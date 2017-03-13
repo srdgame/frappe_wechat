@@ -29,11 +29,11 @@ def valid_auth_code(app=None, auth_code=None):
 
 
 @frappe.whitelist(allow_guest=True)
-def check_bind(user=None):
+def check_bind(openid=None):
 	app = valid_auth_code()
-	if not (user):
-		user = frappe.form_dict.get('user')
-	return frappe.get_value("Wechat Binding", {"user":user, "app": app}, "openid")
+	if not (openid):
+		openid = frappe.form_dict.get('openid')
+	return frappe.get_value("Wechat Binding", {"openid":openid, "app": app}, "user")
 
 
 def get_post_json_data():
