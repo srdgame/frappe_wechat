@@ -87,7 +87,7 @@ def iot_device_data(user, sn):
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
-	from iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
+	from iot.iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
 
 	frappe.session.user = user
 	doc = frappe.get_doc('IOT Device', sn)
@@ -108,7 +108,7 @@ def iot_device_cfg(user, sn):
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
-	from iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
+	from iot.iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
 
 	frappe.session.user = user
 	sn = sn or frappe.form_dict.get('sn')
