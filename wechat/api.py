@@ -115,6 +115,14 @@ def iot_device_cfg(user, sn):
 	return hdb.iot_device_cfg(sn)
 
 
+@frappe.whitelist()
+def send_wechat_msg(app, users, msg):
+	if not frappe.get_value('Wechat App', app):
+		throw(_("wechat not existed!"))
+
+	ids = [d[0] for d in frappe.db.get_values('Wechat Binding', {"app": app, "user": ["in", users]}, "openid")]
+	print("Wechat sending notify : {0} to openids {1} via app {2}".format(msg, ids, app))
+
 
 @frappe.whitelist(allow_guest=True)
 def get_time():
