@@ -13,9 +13,9 @@ from wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unb
 
 
 def valid_auth_code(app=None, auth_code=None):
-	app = app or frappe.get_request_header("App")
+	app = app or frappe.get_request_header("AppName")
 	if not app:
-		throw(_("App is required in HTTP Header!"))
+		throw(_("AppName is required in HTTP Header!"))
 	auth_code = auth_code or frappe.get_request_header("AuthorizationCode")
 	if not auth_code:
 		throw(_("AuthorizationCode is required in HTTP Header!"))
