@@ -6,7 +6,7 @@ def get_data():
 	return [
 		{
 			"module_name": "Wechat",
-			"color": "green",
+			"color": "#33cc33",
 			"icon": "fa fa-wechat",
 			"type": "module",
 			"label": _("Wechat")
