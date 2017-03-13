@@ -96,7 +96,9 @@ def iot_device_data(user, sn):
 		throw(_("user and sn is required!"))
 
 	frappe.session.user = user
-	return iot.iot.hdb.iot_device_data(sn)
+
+	from iot.iot import hdb
+	return hdb.iot_device_data(sn)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -105,7 +107,8 @@ def iot_device_cfg(user, sn):
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
-	return iot.iot.hdb.iot_device_cfg(sn)
+	from iot.iot import hdb
+	return hdb.iot_device_cfg(sn)
 
 
 
