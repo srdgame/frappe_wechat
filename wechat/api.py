@@ -82,24 +82,21 @@ def unbind(user=None):
 
 
 @frappe.whitelist(allow_guest=True)
+def list_iot_devices(user):
+	app = valid_auth_code()
+	if not (user and sn):
+		throw(_("user and sn is required!"))
+
+
+
+@frappe.whitelist(allow_guest=True)
 def iot_device_data(user, sn):
 	app = valid_auth_code()
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
-	from iot.iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
-
 	frappe.session.user = user
-	doc = frappe.get_doc('IOT Device', sn)
-	doc.has_permission("read")
-	session = requests.session()
-	url = IOTHDBSettings.get_data_url() + "/rtdb/boxdata"
-	params = {
-		"sn": doc.sn
-	}
-	r = session.get(url, params=params)
-	if r:
-		return r.json();
+	return iot.iot.hdb.iot_device_data(sn)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -108,19 +105,8 @@ def iot_device_cfg(user, sn):
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
-	from iot.iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
+	return iot.iot.hdb.iot_device_cfg(sn)
 
-	frappe.session.user = user
-	doc = frappe.get_doc('IOT Device', sn)
-	doc.has_permission("read")
-	session = requests.session()
-	url = IOTHDBSettings.get_data_url() + "/rtdb/boxcfg"
-	params = {
-		"sn": doc.sn
-	}
-	r = session.get(url, params=params)
-	if r:
-		return r.json();
 
 
 @frappe.whitelist(allow_guest=True)
