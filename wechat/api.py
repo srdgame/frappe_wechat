@@ -102,7 +102,7 @@ def iot_device_data(user, sn):
 		return r.json();
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def iot_device_cfg(user, sn):
 	app = valid_auth_code()
 	if not (user and sn):
