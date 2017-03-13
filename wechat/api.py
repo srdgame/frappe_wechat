@@ -111,7 +111,6 @@ def iot_device_cfg(user, sn):
 	from iot.iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
 
 	frappe.session.user = user
-	sn = sn or frappe.form_dict.get('sn')
 	doc = frappe.get_doc('IOT Device', sn)
 	doc.has_permission("read")
 	session = requests.session()
