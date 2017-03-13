@@ -40,7 +40,7 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0, 
-   "unique": 0
+   "unique": 1
   }, 
   {
    "allow_on_submit": 0, 
@@ -141,7 +141,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-13 13:50:33.927010", 
+ "modified": "2017-03-13 13:51:03.738740", 
  "modified_by": "Administrator", 
  "module": "Wechat", 
  "name": "Wechat App", 
