@@ -1,6 +1,9 @@
+*~
 .DS_Store
 *.pyc
 *.egg-info
 *.swp
 tags
-wechat/docs/current
+iot/docs/current
+.idea
+git_swap.sh
