@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include wechat *.css
+recursive-include wechat *.csv
+recursive-include wechat *.html
+recursive-include wechat *.ico
+recursive-include wechat *.js
+recursive-include wechat *.json
+recursive-include wechat *.md
+recursive-include wechat *.png
+recursive-include wechat *.py
+recursive-include wechat *.svg
+recursive-include wechat *.txt
+recursive-exclude wechat *.pyc
