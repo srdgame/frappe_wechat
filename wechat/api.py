@@ -82,11 +82,15 @@ def unbind(user=None):
 
 
 @frappe.whitelist(allow_guest=True)
-def list_iot_devices(user):
+def iot_device_list(user):
 	app = valid_auth_code()
-	if not (user and sn):
-		throw(_("user and sn is required!"))
+	if not (user):
+		throw(_("user is required!"))
 
+	frappe.session.user = user
+
+	from iot import hdb_api
+	return hdb_api.list_iot_devices(user)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -97,7 +101,7 @@ def iot_device_data(user, sn):
 
 	frappe.session.user = user
 
-	from iot.iot import hdb
+	from iot import hdb
 	return hdb.iot_device_data(sn)
 
 
@@ -107,7 +111,7 @@ def iot_device_cfg(user, sn):
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
-	from iot.iot import hdb
+	from iot import hdb
 	return hdb.iot_device_cfg(sn)
 
 
