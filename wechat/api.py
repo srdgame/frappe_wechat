@@ -82,6 +82,49 @@ def unbind(user=None):
 
 
 @frappe.whitelist(allow_guest=True)
+def iot_device_data(user, sn):
+	app = valid_auth_code()
+	if not (user and sn):
+		throw(_("user and sn is required!"))
+
+	from iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
+
+	frappe.session.user = user
+	doc = frappe.get_doc('IOT Device', sn)
+	doc.has_permission("read")
+	session = requests.session()
+	url = IOTHDBSettings.get_data_url() + "/rtdb/boxdata"
+	params = {
+		"sn": doc.sn
+	}
+	r = session.get(url, params=params)
+	if r:
+		return r.json();
+
+
+@frappe.whitelist()
+def iot_device_cfg(user, sn):
+	app = valid_auth_code()
+	if not (user and sn):
+		throw(_("user and sn is required!"))
+
+	from iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
+
+	frappe.session.user = user
+	sn = sn or frappe.form_dict.get('sn')
+	doc = frappe.get_doc('IOT Device', sn)
+	doc.has_permission("read")
+	session = requests.session()
+	url = IOTHDBSettings.get_data_url() + "/rtdb/boxcfg"
+	params = {
+		"sn": doc.sn
+	}
+	r = session.get(url, params=params)
+	if r:
+		return r.json();
+
+
+@frappe.whitelist(allow_guest=True)
 def get_time():
 	valid_auth_code()
 	return frappe.utils.now()
