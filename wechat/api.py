@@ -29,7 +29,7 @@ def valid_auth_code(app=None, auth_code=None):
 
 
 @frappe.whitelist(allow_guest=True)
-def get(user=None):
+def check_bind(user=None):
 	app = valid_auth_code()
 	if not (user):
 		user = frappe.form_dict.get('user')
@@ -48,7 +48,7 @@ def get_post_json_data():
 
 
 @frappe.whitelist(allow_guest=True)
-def bind(frm_data):
+def bind(frm_data=None):
 	app = valid_auth_code()
 	frm_data = frm_data or get_post_json_data()
 	user = frm_data.get("user")
@@ -70,7 +70,7 @@ def bind(frm_data):
 
 
 @frappe.whitelist(allow_guest=True)
-def unbind(user):
+def unbind(user=None):
 	app = valid_auth_code()
 	user = user or get_post_json_data().get("user")
 	if not (user):
