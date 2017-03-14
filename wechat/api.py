@@ -31,8 +31,9 @@ def valid_auth_code(app=None, auth_code=None):
 @frappe.whitelist(allow_guest=True)
 def check_bind(openid=None):
 	app = valid_auth_code()
-	if not (openid):
-		openid = frappe.form_dict.get('openid')
+	openid = openid or frappe.form_dict.get('openid')
+	if not openid:
+		throw(_("openid is required!"))
 	return frappe.get_value("Wechat Binding", {"openid":openid, "app": app}, "user")
 
 
