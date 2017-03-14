@@ -125,7 +125,7 @@ def create_wechat_menu(app_name):
 
 			if doc.route:
 				menu_map[menu.group].sub_button.append({
-					"type": doc.type or "view",
+					"type": "view",
 					"name": menu.alias or doc.menu_name,
 					"url": "http://mm.symgrid.com/" + doc.route
 				})
@@ -142,7 +142,7 @@ def create_wechat_menu(app_name):
 			menu_map[menu.group].url = None
 		else:
 			m = {
-				"type": doc.type or "view",
+				"type": "view",
 				"name": menu.alias or doc.menu_name
 			}
 			if doc.route:
