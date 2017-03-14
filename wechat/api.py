@@ -119,7 +119,7 @@ def create_wechat_menu(app_name):
 	menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name})
 	menu_map = {}
 	for menu in menu_list:
-		doc = frappe.get_doc("Wechat Menu", menu)
+		doc = frappe.get_doc("Wechat Menu", menu.menu)
 		if menu_map.has_key(menu.index):
 			menu_map[menu.index].sub_button = menu_map[menu.index].sub_button or []
 
