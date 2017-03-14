@@ -1,0 +1,27 @@
+{% extends "templates/web.html" %}
+
+{% block title %} {{_("Enable IOT for ")}} {{ doc.user }} {% endblock %}
+
+{% block page_content %}
+
+<div class="page-card">
+	<div class='page-card-head'>
+		<span class='indicator blue'>{{ _("Binding Wechat") }}</span>
+	</div>
+   	<form role="form form-bind-wechat" method="POST"
+        action="/api/method/wechat.api.add_user">
+        <input type="hidden" name="app" value="{{ doc.app }}">
+        <input type="hidden" name="openid" value="{{ doc.openid }}">
+        <input type="hidden" name="expires" value="{{ doc.expires }}">
+
+		<input type="text" id="login_email"
+				class="form-control" placeholder="{{ _('Email address') }}" required autofocus>
+
+		<input type="password" id="login_password"
+			class="form-control" placeholder="{{ _('Password') }}" required>
+
+		<button class="btn btn-primary btn-bind-wechat" type="submit">{{ _("Enable") }}</button>
+	</form>
+</div>
+
+{% endblock %}

@@ -122,17 +122,24 @@ app_license = "MIT"
 
 website_route_rules = [
 	{"from_route": "/wechat", "to_route": "Wechat App"},
-	{"from_route": "/wechat/<path:name>", "to_route": "/api/method/wechat.api.wechat",
+	{"from_route": "/wechat/<path:app>", "to_route": "/api/method/wechat.api.wechat",
 		"defaults": {
 			"doctype": "Wechat App",
 			"parents": [{"title": _("Wechat App"), "name": "wechat"}]
 		}
 	},
 	{"from_route": "/wechat/home", "to_route": "Wechat Homepage"},
-	{"from_route": "/wechat/home/<path:name>", "to_route": "wechat_homepage",
+	{"from_route": "/wechat/home/<path:app>", "to_route": "wechat/home",
 		"defaults": {
 			"doctype": "Wechat Homepage",
 			"parents": [{"title": _("Wechat Homepage"), "name": "wechat_home"}]
 		}
-	}
+	},
+	{"from_route": "/wechat/menu", "to_route": "Wechat Menu"},
+	{"from_route": "/wechat/menu/<path:app>", "to_route": "wechat/menu",
+	 "defaults": {
+		 "doctype": "Wechat Homepage",
+		 "parents": [{"title": _("Wechat Homepage"), "name": "wechat_menu"}]
+	 }
+	 }
 ]

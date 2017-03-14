@@ -19,30 +19,6 @@ from wechatpy.exceptions import (
 )
 from wechatpy import WeChatClient
 
-def valid_auth_code(app=None, auth_code=None):
-	app = app or frappe.get_request_header("AppName")
-	if not app:
-		throw(_("AppName is required in HTTP Header!"))
-	auth_code = auth_code or frappe.get_request_header("AuthorizationCode")
-	if not auth_code:
-		throw(_("AuthorizationCode is required in HTTP Header!"))
-	frappe.logger(__name__).debug(_("App as {0} AuthorizationCode as {1}").format(app, auth_code))
-
-	if auth_code != frappe.get_value("Wechat App", app, "authorization_code"):
-		throw(_("Authorization Code is incorrect!"))
-
-	frappe.session.user = frappe.get_value("Wechat App", app, "on_behalf")
-	return app
-
-
-@frappe.whitelist(allow_guest=True)
-def check_bind(openid=None):
-	app = valid_auth_code()
-	openid = openid or frappe.form_dict.get('openid')
-	if not openid:
-		throw(_("openid is required!"))
-	return frappe.get_value("Wechat Binding", {"openid":openid, "app": app}, "user")
-
 
 def get_post_json_data():
 	if frappe.request.method != "POST" and frappe.request.method != "PUT":
@@ -55,44 +31,9 @@ def get_post_json_data():
 	return json.loads(frappe.form_dict.data)
 
 
-@frappe.whitelist(allow_guest=True)
-def bind(frm_data=None):
-	app = valid_auth_code()
-	frm_data = frm_data or get_post_json_data()
-	user = frm_data.get("user")
-	passwd = frm_data.get("passwd")
-	openid = frm_data.get("openid")
-	expires = frm_data.get("expires")
-	if not (user and passwd and openid):
-		throw(_("user, passwd, openid is required!"))
-
-	frappe.logger(__name__).debug(_("Wechat App binding user {0} password {1} openid {2} expires{3}")
-									.format(user, passwd, openid, expires))
-
-	frappe.local.login_manager.authenticate(user, passwd)
-	if frappe.local.login_manager.user != user:
-		throw(_("Username password is not matched!"))
-
-	return wechat_bind(app, user, openid, expires)
-
-
-
-@frappe.whitelist(allow_guest=True)
-def unbind(user=None):
-	app = valid_auth_code()
-	user = user or get_post_json_data().get("user")
-	if not (user):
-		throw(_("user is required!"))
-
-	frappe.logger(__name__).debug(_("Wechat App binding user {0}").format(user))
-
-	return wechat_unbind(app, user)
-
-
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def iot_device_list(user):
-	app = valid_auth_code()
-	if not (user):
+	if not user:
 		throw(_("user is required!"))
 
 	frappe.session.user = user
@@ -101,10 +42,9 @@ def iot_device_list(user):
 	return hdb_api.list_iot_devices(user)
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def iot_device_data(user, sn):
-	app = valid_auth_code()
-	if not (user and sn):
+	if not user and sn:
 		throw(_("user and sn is required!"))
 
 	frappe.session.user = user
@@ -113,9 +53,8 @@ def iot_device_data(user, sn):
 	return hdb.iot_device_data(sn)
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def iot_device_cfg(user, sn):
-	app = valid_auth_code()
 	if not (user and sn):
 		throw(_("user and sn is required!"))
 
@@ -134,36 +73,7 @@ def send_wechat_msg(app, users, msg):
 
 @frappe.whitelist(allow_guest=True)
 def get_time():
-	valid_auth_code()
 	return frappe.utils.now()
-
-
-@frappe.whitelist(allow_guest=True)
-def ping():
-	form_data = frappe.form_dict
-	if frappe.request and frappe.request.method == "POST":
-		if form_data.data:
-			form_data = json.loads(form_data.data)
-		return form_data.get("text") or "No Text"
-	return 'pong'
-
-
-@frappe.whitelist(allow_guest=True)
-def login(app, openid, redirect=None):
-	valid_auth_code()
-
-	redirect = redirect or "/desk#desktop"
-	if not (app and openid):
-		frappe.local.response["type"] = "redirect"
-		frappe.local.response["location"] = "/login"
-
-	user = frappe.get_value("Wechat Binding", {"openid":openid, "app": app}, "user")
-	frappe.local.login_manager.user = user
-	frappe.local.login_manager.post_login()
-
-	frappe.local.response["type"] = "redirect"
-	# the #desktop is added to prevent a facebook redirect bug
-	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
 
 
 def fire_raw_content(content, status=200, content_type='text/html'):
@@ -180,6 +90,25 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 	frappe.response['type'] = 'download'
 
 
+@frappe.whitelist(allow_guest=True)
+def bind(app, openid, user, passwd, expires=None, redirect=None):
+	redirect = redirect or "/desk#desktop"
+	if not (app and openid and user and passwd):
+		return fire_raw_content("App, OpenID, User, Passwd is required!", 403)
+
+	frappe.local.login_manager.authenticate(user, passwd)
+	if frappe.local.login_manager.user != user:
+		throw(_("Username password is not matched!"))
+
+	frappe.local.login_manager.user = user
+	frappe.local.login_manager.post_login()
+
+	wechat_bind(app, user, openid, expires)
+
+	frappe.local.response["type"] = "redirect"
+	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
+
+
 def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
@@ -189,13 +118,33 @@ def create_wechat_menu(app_name):
 		"button": [
 			{
 				"type": "view",
-				"name": "Home",
-				"url": "http://mm.symgrid.com/wechat/home/test"
+				"name": "主页",
+				"url": "http://mm.symgrid.com/wechat/home/" + app_name
 			},
 			{
 				"type": "view",
-				"name": "test2",
-				"url": "http://www.symid.com/"
+				"name": "我的设备",
+				"url": "http://mm.symgrid.com/wechat/menu/" + app_name + "?menu=iot_devices"
+			},
+			{
+				"name": "菜单",
+				"sub_button": [
+					{
+						"type": "view",
+						"name": "搜索",
+						"url": "http://www.soso.com/"
+					},
+					{
+						"type": "view",
+						"name": "视频",
+						"url": "http://v.qq.com/"
+					},
+					{
+						"type": "click",
+						"name": "赞一下我们",
+						"key": "V1001_GOOD"
+					}
+				]
 			}
 		]
 	}
@@ -205,9 +154,9 @@ def create_wechat_menu(app_name):
 
 
 @frappe.whitelist(allow_guest=True)
-def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echostr=None):
-	name = name or 'test'
-	TOKEN = frappe.get_value('Wechat App', name, 'token')
+def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echostr=None):
+	app = app or 'test'
+	TOKEN = frappe.get_value('Wechat App', app, 'token')
 
 	try:
 		check_signature(TOKEN, signature, timestamp, nonce)
@@ -215,7 +164,7 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 		return fire_raw_content(e, 403)
 
 	if frappe.request.method == "GET":
-		frappe.enqueue('wechat.api.create_wechat_menu', app_name=name)
+		frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 		return fire_raw_content(echostr)
 
 	# POST request
@@ -227,13 +176,13 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 		else:
 			reply = create_reply('Sorry, can not handle this for now', msg)
 
-		frappe.enqueue('wechat.api.create_wechat_menu', app_name=name)
+		frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 		return fire_raw_content(reply.render(), 200, 'text/xml')
 	else:
 		# encryption mode
 		from wechatpy.crypto import WeChatCrypto
-		AES_KEY = frappe.get_value('Wechat App', name, 'aes_key')
-		APP_ID = frappe.get_value('Wechat App', name, 'app_id')
+		AES_KEY = frappe.get_value('Wechat App', app, 'aes_key')
+		APP_ID = frappe.get_value('Wechat App', app, 'app_id')
 
 		crypto = WeChatCrypto(TOKEN, AES_KEY, APP_ID)
 		try:
@@ -251,5 +200,5 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 				reply = create_reply(msg.content, msg)
 			else:
 				reply = create_reply('Sorry, can not handle this for now', msg)
-			frappe.enqueue('wechat.api.create_wechat_menu', app_name=name)
+			frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 			return fire_raw_content(crypto.encrypt_message(reply.render(), nonce, timestamp), 200, 'text/xml')
