@@ -7,7 +7,7 @@ import requests
 import json
 from frappe import _
 from iot.iot.doctype.iot_settings.iot_settings import IOTSettings
-from wechatpy import WeChatClient
+from wechatpy.oauth import WeChatOAuth
 
 
 def get_context(context):
@@ -26,8 +26,8 @@ def get_context(context):
 	secret = frappe.get_value('Wechat App', app, 'secret')
 
 	try:
-		client = WeChatClient(app_id, secret)
-		token = client.fetch_access_token(code)
+		auth = WeChatOAuth(app_id, secret, '')
+		token = auth.fetch_access_token(code)
 
 		user = frappe.get_value("Wechat Binding", {"openid":token.open_id, "app": app}, "user")
 		if user:
