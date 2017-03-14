@@ -10,9 +10,9 @@
 	</div>
    	<form role="form form-bind-wechat" method="POST"
         action="/api/method/wechat.api.add_user">
-        <input type="hidden" name="app" value="{{ doc.app }}">
-        <input type="hidden" name="openid" value="{{ doc.openid }}">
-        <input type="hidden" name="expires" value="{{ doc.expires }}">
+		<input type="hidden" name="app" value="{{ doc.app }}">
+		<input type="hidden" name="openid" value="{{ doc.openid }}">
+		<input type="hidden" name="expires" value="{{ doc.expires }}">
 
 		<input type="text" id="login_email"
 				class="form-control" placeholder="{{ _('Email address') }}" required autofocus>
