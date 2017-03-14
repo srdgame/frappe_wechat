@@ -120,6 +120,6 @@ app_license = "MIT"
 # }
 
 website_route_rules = [
-	{"from_route": "/wechat/wechat/<path:name>", "to_route": "/api/method/wechat.api.wechat"},
-	{"from_route": "/wechat/home/<path:name>", "to_route": "wechat_homepage"}
+	{"from_route": "/wechat/<path:name>", "to_route": "/api/method/wechat.api.wechat"},
+	{"from_route": "/wechat_home/<path:name>", "to_route": "wechat_homepage"}
 ]
