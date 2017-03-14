@@ -152,7 +152,8 @@ def create_wechat_menu(app_name):
 
 	buttons = []
 	for i in range(0, 5):
-		buttons.append(menu_map[i])
+		if menu_map.has_key(i):
+			buttons.append(menu_map[i])
 
 	menu = {
 		"button":buttons
