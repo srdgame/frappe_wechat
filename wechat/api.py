@@ -139,7 +139,8 @@ def create_wechat_menu(app_name):
 					"name": menu_map[menu.group]['name']
 				})
 			menu_map[menu.group] = {
-				"name": menu_map[menu.group]['name']
+				"name": menu_map[menu.group]['name'],
+				"sub_button": menu_map[menu.group]['sub_button']
 			}
 		else:
 			m = {
