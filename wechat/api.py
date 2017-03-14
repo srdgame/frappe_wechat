@@ -165,6 +165,20 @@ def login(app, openid, redirect=None):
 	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
 
 
+def fire_raw_content(content, status=200, content_type='text/html'):
+	"""
+	I am hack!!!
+	:param content: 
+	:param content_type: 
+	:return: 
+	"""
+	frappe.response['http_status_code'] = status
+	frappe.response['filename'] = ''
+	frappe.response['filecontent'] = content
+	frappe.response['content_type'] = content_type
+	frappe.response['type'] = 'download'
+
+
 @frappe.whitelist(allow_guest=True)
 def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echo_str=None):
 	TOKEN = frappe.get_value('Wechat App', name, 'token')
@@ -172,21 +186,20 @@ def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw',
 	try:
 		check_signature(TOKEN, signature, timestamp, nonce)
 	except InvalidSignatureException, e:
-		frappe.response['http_status_code'] = 403
-		frappe.response['message'] = e
+		return fire_raw_content(e, 403)
 
 	if frappe.request.method == "GET":
-		return echo_str
+		return fire_raw_content(echo_str)
 
 	# POST request
 	if encrypt_type == 'raw':
 		# plaintext mode
-		msg = get_post_json_data()
+		msg = parse_message(frappe.form_dict.data)
 		if msg.type == 'text':
 			reply = create_reply(msg.content, msg)
 		else:
 			reply = create_reply('Sorry, can not handle this for now', msg)
-		return reply.render()
+			return fire_raw_content(reply.render(), 200, 'text/xml')
 	else:
 		# encryption mode
 		from wechatpy.crypto import WeChatCrypto
@@ -202,13 +215,11 @@ def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw',
 				nonce
 			)
 		except (InvalidSignatureException, InvalidAppIdException), e:
-			frappe.response['http_status_code'] = 403
-			frappe.response['message'] = e
+			return fire_raw_content(e, 403)
 		else:
 			msg = parse_message(msg)
 			if msg.type == 'text':
 				reply = create_reply(msg.content, msg)
 			else:
 				reply = create_reply('Sorry, can not handle this for now', msg)
-			frappe.response['http_status_code'] = 403
-			frappe.response['message'] = crypto.encrypt_message(reply.render(), nonce, timestamp)
+			return fire_raw_content(crypto.encrypt_message(reply.render(), nonce, timestamp), 200, 'text/xml')
