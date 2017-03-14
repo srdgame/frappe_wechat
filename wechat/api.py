@@ -121,7 +121,8 @@ def create_wechat_menu(app_name):
 	for menu in menu_list:
 		doc = frappe.get_doc("Wechat Menu", menu.menu)
 		if menu_map.has_key(menu.group):
-			menu_map[menu.group]["sub_button"] = menu_map[menu.group]["sub_button"] or []
+			if not menu_map[menu.group].has_key("sub_button"):
+				menu_map[menu.group]["sub_button"] = []
 
 			if doc.route:
 				menu_map[menu.group]["sub_button"].append({
