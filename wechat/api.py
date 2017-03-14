@@ -184,7 +184,7 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 	TOKEN = frappe.get_value('Wechat App', name, 'token')
 
 	try:
-		echo_str = check_signature(TOKEN, signature, timestamp, nonce)
+		check_signature(TOKEN, signature, timestamp, nonce)
 	except InvalidSignatureException, e:
 		return fire_raw_content(e, 403)
 
