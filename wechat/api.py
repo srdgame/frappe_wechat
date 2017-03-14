@@ -185,7 +185,7 @@ def create_wechat_menu(app_name):
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
 	client = WeChatClient(app_id, secret)
-	client.menu.add_conditional({
+	menu = {
 		"button": [
 			{
 				"type": "view",
@@ -218,7 +218,9 @@ def create_wechat_menu(app_name):
 				]
 			}
 		]
-	})
+	}
+	print(menu)
+	client.menu.add_conditional(menu)
 	print('--------------------------------------------------------')
 
 
