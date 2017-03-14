@@ -41,4 +41,3 @@ def get_context(context):
 		"openid": auth.open_id,
 		"expires": auth.expires_in
 	}
-	
