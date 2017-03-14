@@ -9,6 +9,7 @@ import requests
 from frappe import throw, msgprint, _
 from frappe.model.document import Document
 from frappe.utils import cint
+from frappe.utils.response import build_response
 from wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
 from wechatpy import parse_message, create_reply
 from wechatpy.utils import check_signature
@@ -170,8 +171,9 @@ def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw',
 
 	try:
 		check_signature(TOKEN, signature, timestamp, nonce)
-	except InvalidSignatureException:
-		raise frappe.PermissionError
+	except InvalidSignatureException, e:
+		frappe.response['http_status_code'] = 403
+		frappe.response['message'] = e
 
 	if frappe.request.method == "GET":
 		return echo_str
@@ -199,12 +201,14 @@ def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw',
 				timestamp,
 				nonce
 			)
-		except (InvalidSignatureException, InvalidAppIdException):
-			raise frappe.PermissionError
+		except (InvalidSignatureException, InvalidAppIdException), e:
+			frappe.response['http_status_code'] = 403
+			frappe.response['message'] = e
 		else:
 			msg = parse_message(msg)
 			if msg.type == 'text':
 				reply = create_reply(msg.content, msg)
 			else:
 				reply = create_reply('Sorry, can not handle this for now', msg)
-			return crypto.encrypt_message(reply.render(), nonce, timestamp)
+			frappe.response['http_status_code'] = 403
+			frappe.response['message'] = crypto.encrypt_message(reply.render(), nonce, timestamp)
