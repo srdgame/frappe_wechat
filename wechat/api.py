@@ -138,9 +138,9 @@ def create_wechat_menu(app_name):
 					"type": menu_map[menu.group]['type'],
 					"name": menu_map[menu.group]['name']
 				})
-
-			menu_map[menu.group]['type'] = None
-			menu_map[menu.group]['url'] = None
+			menu_map[menu.group] = {
+				"name": menu_map[menu.group]['name']
+			}
 		else:
 			m = {
 				"type": "view",
