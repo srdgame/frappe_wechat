@@ -180,7 +180,7 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 
 
 @frappe.whitelist(allow_guest=True)
-def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echo_str=None):
+def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echostr=None):
 	name = name or 'test'
 	TOKEN = frappe.get_value('Wechat App', name, 'token')
 
@@ -190,7 +190,7 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 		return fire_raw_content(e, 403)
 
 	if frappe.request.method == "GET":
-		return fire_raw_content(echo_str)
+		return fire_raw_content(echostr)
 
 	# POST request
 	if encrypt_type == 'raw':
