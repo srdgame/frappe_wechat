@@ -116,7 +116,7 @@ def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
-	menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name})
+	menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name}, fields=['menu', 'alias', 'index'])
 	menu_map = {}
 	for menu in menu_list:
 		doc = frappe.get_doc("Wechat Menu", menu.menu)
@@ -125,7 +125,7 @@ def create_wechat_menu(app_name):
 
 			if doc.route:
 				menu_map[menu.index].sub_button.append({
-					"type": menu.type or "view",
+					"type": doc.type or "view",
 					"name": menu.alias or doc.menu_name,
 					"url": "http://mm.symgrid.com/" + doc.route
 				})
@@ -142,7 +142,7 @@ def create_wechat_menu(app_name):
 			menu_map[menu.index].url = None
 		else:
 			m = {
-				"type": menu.type or "view",
+				"type": doc.type or "view",
 				"name": menu.alias or doc.menu_name
 			}
 			if doc.route:
