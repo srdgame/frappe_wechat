@@ -7,7 +7,7 @@ import requests
 import json
 from frappe import _
 from iot.iot.doctype.iot_settings.iot_settings import IOTSettings
-from wechatpy.oauth import WeChatOAuth
+from wechatpy import WeChatClient
 
 
 def get_context(context):
@@ -22,13 +22,16 @@ def get_context(context):
 	if not (app and code):
 		raise frappe.PermissionError("App or Code does not exists!")
 
+	app_id = frappe.get_value('Wechat App', app, 'app_id')
+	secret = frappe.get_value('Wechat App', app, 'secret')
+
 	try:
-		auth = WeChatOAuth()
-		url = auth.oauth.authorize_url(frappe.request.url)
+		client = WeChatClient(app_id, secret)
+		url = client.oauth.authorize_url(frappe.request.url)
 
-		auth.fetch_access_token(code)
+		token = client.fetch_access_token(code)
 
-		user = frappe.get_value("Wechat Binding", {"openid":auth.open_id, "app": app}, "user")
+		user = frappe.get_value("Wechat Binding", {"openid":token.open_id, "app": app}, "user")
 		if user:
 			frappe.local.flags.redirect_location = frappe.form_dict.redirect or "/me"
 			raise frappe.Redirect
@@ -39,8 +42,8 @@ def get_context(context):
 		context.title = _("Binding Wechat")
 		context.doc = {
 			"app": app,
-			"openid": auth.open_id,
-			"expires": auth.expires_in
+			"openid": token.open_id,
+			"expires": token.expires_in
 		}
 	except Exception, e:
 		raise frappe.PermissionError(e)
