@@ -17,6 +17,7 @@ from wechatpy.exceptions import (
     InvalidSignatureException,
     InvalidAppIdException,
 )
+from wechatpy import WeChatClient
 
 def valid_auth_code(app=None, auth_code=None):
 	app = app or frappe.get_request_header("AppName")
@@ -179,6 +180,46 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 	frappe.response['type'] = 'download'
 
 
+def create_wechat_menu(app_name):
+	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
+	secret = frappe.get_value('Wechat App', app_name, 'secret')
+	client = WeChatClient(app_id, secret)
+	client.menu.add_conditional({
+		"button": [
+			{
+				"type": "view",
+				"name": "Home",
+				"url": "http://mm.symgrid.com/wechat/home/test"
+			},
+			{
+				"type": "view",
+				"name": "test2",
+				"url": "http://www.symid.com/"
+			},
+			{
+				"name": "Menu",
+				"sub_button": [
+					{
+						"type": "view",
+						"name": "搜索",
+						"url": "http://www.symid.com/"
+					},
+					{
+						"type": "view",
+						"name": "视频",
+						"url": "http://www.symid.com/"
+					},
+					{
+						"type": "click",
+						"name": "赞一下我们",
+						"key": "V1001_GOOD"
+					}
+				]
+			}
+		]
+	})
+
+
 @frappe.whitelist(allow_guest=True)
 def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echostr=None):
 	name = name or 'test'
@@ -190,6 +231,7 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 		return fire_raw_content(e, 403)
 
 	if frappe.request.method == "GET":
+		frappe.enqueue('iot.hdb_api.fire_callback', app_name=name)
 		return fire_raw_content(echostr)
 
 	# POST request
@@ -200,7 +242,9 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 			reply = create_reply(msg.content, msg)
 		else:
 			reply = create_reply('Sorry, can not handle this for now', msg)
-			return fire_raw_content(reply.render(), 200, 'text/xml')
+
+		frappe.enqueue('iot.hdb_api.fire_callback', app_name=name)
+		return fire_raw_content(reply.render(), 200, 'text/xml')
 	else:
 		# encryption mode
 		from wechatpy.crypto import WeChatCrypto
@@ -223,4 +267,5 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 				reply = create_reply(msg.content, msg)
 			else:
 				reply = create_reply('Sorry, can not handle this for now', msg)
+			frappe.enqueue('iot.hdb_api.fire_callback', app_name=name)
 			return fire_raw_content(crypto.encrypt_message(reply.render(), nonce, timestamp), 200, 'text/xml')
