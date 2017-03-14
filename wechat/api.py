@@ -133,14 +133,14 @@ def create_wechat_menu(app_name):
 			else:
 				menu_map[menu.group].name = menu.alias or doc.menu_name
 
-			if menu_map[menu.group].url:
+			if menu_map[menu.group].has_key('url'):
 				menu_map[menu.group]["sub_button"].append({
-					"type": menu_map[menu.group].type,
-					"name": menu_map[menu.group].name
+					"type": menu_map[menu.group]['type'],
+					"name": menu_map[menu.group]['name']
 				})
 
-			menu_map[menu.group].type = None
-			menu_map[menu.group].url = None
+			menu_map[menu.group]['type'] = None
+			menu_map[menu.group]['url'] = None
 		else:
 			m = {
 				"type": "view",
