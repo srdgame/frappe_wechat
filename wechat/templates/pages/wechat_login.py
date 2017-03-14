@@ -27,8 +27,6 @@ def get_context(context):
 
 	try:
 		client = WeChatClient(app_id, secret)
-		url = client.oauth.authorize_url(frappe.request.url)
-
 		token = client.fetch_access_token(code)
 
 		user = frappe.get_value("Wechat Binding", {"openid":token.open_id, "app": app}, "user")
