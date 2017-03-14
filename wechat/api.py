@@ -219,7 +219,7 @@ def create_wechat_menu(app_name):
 			}
 		]
 	}
-	print(menu)
+	print(json.dumps(menu))
 	client.menu.add_conditional(menu)
 	print('--------------------------------------------------------')
 
