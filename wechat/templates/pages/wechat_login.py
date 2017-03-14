@@ -39,5 +39,6 @@ def get_context(context):
 	context.doc = {
 		"app": app,
 		"openid": auth.open_id,
-		"expires": auth.expires_in,
+		"expires": auth.expires_in
 	}
+	
