@@ -22,22 +22,25 @@ def get_context(context):
 	if not (app and code):
 		raise frappe.PermissionError("App or Code does not exists!")
 
-	auth = WeChatOAuth()
-	url = auth.oauth.authorize_url(frappe.request.url)
+	try:
+		auth = WeChatOAuth()
+		url = auth.oauth.authorize_url(frappe.request.url)
 
-	auth.fetch_access_token(code)
+		auth.fetch_access_token(code)
 
-	user = frappe.get_value("Wechat Binding", {"openid":auth.open_id, "app": app}, "user")
-	if user:
-		frappe.local.flags.redirect_location = frappe.form_dict.redirect or "/me"
-		raise frappe.Redirect
+		user = frappe.get_value("Wechat Binding", {"openid":auth.open_id, "app": app}, "user")
+		if user:
+			frappe.local.flags.redirect_location = frappe.form_dict.redirect or "/me"
+			raise frappe.Redirect
 
-	context.no_cache = 1
-	context.show_sidebar = False
+		context.no_cache = 1
+		context.show_sidebar = False
 
-	context.title = _("Binding Wechat")
-	context.doc = {
-		"app": app,
-		"openid": auth.open_id,
-		"expires": auth.expires_in
-	}
+		context.title = _("Binding Wechat")
+		context.doc = {
+			"app": app,
+			"openid": auth.open_id,
+			"expires": auth.expires_in
+		}
+	except Exception, e:
+		raise frappe.PermissionError(e)
