@@ -9,7 +9,7 @@
 		<span class='indicator blue'>{{ title }}</span>
 	</div>
    	<form role="form form-bind-wechat" method="POST"
-        action="/api/method/wechat.api.add_user">
+        action="/api/method/wechat.api.bind">
 		<input type="hidden" name="app" value="{{ doc.app }}">
 		<input type="hidden" name="openid" value="{{ doc.openid }}">
 		<input type="hidden" name="expires" value="{{ doc.expires }}">
