@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from . import __version__ as app_version
+from frappe import _
 
 app_name = "wechat"
 app_title = "Wechat"
@@ -120,6 +121,18 @@ app_license = "MIT"
 # }
 
 website_route_rules = [
-	{"from_route": "/wechat/<path:name>", "to_route": "/api/method/wechat.api.wechat"},
-	{"from_route": "/wechat_home/<path:name>", "to_route": "wechat_homepage"}
+	{"from_route": "/wechat", "to_route": "Wechat App"},
+	{"from_route": "/wechat/<path:name>", "to_route": "/api/method/wechat.api.wechat",
+		"defaults": {
+			"doctype": "Wechat App",
+			"parents": [{"title": _("Wechat App"), "name": "wechat"}]
+		}
+	},
+	{"from_route": "/wechat_home", "to_route": "Wechat Homepage"},
+	{"from_route": "/wechat_home/<path:name>", "to_route": "wechat_homepage",
+		"defaults": {
+			"doctype": "Wechat Homepage",
+			"parents": [{"title": _("Wechat Homepage"), "name": "wechat_home"}]
+		}
+	}
 ]
