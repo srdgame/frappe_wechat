@@ -1,12 +1,12 @@
 {% extends "templates/web.html" %}
 
-{% block title %} {{_("Enable IOT for ")}} {{ doc.user }} {% endblock %}
+{% block title %} {{ title }} {% endblock %}
 
 {% block page_content %}
 
 <div class="page-card">
 	<div class='page-card-head'>
-		<span class='indicator blue'>{{ _("Binding Wechat") }}</span>
+		<span class='indicator blue'>{{ title }}</span>
 	</div>
    	<form role="form form-bind-wechat" method="POST"
         action="/api/method/wechat.api.add_user">
