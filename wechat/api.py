@@ -196,26 +196,6 @@ def create_wechat_menu(app_name):
 				"type": "view",
 				"name": "test2",
 				"url": "http://www.symid.com/"
-			},
-			{
-				"name": "Menu",
-				"sub_button": [
-					{
-						"type": "view",
-						"name": "搜索",
-						"url": "http://www.symid.com/"
-					},
-					{
-						"type": "view",
-						"name": "视频",
-						"url": "http://www.symid.com/"
-					},
-					{
-						"type": "click",
-						"name": "赞一下我们",
-						"key": "V1001_GOOD"
-					}
-				]
 			}
 		]
 	}
