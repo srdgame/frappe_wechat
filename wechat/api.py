@@ -181,6 +181,7 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 
 
 def create_wechat_menu(app_name):
+	print('--------------------------------------------------------')
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
 	client = WeChatClient(app_id, secret)
@@ -218,6 +219,7 @@ def create_wechat_menu(app_name):
 			}
 		]
 	})
+	print('--------------------------------------------------------')
 
 
 @frappe.whitelist(allow_guest=True)
@@ -231,7 +233,7 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 		return fire_raw_content(e, 403)
 
 	if frappe.request.method == "GET":
-		frappe.enqueue('iot.hdb_api.fire_callback', app_name=name)
+		frappe.enqueue('wechat.api.create_wechat_menu', app_name=name)
 		return fire_raw_content(echostr)
 
 	# POST request
@@ -243,7 +245,7 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 		else:
 			reply = create_reply('Sorry, can not handle this for now', msg)
 
-		frappe.enqueue('iot.hdb_api.fire_callback', app_name=name)
+		frappe.enqueue('wechat.api.create_wechat_menu', app_name=name)
 		return fire_raw_content(reply.render(), 200, 'text/xml')
 	else:
 		# encryption mode
@@ -267,5 +269,5 @@ def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='
 				reply = create_reply(msg.content, msg)
 			else:
 				reply = create_reply('Sorry, can not handle this for now', msg)
-			frappe.enqueue('iot.hdb_api.fire_callback', app_name=name)
+			frappe.enqueue('wechat.api.create_wechat_menu', app_name=name)
 			return fire_raw_content(crypto.encrypt_message(reply.render(), nonce, timestamp), 200, 'text/xml')
