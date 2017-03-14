@@ -116,7 +116,7 @@ def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
-	menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name}, fields=['menu', 'alias', 'group'])
+	menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name}, fields="*")
 	menu_map = {}
 	for menu in menu_list:
 		doc = frappe.get_doc("Wechat Menu", menu.menu)
