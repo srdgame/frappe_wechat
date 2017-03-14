@@ -180,11 +180,11 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 
 
 @frappe.whitelist(allow_guest=True)
-def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echo_str=None):
+def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None):
 	TOKEN = frappe.get_value('Wechat App', name, 'token')
 
 	try:
-		check_signature(TOKEN, signature, timestamp, nonce)
+		echo_str = check_signature(TOKEN, signature, timestamp, nonce)
 	except InvalidSignatureException, e:
 		return fire_raw_content(e, 403)
 
