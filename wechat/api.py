@@ -181,6 +181,7 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 
 @frappe.whitelist(allow_guest=True)
 def wechat(name=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echo_str=None):
+	name = name or 'test'
 	TOKEN = frappe.get_value('Wechat App', name, 'token')
 
 	try:
