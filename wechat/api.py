@@ -10,7 +10,12 @@ from frappe import throw, msgprint, _
 from frappe.model.document import Document
 from frappe.utils import cint
 from wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
-
+from wechatpy import parse_message, create_reply
+from wechatpy.utils import check_signature
+from wechatpy.exceptions import (
+    InvalidSignatureException,
+    InvalidAppIdException,
+)
 
 def valid_auth_code(app=None, auth_code=None):
 	app = app or frappe.get_request_header("AppName")
@@ -141,3 +146,65 @@ def ping():
 	return 'pong'
 
 
+@frappe.whitelist(allow_guest=True)
+def login(app, openid, redirect=None):
+	valid_auth_code()
+
+	redirect = redirect or "/desk#desktop"
+	if not (app and openid):
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = "/login"
+
+	user = frappe.get_value("Wechat Binding", {"openid":openid, "app": app}, "user")
+	frappe.local.login_manager.user = user
+	frappe.local.login_manager.post_login()
+
+	frappe.local.response["type"] = "redirect"
+	# the #desktop is added to prevent a facebook redirect bug
+	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
+
+
+@frappe.whitelist(allow_guest=True)
+def wechat(name, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echo_str=None):
+	TOKEN = frappe.get_value('Wechat App', name, 'token')
+
+	try:
+		check_signature(TOKEN, signature, timestamp, nonce)
+	except InvalidSignatureException:
+		raise frappe.PermissionError
+
+	if frappe.request.method == "GET":
+		return echo_str
+
+	# POST request
+	if encrypt_type == 'raw':
+		# plaintext mode
+		msg = get_post_json_data()
+		if msg.type == 'text':
+			reply = create_reply(msg.content, msg)
+		else:
+			reply = create_reply('Sorry, can not handle this for now', msg)
+		return reply.render()
+	else:
+		# encryption mode
+		from wechatpy.crypto import WeChatCrypto
+		AES_KEY = frappe.get_value('Wechat App', name, 'aes_key')
+		APP_ID = frappe.get_value('Wechat App', name, 'app_id')
+
+		crypto = WeChatCrypto(TOKEN, AES_KEY, APP_ID)
+		try:
+			msg = crypto.decrypt_message(
+				frappe.form_dict.data,
+				msg_signature,
+				timestamp,
+				nonce
+			)
+		except (InvalidSignatureException, InvalidAppIdException):
+			raise frappe.PermissionError
+		else:
+			msg = parse_message(msg)
+			if msg.type == 'text':
+				reply = create_reply(msg.content, msg)
+			else:
+				reply = create_reply('Sorry, can not handle this for now', msg)
+			return crypto.encrypt_message(reply.render(), nonce, timestamp)

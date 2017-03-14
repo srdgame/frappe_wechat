@@ -1,0 +1,52 @@
+{% extends "templates/web.html" %}
+{% from "iot/templates/includes/macros.html" import product_image_square %}
+
+{% block page_content %}
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="hero">
+			<h1 class="text-center">{{ homepage.tag_line or '' }}</h1>
+			<p class="text-center">{{ homepage.description or '' }}</p>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+	.hero {
+		padding-top: 50px;
+		padding-bottom: 100px;
+	}
+
+	.hero h1 {
+		font-size: 40px;
+		font-weight: 200;
+	}
+
+	.home-login {
+		margin-top: 30px;
+	}
+	.btn-login {
+		width: 80px;
+	}
+
+	.featured-product-heading, .all-products {
+		 text-transform: uppercase;
+		 letter-spacing: 0.5px;
+		 font-size: 12px;
+		 font-weight: 500;
+	}
+
+	.all-products {
+		 font-weight: 300;
+		 padding-left: 25px;
+		 padding-right: 25px;
+		 padding-top: 10px;
+		 padding-bottom: 10px;
+	}
+
+
+</style>
+{% endblock %}

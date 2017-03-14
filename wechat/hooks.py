@@ -119,3 +119,7 @@ app_license = "MIT"
 # 	"frappe.desk.doctype.event.event.get_events": "wechat.event.get_events"
 # }
 
+website_route_rules = [
+	{"from_route": "/wechat/wechat/<path:name>", "to_route": "/api/method/wechat.api.wechat"},
+	{"from_route": "/wechat/home/<path:name>", "to_route": "wechat_homepage"}
+]
