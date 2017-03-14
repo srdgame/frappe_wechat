@@ -129,17 +129,17 @@ website_route_rules = [
 		}
 	},
 	{"from_route": "/wechat/home", "to_route": "Wechat Homepage"},
-	{"from_route": "/wechat/home/<path:app>", "to_route": "wechat/home",
+	{"from_route": "/wechat/home/<path:app>", "to_route": "wechat_home",
 		"defaults": {
 			"doctype": "Wechat Homepage",
-			"parents": [{"title": _("Wechat Homepage"), "name": "wechat_home"}]
+			"parents": [{"title": _("Wechat Homepage"), "name": "wechat/home"}]
 		}
 	},
 	{"from_route": "/wechat/menu", "to_route": "Wechat Menu"},
-	{"from_route": "/wechat/menu/<path:app>", "to_route": "wechat/menu",
+	{"from_route": "/wechat/menu/<path:app>", "to_route": "wechat_menu",
 	 "defaults": {
 		 "doctype": "Wechat Homepage",
-		 "parents": [{"title": _("Wechat Homepage"), "name": "wechat_menu"}]
+		 "parents": [{"title": _("Wechat Homepage"), "name": "wechat/menu"}]
 	 }
 	 }
 ]
