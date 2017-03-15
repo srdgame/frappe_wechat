@@ -148,10 +148,10 @@ def create_wechat_menu(app_name):
 					"name": menu_button['name'],
 					"sub_button": []
 				}
-
+			doc = frappe.get_doc("Wechat Menu", sub_menu.menu)
 			m = {
 				"type": doc.menu_type or "view",
-				"name": menu.alias or doc.menu_name
+				"name": sub_menu.alias or doc.menu_name
 			}
 			if doc.route:
 				m["url"] = "http://mm.symgrid.com/" + doc.route + "/" + app_name
