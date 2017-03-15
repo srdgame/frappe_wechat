@@ -33,7 +33,7 @@ def check_wechat_binding(app=None):
 		expires_in = token['expires_in']
 		user = frappe.get_value('Wechat Binging', {'app': app, 'openid': openid}, 'user')
 		if not user:
-			redirect = frappe.form_dict.redirect or frappe.request.url
+			redirect = frappe.form_dict.redirect or ('wechat_home/' + app)
 			url = "/wechat_login?app=" + app + "&openid=" + openid + "&redirect=" + redirect
 			frappe.local.flags.redirect_location = url
 			raise frappe.Redirect
