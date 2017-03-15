@@ -207,23 +207,23 @@ def send_device_alarm(app, user_list, alarm):
 	client = WeChatClient(app_id, secret)
 	data = {
 		"first": {
-			"value": alarm.title,
+			"value": alarm["title"],
 			"color": "red"
 		},
 		"keyword1": {
-			"value": alarm.device_name,
+			"value": alarm["device_name"],
 			"color": "blue"
 		},
 		"keyword2": {
-			"value": alarm.time,
+			"value": alarm["time"],
 			"color": "blue"
 		},
 		"keyword3": {
-			"value": alarm.content,
+			"value": alarm["content"],
 			"color": "yellow",
 		},
 		"remark": {
-			"value": alarm.remark
+			"value": alarm["remark"]
 		}
 	}
 	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
@@ -238,7 +238,7 @@ def send_device_alarm(app, user_list, alarm):
 
 
 
-def send_repair_issue(app, user_list, alarm):
+def send_repair_issue(app, user_list, issue):
 	template_id = frappe.get_value('Wechat App', app, "repair_issue_template")
 	if not template_id:
 		throw(_("Device Alarm Template is empty!"))
@@ -248,23 +248,23 @@ def send_repair_issue(app, user_list, alarm):
 	client = WeChatClient(app_id, secret)
 	data = {
 		"first": {
-			"value": alarm.title,
+			"value": issue["title"],
 			"color": "red"
 		},
 		"keyword1": {
-			"value": alarm.device_name,
+			"value": issue["device_name"],
 			"color": "blue"
 		},
 		"keyword2": {
-			"value": alarm.time,
+			"value": issue["time"],
 			"color": "blue"
 		},
 		"keyword3": {
-			"value": alarm.content,
+			"value": issue["content"],
 			"color": "yellow",
 		},
 		"remark": {
-			"value": alarm.remark
+			"value": issue["remark"]
 		}
 	}
 	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
