@@ -199,7 +199,7 @@ def create_wechat_menu(app_name):
 
 def send_wechat_msg(app, client, user, template_id, url, data):
 	frappe.logger(__name__).info("Send template {0} data {1} to user {2} via app {3}"
-								.format(template_id, data.as_json(), user, app))
+								.format(template_id, data, user, app))
 	user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
 	if not user_id:
 		frappe.logger(__name__).warning(_("User {0} has not bind her/his wechat").format(user))
