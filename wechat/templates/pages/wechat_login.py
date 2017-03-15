@@ -23,11 +23,6 @@ def get_context(context):
 		raise frappe.PermissionError("App or Openid does not exists!")
 
 	try:
-		user = frappe.get_value("Wechat Binding", {"openid": openid, "app": app}, "user")
-		if user:
-			frappe.local.flags.redirect_location = frappe.form_dict.redirect or "/me"
-			raise frappe.Redirect
-
 		context.no_cache = 1
 		context.show_sidebar = False
 
