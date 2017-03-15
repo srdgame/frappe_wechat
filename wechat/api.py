@@ -271,7 +271,9 @@ def send_repair_issue(app, user_list, issue):
 	}
 	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
 	for user in user_list:
-		user_id = frappe.get_value("Wechat Binding", user, "openid")
+		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
+		if not user_id:
+			continue
 		try:
 			client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
 		except Exception, e:
