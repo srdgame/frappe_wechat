@@ -20,6 +20,7 @@ from wechatpy.exceptions import (
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
 from HTMLParser import HTMLParser
+import xml.etree.ElementTree as ElementTree
 
 def check_wechat_binding(app=None):
 	app = app or frappe.form_dict.app
@@ -209,6 +210,8 @@ def send_wechat_msg(app, client, user, template_id, url, data):
 		r = client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
 		if r["errcode"] != 0:
 			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, r["errmsg"]))
+		else:
+			frappe.logger(__name__).info(_("Send template message ok {0}").format(r))
 	except Exception, e:
 		print(e)
 		frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
@@ -310,6 +313,8 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		return fire_raw_content(echostr)
 
 	data = HTMLParser().unescape(frappe.form_dict.data)
+	root = ElementTree.fromstring(data)
+	data = ElementTree.tostring(root)
 
 	# POST request
 	if encrypt_type == 'raw':
