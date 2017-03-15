@@ -14,11 +14,15 @@
 		<input type="hidden" name="openid" value="{{ doc.openid }}">
 		<input type="hidden" name="expires" value="{{ doc.expires }}">
 
-		<input type="text" id="login_email"
+		<div class="form-group">
+			<input type="text" id="login_email" name="user"
 				class="form-control" placeholder="{{ _('Email address') }}" required autofocus>
+		</div>
 
-		<input type="password" id="login_password"
-			class="form-control" placeholder="{{ _('Password') }}" required>
+		<div class="form-group">
+			<input type="password" id="login_password" name="passwd"
+				class="form-control" placeholder="{{ _('Password') }}" required>
+		</div>
 
 		<button class="btn btn-primary btn-bind-wechat" type="submit">{{ _("Enable") }}</button>
 	</form>
