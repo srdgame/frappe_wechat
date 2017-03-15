@@ -113,7 +113,7 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	frappe.local.login_manager.user = user
 	frappe.local.login_manager.post_login()
 
-	frappe.session.user = 'Administrator'
+	frappe.session.user = frappe.get_value('Wechat App', app, 'on_behalf') or 'Administrator'
 	wechat_bind(app, user, openid, expires)
 	frappe.session.user = user
 
