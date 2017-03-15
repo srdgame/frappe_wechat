@@ -137,7 +137,7 @@ def create_wechat_menu(app_name):
 		# Sub menu
 		sub_menu_list = frappe.get_all("Wechat AppMenu",
 										filters={'parent': app_name, '`group`': menu.group},
-										fields=["menu_name", "menu_type", "group_index"],
+										fields=["menu", "alias", "group_index"],
 										order_by="group_index")
 
 		for sub_menu in sub_menu_list:
