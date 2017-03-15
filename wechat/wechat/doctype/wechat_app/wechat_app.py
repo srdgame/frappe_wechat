@@ -7,4 +7,5 @@ import frappe
 from frappe.model.document import Document
 
 class WechatApp(Document):
-	pass
+	def on_update(self):
+		frappe.enqueue('wechat.api.create_wechat_menu', app_name=self.name)

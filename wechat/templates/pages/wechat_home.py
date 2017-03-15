@@ -8,6 +8,7 @@ from wechatpy.oauth import WeChatOAuth
 no_cache = 1
 no_sitemap = 1
 
+
 def get_context(context):
 	name = frappe.form_dict.name
 	if not frappe.session.user or frappe.session.user=='Guest':

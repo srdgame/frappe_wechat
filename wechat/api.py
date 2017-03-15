@@ -116,48 +116,43 @@ def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
-	menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name}, fields="*")
-	menu_map = {}
-	for menu in menu_list:
+
+	# Top Menu
+	top_menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name, 'group_index': 0}, fields="*", order_by="group")
+	menu_buttons = []
+	for menu in top_menu_list:
 		doc = frappe.get_doc("Wechat Menu", menu.menu)
-		if menu_map.has_key(menu.group):
-			if not menu_map[menu.group].has_key("sub_button"):
-				menu_map[menu.group]["sub_button"] = []
+		m = {
+			"type": doc.menu_type or "view",
+			"name": menu.alias or doc.menu_name
+		}
+		if doc.route:
+			m["url"] = "http://mm.symgrid.com/" + doc.route
+		menu_buttons[menu.group] = m
 
-			if doc.route:
-				menu_map[menu.group]["sub_button"].append({
-					"type": "view",
-					"name": menu.alias or doc.menu_name,
-					"url": "http://mm.symgrid.com/" + doc.route
-				})
-			else:
-				menu_map[menu.group].name = menu.alias or doc.menu_name
+		# Sub menu
+		sub_menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name, 'group': menu.group}, fields="*",
+									order_by="group_index")
 
-			if menu_map[menu.group].has_key('url'):
-				menu_map[menu.group]["sub_button"].append({
-					"type": menu_map[menu.group]['type'],
-					"name": menu_map[menu.group]['name']
-				})
-			menu_map[menu.group] = {
-				"name": menu_map[menu.group]['name'],
-				"sub_button": menu_map[menu.group]['sub_button']
-			}
-		else:
+		for sub_menu in sub_menu_list:
+			if sub_menu.group_index == 0:
+				continue
+			if not menu_buttons[menu.group].has_key("sub_button"):
+				menu_buttons[menu.group] = {
+					"name": menu_buttons[menu.group]['name'],
+					"sub_button": []
+				}
+
 			m = {
-				"type": "view",
+				"type": doc.menu_type or "view",
 				"name": menu.alias or doc.menu_name
 			}
 			if doc.route:
 				m["url"] = "http://mm.symgrid.com/" + doc.route
-			menu_map[menu.group] = m
-
-	buttons = []
-	for i in range(0, 5):
-		if menu_map.has_key(i):
-			buttons.append(menu_map[i])
+			menu_buttons[menu.group] = m
 
 	menu = {
-		"button":buttons
+		"button": menu_buttons
 	}
 	print(json.dumps(menu))
 	client = WeChatClient(app_id, secret)
