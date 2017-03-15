@@ -209,7 +209,7 @@ def send_wechat_msg(app, client, user, template_id, url, data):
 	try:
 		r = client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
 		if r["errcode"] != 0:
-			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, r["errmsg"]))
+			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, r))
 		else:
 			frappe.logger(__name__).info(_("Send template message ok {0}").format(r))
 	except Exception, e:
