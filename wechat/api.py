@@ -20,14 +20,26 @@ from wechatpy.exceptions import (
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
 
-def redirect_to_login(app):
-	code = frappe.form_dict.code
-	url = "/wechat_login?app=" + app + "&code=" + code
-	redirect = frappe.form_dict.redirect
-	if redirect:
-		url = url + "&redirect=" + redirect
-	frappe.local.flags.redirect_location = url
-	raise frappe.Redirect
+def redirect_to_login(app=None):
+	app = app or frappe.form_dict.app
+	if not frappe.session.user or frappe.session.user == 'Guest':
+		code = frappe.form_dict.code
+
+		app_id = frappe.get_value('Wechat App', app, 'app_id')
+		secret = frappe.get_value('Wechat App', app, 'secret')
+		auth = WeChatOAuth(app_id, secret, '')
+		token = auth.fetch_access_token(code)
+		openid = token["openid"]
+		expires_in = token['expires_in']
+		user = frappe.get_value('Wechat Binging', {'app': app, 'openid': openid}, 'user')
+		if not user:
+			redirect = frappe.form_dict.redirect or frappe.request.url
+			url = "/wechat_login?app=" + app + "&code=" + code + "&redirect=" + redirect
+			frappe.local.flags.redirect_location = url
+			raise frappe.Redirect
+
+		frappe.local.login_manager.user = user
+		frappe.local.login_manager.post_login()
 
 
 def get_post_json_data():
@@ -109,9 +121,6 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	frappe.local.login_manager.authenticate(user, passwd)
 	if frappe.local.login_manager.user != user:
 		throw(_("Username password is not matched!"))
-
-	frappe.local.login_manager.user = user
-	frappe.local.login_manager.post_login()
 
 	frappe.session.user = frappe.get_value('Wechat App', app, 'on_behalf') or 'Administrator'
 	wechat_bind(app, user, openid, expires)
