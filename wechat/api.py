@@ -312,10 +312,7 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 		return fire_raw_content(echostr)
 
-	data = HTMLParser().unescape(frappe.form_dict.data)
-	root = ElementTree.fromstring(data)
-	data = ElementTree.tostring(root)
-
+	data = frappe.request.get_data()
 	# POST request
 	if encrypt_type == 'raw':
 		# plaintext mode
