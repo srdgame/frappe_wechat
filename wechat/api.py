@@ -313,9 +313,7 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		return fire_raw_content(echostr)
 
 	data = frappe.request.get_data()
-	print('========================================================')
-	print(data)
-	print('========================================================')
+	frappe.logger(__name__).info(_("Received WeChat message {0}").format(data))
 
 	# POST request
 	if encrypt_type == 'raw':
