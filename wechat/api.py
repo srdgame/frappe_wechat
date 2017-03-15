@@ -212,7 +212,7 @@ def send_device_alarm(app, user_list, alarm):
 			"color": "red"
 		},
 		"keyword1": {
-			"value": alarm["device_name"],
+			"value": alarm["name"],
 			"color": "blue"
 		},
 		"keyword2": {
@@ -227,7 +227,7 @@ def send_device_alarm(app, user_list, alarm):
 			"value": alarm["remark"]
 		}
 	}
-	url = WeChatOAuth(app_id, secret, domain + "/wechat/issue_list/" + app + "?name=" + alarm["name"]).authorize_url
+	url = WeChatOAuth(app_id, secret, domain + alarm["url"]).authorize_url
 	for user in user_list:
 		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
 		if not user_id:
@@ -256,7 +256,7 @@ def send_repair_issue(app, user_list, issue):
 			"color": "red"
 		},
 		"keyword1": {
-			"value": issue["device_name"],
+			"value": issue["name"],
 			"color": "blue"
 		},
 		"keyword2": {
@@ -271,7 +271,7 @@ def send_repair_issue(app, user_list, issue):
 			"value": issue["remark"]
 		}
 	}
-	url = WeChatOAuth(app_id, secret, domain + "/wechat/issue_list/" + app + "?name=" + issue["name"]).authorize_url
+	url = WeChatOAuth(app_id, secret, domain + issue["url"]).authorize_url
 	for user in user_list:
 		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
 		if not user_id:
