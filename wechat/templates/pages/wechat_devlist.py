@@ -12,9 +12,6 @@ no_sitemap = 1
 
 def get_context(context):
 	app = check_wechat_binding()
-
-	context.title = "Device List"
-
-	context.doc = {
-		"name": "Device List"
-	}
+	if app:
+		frappe.local.flags.redirect_location = "/iot_devices"
+		raise frappe.Redirect
