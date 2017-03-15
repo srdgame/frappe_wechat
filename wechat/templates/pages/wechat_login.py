@@ -29,7 +29,7 @@ def get_context(context):
 		auth = WeChatOAuth(app_id, secret, '')
 		token = auth.fetch_access_token(code)
 
-		user = frappe.get_value("Wechat Binding", {"openid":token.open_id, "app": app}, "user")
+		user = frappe.get_value("Wechat Binding", {"openid":token.openid, "app": app}, "user")
 		if user:
 			frappe.local.flags.redirect_location = frappe.form_dict.redirect or "/me"
 			raise frappe.Redirect
@@ -40,7 +40,7 @@ def get_context(context):
 		context.title = _("Binding Wechat")
 		context.doc = {
 			"app": app,
-			"openid": token.open_id,
+			"openid": token.openid,
 			"expires": token.expires_in
 		}
 	except Exception, e:
