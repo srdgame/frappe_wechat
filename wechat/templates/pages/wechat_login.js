@@ -5,6 +5,7 @@ frappe.ready(function() {
 			openid: $("#openid").val(),
 			user: $("#login_email").val(),
 			passwd: $("#login_password").val(),
+			redirect: $("#redirect").val(),
 		};
 
 		if(!args.user) {

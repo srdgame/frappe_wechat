@@ -30,6 +30,7 @@ def get_context(context):
 		context.doc = {
 			"app": app,
 			"openid": openid,
+			"redirect": redirect,
 		}
 	except Exception, e:
 		raise frappe.PermissionError(e)
