@@ -221,7 +221,7 @@ def send_device_alarm(app, user_list, alarm):
 		},
 		"keyword3": {
 			"value": alarm["content"],
-			"color": "yellow",
+			"color": "green",
 		},
 		"remark": {
 			"value": alarm["remark"]
@@ -256,16 +256,16 @@ def send_repair_issue(app, user_list, issue):
 			"color": "red"
 		},
 		"keyword1": {
-			"value": issue["name"],
+			"value": issue["sn"],#编号
 			"color": "blue"
 		},
 		"keyword2": {
-			"value": issue["time"],
+			"value": issue["name"],#标题
 			"color": "blue"
 		},
 		"keyword3": {
-			"value": issue["content"],
-			"color": "yellow",
+			"value": issue["time"],#时间
+			"color": "green",
 		},
 		"remark": {
 			"value": issue["remark"]
