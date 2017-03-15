@@ -197,6 +197,20 @@ def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 
 
+def send_wechat_msg(app, client, user, template_id, url, data):
+	user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
+	if not user_id:
+		frappe.logger(__name__).warning(_("User {0} has not bind her/his wechat").format(user))
+		return
+	try:
+		r = client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
+		if r["errcode"] != 0:
+			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, r["errmsg"]))
+	except Exception, e:
+		print(e)
+		frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
+
+
 def send_device_alarm(app, user_list, alarm):
 	template_id = frappe.get_value('Wechat App', app, "device_alarm_template")
 	if not template_id:
@@ -229,16 +243,7 @@ def send_device_alarm(app, user_list, alarm):
 	}
 	url = WeChatOAuth(app_id, secret, "http://" + domain + alarm["url"]).authorize_url
 	for user in user_list:
-		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
-		if not user_id:
-			continue
-
-		try:
-			client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
-		except Exception, e:
-			print(e)
-			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
-
+		send_wechat_msg(app, client, user, template_id, url, data)
 
 
 def send_repair_issue(app, user_list, issue):
@@ -273,14 +278,7 @@ def send_repair_issue(app, user_list, issue):
 	}
 	url = WeChatOAuth(app_id, secret, "http://" + domain + issue["url"]).authorize_url
 	for user in user_list:
-		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
-		if not user_id:
-			continue
-		try:
-			client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
-		except Exception, e:
-			print(e)
-			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
+		send_wechat_msg(app, client, user, template_id, url, data)
 
 
 @frappe.whitelist(allow_guest=True)
