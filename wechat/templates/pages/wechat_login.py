@@ -17,7 +17,6 @@ def get_context(context):
 
 	app = frappe.form_dict.app
 	openid = frappe.form_dict.openid
-	expires_in = frappe.form_dict.expires_in
 	redirect = frappe.form_dict.redirect
 
 	if not (app and openid):
@@ -36,7 +35,6 @@ def get_context(context):
 		context.doc = {
 			"app": app,
 			"openid": openid,
-			"expires": expires_in
 		}
 	except Exception, e:
 		raise frappe.PermissionError(e)
