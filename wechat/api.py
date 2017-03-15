@@ -18,6 +18,7 @@ from wechatpy.exceptions import (
     InvalidAppIdException,
 )
 from wechatpy import WeChatClient
+from wechatpy.oauth import WeChatOAuth
 
 def redirect_to_login():
 	code = frappe.form_dict.code
@@ -139,9 +140,11 @@ def create_wechat_menu(app_name):
 			"name": menu.alias or doc.menu_name
 		}
 		if doc.route:
-			menu_button["url"] = "http://mm.symgrid.com/wechat/" + doc.route + "/" + app_name
+			url = "http://mm.symgrid.com/wechat/" + doc.route + "/" + app_name
 		else:
-			menu_button["url"] = "http://mm.symgrid.com/wechat/home/" + app_name
+			url = "http://mm.symgrid.com/wechat/home/" + app_name
+		oauth = WeChatOAuth(app_id, secret, url)
+		menu_button["url"] = oauth.redirect_uri()
 
 		# Sub menu
 		sub_menu_list = frappe.get_all("Wechat AppMenu",
@@ -163,9 +166,11 @@ def create_wechat_menu(app_name):
 				"name": sub_menu.alias or doc.menu_name
 			}
 			if doc.route:
-				m["url"] = "http://mm.symgrid.com/wechat/" + doc.route + "/" + app_name
+				url = "http://mm.symgrid.com/wechat/" + doc.route + "/" + app_name
 			else:
-				m["url"] = "http://mm.symgrid.com/wechat/home/" + app_name
+				url = "http://mm.symgrid.com/wechat/home/" + app_name
+			oauth = WeChatOAuth(app_id, secret, url)
+			m["url"] = oauth.redirect_uri()
 			menu_button["sub_button"].append(m)
 
 		menu_buttons.append(menu_button)
