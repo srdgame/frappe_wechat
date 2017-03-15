@@ -20,9 +20,9 @@ from wechatpy.exceptions import (
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
 
-def redirect_to_login():
+def redirect_to_login(app):
 	code = frappe.form_dict.code
-	url = "/wechat_login?code=" + code
+	url = "/wechat_login?app=" + app + "&code=" + code
 	redirect = frappe.form_dict.redirect
 	if redirect:
 		url = url + "&redirect=" + redirect

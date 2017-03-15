@@ -11,11 +11,11 @@ no_sitemap = 1
 
 
 def get_context(context):
-	name = frappe.form_dict.name
+	app = frappe.form_dict.app
 	if not frappe.session.user or frappe.session.user=='Guest':
-		redirect_to_login()
+		redirect_to_login(app)
 
-	homepage = frappe.get_doc('Wechat Homepage', name)
+	homepage = frappe.get_doc('Wechat Homepage', app)
 
 	context.title = homepage.title or homepage.company
 
