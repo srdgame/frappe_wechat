@@ -8,10 +8,9 @@
 	<div class='page-card-head'>
 		<span class='indicator blue'>{{ title }}</span>
 	</div>
-   	<form role="form form-bind-wechat" method="POST"
-        action="/api/method/wechat.api.bind">
-		<input type="hidden" name="app" value="{{ doc.app }}">
-		<input type="hidden" name="openid" value="{{ doc.openid }}">
+   	<form role="form form-bind-wechat">
+		<input type="hidden" id="app" name="app" value="{{ doc.app }}">
+		<input type="hidden" id="openid" name="openid" value="{{ doc.openid }}">
 
 		<div class="form-group">
 			<input type="text" id="login_email" name="user"

@@ -126,11 +126,11 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	wechat_bind(app, user, openid, expires)
 	frappe.session.user = user
 
-	if redirect:
-		frappe.local.response["type"] = "redirect"
-		frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
+	#if redirect:
+	#	frappe.local.response["type"] = "redirect"
+	#	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
 
-	return _("Wechat binded!")
+	return redirect or _("Wechat binded!")
 
 
 def create_wechat_menu(app_name):
