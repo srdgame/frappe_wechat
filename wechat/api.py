@@ -20,7 +20,7 @@ from wechatpy.exceptions import (
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
 
-def redirect_to_login(app=None):
+def check_wechat_binding(app=None):
 	app = app or frappe.form_dict.app
 	if not frappe.session.user or frappe.session.user == 'Guest':
 		code = frappe.form_dict.code
