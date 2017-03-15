@@ -204,6 +204,7 @@ def send_device_alarm(app, user_list, alarm):
 
 	app_id = frappe.get_value('Wechat App', app, 'app_id')
 	secret = frappe.get_value('Wechat App', app, 'secret')
+	domain = frappe.get_value('Wechat App', app, 'domain')
 	client = WeChatClient(app_id, secret)
 	data = {
 		"first": {
@@ -226,7 +227,7 @@ def send_device_alarm(app, user_list, alarm):
 			"value": alarm["remark"]
 		}
 	}
-	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
+	url = WeChatOAuth(app_id, secret, domain + "/issue_list/" + app).authorize_url
 	for user in user_list:
 		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
 		if not user_id:
@@ -247,6 +248,7 @@ def send_repair_issue(app, user_list, issue):
 
 	app_id = frappe.get_value('Wechat App', app, 'app_id')
 	secret = frappe.get_value('Wechat App', app, 'secret')
+	domain = frappe.get_value('Wechat App', app, 'domain')
 	client = WeChatClient(app_id, secret)
 	data = {
 		"first": {
@@ -269,7 +271,7 @@ def send_repair_issue(app, user_list, issue):
 			"value": issue["remark"]
 		}
 	}
-	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
+	url = WeChatOAuth(app_id, secret, domain + "/issue_list/" + app).authorize_url
 	for user in user_list:
 		user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
 		if not user_id:
