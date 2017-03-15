@@ -19,6 +19,7 @@ from wechatpy.exceptions import (
 )
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
+from HTMLParser import HTMLParser
 
 def check_wechat_binding(app=None):
 	app = app or frappe.form_dict.app
@@ -308,10 +309,12 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 		return fire_raw_content(echostr)
 
+	data = HTMLParser().unescape(frappe.form_dict.data)
+
 	# POST request
 	if encrypt_type == 'raw':
 		# plaintext mode
-		msg = parse_message(frappe.form_dict.data)
+		msg = parse_message(data)
 		if msg.type == 'text':
 			reply = create_reply(msg.content, msg)
 		else:
@@ -328,7 +331,7 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		crypto = WeChatCrypto(TOKEN, AES_KEY, APP_ID)
 		try:
 			msg = crypto.decrypt_message(
-				frappe.form_dict.data,
+				data,
 				msg_signature,
 				timestamp,
 				nonce
