@@ -128,5 +128,7 @@ website_route_rules = [
 			"parents": [{"title": _("Wechat Homepage"), "name": "wechat/home"}]
 		}
 	},
-	{"from_route": "/wechat/devlist/<path:app>", "to_route": "wechat_devlist"}
+	{"from_route": "/wechat/devlist/<path:app>", "to_route": "wechat_devlist"},
+	{"from_route": "/wechat/profile/<path:app>", "to_route": "wechat_profile"},
+	{"from_route": "/wechat/issue_list/<path:app>", "to_route": "wechat_issue_list"}
 ]
