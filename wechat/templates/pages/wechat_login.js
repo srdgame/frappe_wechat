@@ -3,8 +3,8 @@ frappe.ready(function() {
 		var args = {
 			app: $("#app").val(),
 			openid: $("#openid").val(),
-			user: $("#user").val(),
-			passwd: $("#passwd").val(),
+			user: $("#login_email").val(),
+			passwd: $("#login_password").val(),
 		};
 
 		if(!args.user) {
