@@ -22,15 +22,12 @@ def get_context(context):
 	if not (app and openid):
 		raise frappe.PermissionError("App or Openid does not exists!")
 
-	try:
-		context.no_cache = 1
-		context.show_sidebar = False
+	context.no_cache = 1
+	context.show_sidebar = False
 
-		context.title = _("Binding Wechat")
-		context.doc = {
-			"app": app,
-			"openid": openid,
-			"redirect": redirect,
-		}
-	except Exception, e:
-		raise frappe.PermissionError(e)
+	context.title = _("Binding Wechat")
+	context.doc = {
+		"app": app,
+		"openid": openid,
+		"redirect": redirect,
+	}
