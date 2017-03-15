@@ -19,6 +19,15 @@ from wechatpy.exceptions import (
 )
 from wechatpy import WeChatClient
 
+def redirect_to_login():
+	code = frappe.from_dict.code
+	url = "/wechat_login?code=" + code
+	redirect = frappe.form_dict.redirect
+	if redirect:
+		url = url + "&redirect=" + redirect
+	frappe.local.flags.redirect_location = url
+	raise frappe.Redirect
+
 
 def get_post_json_data():
 	if frappe.request.method != "POST" and frappe.request.method != "PUT":
