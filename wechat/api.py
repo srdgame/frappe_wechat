@@ -118,28 +118,30 @@ def create_wechat_menu(app_name):
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
 
 	# Top Menu
-	top_menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name, 'group_index': 0}, fields="*", order_by="group")
+	top_menu_list = frappe.get_all("Wechat AppMenu",
+								   filters={'parent': app_name, 'group_index': 0}, fields="*", order_by="`group`")
 	menu_buttons = []
 	for menu in top_menu_list:
 		doc = frappe.get_doc("Wechat Menu", menu.menu)
-		m = {
+		menu_button = {
 			"type": doc.menu_type or "view",
 			"name": menu.alias or doc.menu_name
 		}
 		if doc.route:
-			m["url"] = "http://mm.symgrid.com/" + doc.route
-		menu_buttons[menu.group] = m
+			menu_button["url"] = "http://mm.symgrid.com/" + doc.route
 
 		# Sub menu
-		sub_menu_list = frappe.get_all("Wechat AppMenu", filters={'parent': app_name, 'group': menu.group}, fields="*",
-									order_by="group_index")
+		sub_menu_list = frappe.get_all("Wechat AppMenu",
+										filters={'parent': app_name, '`group`': menu.group},
+										fields="*",
+										order_by="group_index")
 
 		for sub_menu in sub_menu_list:
 			if sub_menu.group_index == 0:
 				continue
-			if not menu_buttons[menu.group].has_key("sub_button"):
-				menu_buttons[menu.group] = {
-					"name": menu_buttons[menu.group]['name'],
+			if not menu_button.has_key("sub_button"):
+				menu_button = {
+					"name": menu_button['name'],
 					"sub_button": []
 				}
 
@@ -149,7 +151,9 @@ def create_wechat_menu(app_name):
 			}
 			if doc.route:
 				m["url"] = "http://mm.symgrid.com/" + doc.route + "/" + app_name
-			menu_buttons[menu.group] = m
+			menu_button["sub_button"].append(m)
+
+		menu_buttons.append(menu_button)
 
 	menu = {
 		"button": menu_buttons
