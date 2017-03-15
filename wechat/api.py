@@ -148,7 +148,7 @@ def create_wechat_menu(app_name):
 				"name": menu.alias or doc.menu_name
 			}
 			if doc.route:
-				m["url"] = "http://mm.symgrid.com/" + doc.route
+				m["url"] = "http://mm.symgrid.com/" + doc.route + "/" + app_name
 			menu_buttons[menu.group] = m
 
 	menu = {
