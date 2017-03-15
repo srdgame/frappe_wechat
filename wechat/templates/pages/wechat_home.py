@@ -11,7 +11,7 @@ no_sitemap = 1
 
 
 def get_context(context):
-	check_wechat_binding()
+	app = check_wechat_binding()
 
 	homepage = frappe.get_doc('Wechat Homepage', app)
 

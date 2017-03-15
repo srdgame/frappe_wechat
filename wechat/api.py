@@ -40,6 +40,7 @@ def check_wechat_binding(app=None):
 
 		frappe.local.login_manager.user = user
 		frappe.local.login_manager.post_login()
+	return app
 
 
 def get_post_json_data():
