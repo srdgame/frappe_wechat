@@ -197,52 +197,99 @@ def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 
 
-def create_wechat_menu_2(app_name):
-	print('--------------------------------------------------------')
-	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
-	secret = frappe.get_value('Wechat App', app_name, 'secret')
+def send_device_alarm(app, user_list, alarm):
+	template_id = frappe.get_value('Wechat App', app, "device_alarm_template")
+	if not template_id:
+		throw(_("Device Alarm Template is empty!"))
+
+	app_id = frappe.get_value('Wechat App', app, 'app_id')
+	secret = frappe.get_value('Wechat App', app, 'secret')
 	client = WeChatClient(app_id, secret)
-	menu = {
-		"button": [
-			{
-				"type": "view",
-				"name": "主页",
-				"url": "http://mm.symgrid.com/wechat/home/" + app_name
-			},
-			{
-				"type": "view",
-				"name": "我的设备",
-				"url": "http://mm.symgrid.com/wechat/menu/" + app_name + "?menu=iot_devices"
-			},
-			{
-				"name": "菜单",
-				"sub_button": [
-					{
-						"type": "view",
-						"name": "搜索",
-						"url": "http://www.soso.com/"
-					},
-					{
-						"type": "view",
-						"name": "视频",
-						"url": "http://v.qq.com/"
-					},
-					{
-						"type": "click",
-						"name": "赞一下我们",
-						"key": "V1001_GOOD"
-					}
-				]
-			}
-		]
+	data = {
+		"first": {
+			"value": alarm.title,
+			"color": "red"
+		},
+		"keyword1": {
+			"value": alarm.device_name,
+			"color": "blue"
+		},
+		"keyword2": {
+			"value": alarm.time,
+			"color": "blue"
+		},
+		"keyword3": {
+			"value": alarm.content,
+			"color": "yellow",
+		},
+		"remark": {
+			"value": alarm.remark
+		}
 	}
-	print(json.dumps(menu))
-	client.menu.create(menu)
-	print('--------------------------------------------------------')
+	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
+	for user in user_list:
+		user_id = frappe.get_value("Wechat Binding", user, "openid")
+
+		try:
+			client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
+		except Exception, e:
+			print(e)
+			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
+
+
+
+def send_repair_issue(app, user_list, alarm):
+	template_id = frappe.get_value('Wechat App', app, "repair_issue_template")
+	if not template_id:
+		throw(_("Device Alarm Template is empty!"))
+
+	app_id = frappe.get_value('Wechat App', app, 'app_id')
+	secret = frappe.get_value('Wechat App', app, 'secret')
+	client = WeChatClient(app_id, secret)
+	data = {
+		"first": {
+			"value": alarm.title,
+			"color": "red"
+		},
+		"keyword1": {
+			"value": alarm.device_name,
+			"color": "blue"
+		},
+		"keyword2": {
+			"value": alarm.time,
+			"color": "blue"
+		},
+		"keyword3": {
+			"value": alarm.content,
+			"color": "yellow",
+		},
+		"remark": {
+			"value": alarm.remark
+		}
+	}
+	url = WeChatOAuth(app_id, secret, "http://symid.com").authorize_url
+	for user in user_list:
+		user_id = frappe.get_value("Wechat Binding", user, "openid")
+		try:
+			client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
+		except Exception, e:
+			print(e)
+			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
 
 
 @frappe.whitelist(allow_guest=True)
 def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echostr=None):
+	"""
+	微信回调接口
+	:param app: 
+	:param signature: 
+	:param timestamp: 
+	:param nonce: 
+	:param encrypt_type: 
+	:param msg_signature: 
+	:param echostr: 
+	:return: 
+	"""
 	app = app or 'test'
 	TOKEN = frappe.get_value('Wechat App', app, 'token')
 
