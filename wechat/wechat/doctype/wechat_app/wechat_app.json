@@ -9,7 +9,7 @@
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "", 
+ "document_type": "Setup", 
  "editable_grid": 1, 
  "engine": "InnoDB", 
  "fields": [
@@ -433,7 +433,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-15 18:24:58.371896", 
+ "modified": "2017-03-16 16:35:07.385936", 
  "modified_by": "Administrator", 
  "module": "Wechat", 
  "name": "Wechat App", 

@@ -8,7 +8,7 @@
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "", 
+ "document_type": "Document", 
  "editable_grid": 1, 
  "engine": "InnoDB", 
  "fields": [
@@ -141,7 +141,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-13 19:29:13.235175", 
+ "modified": "2017-03-16 16:35:34.038888", 
  "modified_by": "Administrator", 
  "module": "Wechat", 
  "name": "Wechat Binding", 

@@ -8,7 +8,7 @@
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "", 
+ "document_type": "Setup", 
  "editable_grid": 1, 
  "engine": "InnoDB", 
  "fields": [
@@ -140,7 +140,7 @@
  "issingle": 0, 
  "istable": 1, 
  "max_attachments": 0, 
- "modified": "2017-03-15 10:15:47.802856", 
+ "modified": "2017-03-16 16:36:36.049819", 
  "modified_by": "Administrator", 
  "module": "Wechat", 
  "name": "Wechat AppMenu", 
