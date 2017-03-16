@@ -58,8 +58,9 @@ def get_post_json_data():
 
 @frappe.whitelist()
 def send_wechat_msg(app, users, msg):
-	if not frappe.get_value('Wechat App', app):
-		throw(_("wechat not existed!"))
+	enable = frappe.get_value('Wechat App', app, "enabled")
+	if not enable:
+		throw(_("wechat not existed or disabled!"))
 
 	ids = [d[0] for d in frappe.db.get_values('Wechat Binding', {"app": app, "user": ["in", users]}, "openid")]
 	print("Wechat sending notify : {0} to openids {1} via app {2}".format(msg, ids, app))
