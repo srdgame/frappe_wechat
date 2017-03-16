@@ -279,7 +279,8 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 		return fire_raw_content(echostr)
 
-	data = frappe.request.get_data()
+	#data = frappe.request.get_data()
+	data = frappe.form_dict.data
 	frappe.logger(__name__).info(_("Received WeChat message {0}").format(data))
 
 	# POST request
