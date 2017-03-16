@@ -57,37 +57,6 @@ def get_post_json_data():
 
 
 @frappe.whitelist()
-def iot_device_list(user):
-	if not user:
-		throw(_("user is required!"))
-
-	frappe.session.user = user
-
-	from iot import hdb_api
-	return hdb_api.list_iot_devices(user)
-
-
-@frappe.whitelist()
-def iot_device_data(user, sn):
-	if not user and sn:
-		throw(_("user and sn is required!"))
-
-	frappe.session.user = user
-
-	from iot import hdb
-	return hdb.iot_device_data(sn)
-
-
-@frappe.whitelist()
-def iot_device_cfg(user, sn):
-	if not (user and sn):
-		throw(_("user and sn is required!"))
-
-	from iot import hdb
-	return hdb.iot_device_cfg(sn)
-
-
-@frappe.whitelist()
 def send_wechat_msg(app, users, msg):
 	if not frappe.get_value('Wechat App', app):
 		throw(_("wechat not existed!"))
@@ -128,9 +97,7 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	frappe.local.login_manager.user = user
 	frappe.local.login_manager.post_login()
 
-	frappe.session.user = frappe.get_value('Wechat App', app, 'on_behalf') or 'Administrator'
 	wechat_bind(app, user, openid, expires)
-	frappe.session.user = user
 
 	#if redirect:
 	#	frappe.local.response["type"] = "redirect"
