@@ -281,7 +281,7 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		return fire_raw_content(echostr)
 
 	#data = frappe.request.get_data()
-	data = frappe.form_dict.data
+	data = frappe.form_dict.data.decode('utf-8')
 	frappe.logger(__name__).info(_("Received WeChat message {0}").format(data))
 
 	# POST request
