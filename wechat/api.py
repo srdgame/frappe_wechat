@@ -254,7 +254,7 @@ def send_repair_issue(app, user_list, issue):
 		send_wechat_msg(app, client, user, template_id, url, data)
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(allow_guest=True, xss_safe=True)
 def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='raw', msg_signature=None, echostr=None):
 	"""
 	微信回调接口
