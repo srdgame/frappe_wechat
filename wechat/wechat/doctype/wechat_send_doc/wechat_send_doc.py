@@ -20,7 +20,7 @@ class WechatSendDoc(Document):
 					   doc_name=self.name, doc_doc=self)
 
 	def wechat_send(self):
-		if self.status == 'Finished':
+		if self.status in ["Error", "Finished"]:
 			return
 		src_doc = frappe.get_doc(self.doc_type, self.doc_id)
 		if not src_doc:
@@ -29,13 +29,19 @@ class WechatSendDoc(Document):
 
 		data = src_doc.run_method("wechat_tmsg_data")
 		if not data:
+			self.set("status", 'Error')
+			self.save()
 			throw(_("Cannot generate wechat template data for {0}").format(self.doc_type))
 		url = src_doc.run_method("wechat_tmsg_url")
 		if not url:
+			self.set("status", 'Error')
+			self.save()
 			throw(_("Cannot generate wechat template url for {0}").format(self.doc_type))
 
 		template_id = frappe.get_value('Wechat App', self.app, template_name_map[self.doc_type])
 		if not template_id:
+			self.set("status", 'Error')
+			self.save()
 			throw(_("Cannot find wechat template id for {0}").format(self.doc_type))
 
 		app_id = frappe.get_value('Wechat App', self.app, 'app_id')
