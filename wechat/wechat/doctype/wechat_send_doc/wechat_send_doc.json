@@ -40,7 +40,7 @@
    "report_hide": 0, 
    "reqd": 1, 
    "search_index": 0, 
-   "set_only_once": 0, 
+   "set_only_once": 1, 
    "unique": 0
   }, 
   {
@@ -61,7 +61,7 @@
    "label": "Status", 
    "length": 0, 
    "no_copy": 0, 
-   "options": "New\nPartial\nFinished", 
+   "options": "New\nPartial\nFinished\nError", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -102,7 +102,7 @@
    "report_hide": 0, 
    "reqd": 1, 
    "search_index": 0, 
-   "set_only_once": 0, 
+   "set_only_once": 1, 
    "unique": 0
   }, 
   {
@@ -132,7 +132,7 @@
    "report_hide": 0, 
    "reqd": 1, 
    "search_index": 0, 
-   "set_only_once": 0, 
+   "set_only_once": 1, 
    "unique": 0
   }, 
   {
@@ -162,7 +162,7 @@
    "report_hide": 0, 
    "reqd": 1, 
    "search_index": 0, 
-   "set_only_once": 0, 
+   "set_only_once": 1, 
    "unique": 0
   }, 
   {
@@ -235,7 +235,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2017-03-17 14:23:51.853873", 
+ "modified": "2017-03-17 16:27:17.276913", 
  "modified_by": "Administrator", 
  "module": "Wechat", 
  "name": "Wechat Send Doc", 
