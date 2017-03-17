@@ -3,7 +3,7 @@
  */
 frappe.listview_settings['Wechat Send Soc'] = {
 	get_indicator: function(doc) {
-		colour = {'New': 'red', 'Partial': 'orange', 'Finished': 'green'};
+		colour = {'New': 'blue', 'Partial': 'orange', 'Finished': 'green', 'Error': 'red'};
 		return [__(doc.status), colour[doc.status], "status,=," + doc.status];
 	},
 	onload: function(me) {
