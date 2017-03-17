@@ -5,11 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 import json
-import requests
 from frappe import throw, msgprint, _
-from frappe.model.document import Document
-from frappe.utils import cint
-from frappe.utils.response import build_response
 from wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
 from wechatpy import parse_message, create_reply
 from wechatpy.utils import check_signature
@@ -19,8 +15,6 @@ from wechatpy.exceptions import (
 )
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
-from HTMLParser import HTMLParser
-import xml.etree.ElementTree as ElementTree
 
 def check_wechat_binding(app=None):
 	app = app or frappe.form_dict.app
@@ -64,6 +58,27 @@ def send_wechat_msg(app, users, msg):
 
 	ids = [d[0] for d in frappe.db.get_values('Wechat Binding', {"app": app, "user": ["in", users]}, "openid")]
 	print("Wechat sending notify : {0} to openids {1} via app {2}".format(msg, ids, app))
+
+
+def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
+	data = {
+		"app": app,
+		"doc_type": doc_type,
+		"doc_id": doc_id,
+		"type": msg_type,
+	}
+	data.update({
+		"doctype": "Wechat Send Doc"
+	})
+	doc = frappe.get_doc(data)
+	for user in users:
+		doc.append("to_users", {
+			"user": user,
+			"sent": 0,
+			"status": 'New',
+		})
+	doc = doc.insert().as_dict()
+	return doc
 
 
 @frappe.whitelist(allow_guest=True)
@@ -165,94 +180,6 @@ def create_wechat_menu(app_name):
 	client = WeChatClient(app_id, secret)
 	client.menu.create(menu)
 	print('--------------------------------------------------------')
-
-
-def send_wechat_msg(app, client, user, template_id, url, data):
-	frappe.logger(__name__).info("Send template {0} data {1} to user {2} via app {3}"
-								.format(template_id, data, user, app))
-	user_id = frappe.get_value("Wechat Binding", {"app": app, "user": user}, "openid")
-	if not user_id:
-		frappe.logger(__name__).warning(_("User {0} has not bind her/his wechat").format(user))
-		return
-	try:
-		r = client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
-		if r["errcode"] != 0:
-			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, r))
-		else:
-			frappe.logger(__name__).info(_("Send template message ok {0}").format(r))
-	except Exception, e:
-		print(e)
-		frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user, e.message))
-
-
-def send_device_alarm(app, user_list, alarm):
-	template_id = frappe.get_value('Wechat App', app, "device_alarm_template")
-	if not template_id:
-		throw(_("Device Alarm Template is empty!"))
-
-	app_id = frappe.get_value('Wechat App', app, 'app_id')
-	secret = frappe.get_value('Wechat App', app, 'secret')
-	domain = frappe.get_value('Wechat App', app, 'domain')
-	client = WeChatClient(app_id, secret)
-	data = {
-		"first": {
-			"value": alarm["title"],
-			"color": "red"
-		},
-		"keyword1": {
-			"value": alarm["name"],
-			"color": "blue"
-		},
-		"keyword2": {
-			"value": alarm["time"],
-			"color": "blue"
-		},
-		"keyword3": {
-			"value": alarm["content"],
-			"color": "green",
-		},
-		"remark": {
-			"value": alarm["remark"]
-		}
-	}
-	url = WeChatOAuth(app_id, secret, "http://" + domain + alarm["url"]).authorize_url
-	for user in user_list:
-		send_wechat_msg(app, client, user, template_id, url, data)
-
-
-def send_repair_issue(app, user_list, issue):
-	template_id = frappe.get_value('Wechat App', app, "repair_issue_template")
-	if not template_id:
-		throw(_("Device Alarm Template is empty!"))
-
-	app_id = frappe.get_value('Wechat App', app, 'app_id')
-	secret = frappe.get_value('Wechat App', app, 'secret')
-	domain = frappe.get_value('Wechat App', app, 'domain')
-	client = WeChatClient(app_id, secret)
-	data = {
-		"first": {
-			"value": issue["title"],
-			"color": "red"
-		},
-		"keyword1": {
-			"value": issue["sn"],#编号
-			"color": "blue"
-		},
-		"keyword2": {
-			"value": issue["name"],#标题
-			"color": "blue"
-		},
-		"keyword3": {
-			"value": issue["time"],#时间
-			"color": "green",
-		},
-		"remark": {
-			"value": issue["remark"]
-		}
-	}
-	url = WeChatOAuth(app_id, secret, "http://" + domain + issue["url"]).authorize_url
-	for user in user_list:
-		send_wechat_msg(app, client, user, template_id, url, data)
 
 
 @frappe.whitelist(allow_guest=True, xss_safe=True)
