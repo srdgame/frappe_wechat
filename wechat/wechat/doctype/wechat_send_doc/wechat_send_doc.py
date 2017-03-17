@@ -73,7 +73,7 @@ class WechatSendDoc(Document):
 
 		frappe.logger(__name__).info("Send template {0} data {1} to user {2} via app {3}"
 									 .format(template_id, data, user.user, self.app))
-		user_id = frappe.get_value("Wechat Binding", {"app": self.app, "user": user}, "openid")
+		user_id = frappe.get_value("Wechat Binding", {"app": self.app, "user": user.user}, "openid")
 		if not user_id:
 			frappe.logger(__name__).warning(_("User {0} has not bind her/his wechat").format(user.user))
 			user.set("sent", 1)
