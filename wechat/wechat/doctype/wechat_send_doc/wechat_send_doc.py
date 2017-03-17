@@ -79,7 +79,7 @@ class WechatSendDoc(Document):
 			user.set("sent", 1)
 			user.set("status", 'Error')
 			user.set("info", ("User {0} has not bind her/his wechat").format(user.user))
-			return
+			return True
 
 		try:
 			r = client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
