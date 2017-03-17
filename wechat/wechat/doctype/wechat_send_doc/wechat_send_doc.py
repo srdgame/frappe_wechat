@@ -24,6 +24,8 @@ class WechatSendDoc(Document):
 			return
 		src_doc = frappe.get_doc(self.doc_type, self.doc_id)
 		if not src_doc:
+			self.set("status", 'Error')
+			self.save()
 			throw(_("Cannot find doc {0} id {1}").format(self.doc_type, self.doc_id))
 			return
 
