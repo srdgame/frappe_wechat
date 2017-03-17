@@ -17,7 +17,7 @@ template_name_map = {
 class WechatSendDoc(Document):
 	def after_insert(self):
 		frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
-					   doc_name=self.name)
+					   doc_name=self.name, doc_doc=self)
 
 	def wechat_send(self):
 		if self.status in ["Error", "Finished"]:
@@ -102,7 +102,7 @@ class WechatSendDoc(Document):
 		return False
 
 
-def wechat_send(doc_name):
-	doc = frappe.get_doc('Wechat Send Doc', doc_name)
+def wechat_send(doc_name, doc_doc=None):
+	doc = doc_doc or frappe.get_doc('Wechat Send Doc', doc_name)
 	return doc.wechat_send()
 
