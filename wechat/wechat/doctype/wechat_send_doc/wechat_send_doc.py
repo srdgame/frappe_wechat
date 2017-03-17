@@ -27,10 +27,10 @@ class WechatSendDoc(Document):
 			throw(_("Cannot find doc {0} id {1}").format(self.doc_type, self.doc_id))
 			return
 
-		data = self.run_method("wechat_tmsg_data")
+		data = src_doc.run_method("wechat_tmsg_data")
 		if not data:
 			throw(_("Cannot generate wechat template data for {0}").format(self.doc_type))
-		url = self.run_method("wechat_tmsg_url")
+		url = src_doc.run_method("wechat_tmsg_url")
 		if not url:
 			throw(_("Cannot generate wechat template url for {0}").format(self.doc_type))
 
