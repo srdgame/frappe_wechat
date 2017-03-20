@@ -27,7 +27,7 @@ class WechatSendDoc(Document):
 
 	def __set_error(self, err):
 		self.set("status", 'Error')
-		self.set("info", err)
+		self.set("error_info", err)
 		self.save()
 		frappe.db.commit()
 		throw(err)
