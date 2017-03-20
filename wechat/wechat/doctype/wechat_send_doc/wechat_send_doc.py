@@ -20,7 +20,7 @@ class WechatSendDoc(Document):
 	def on_update(self):
 		if self.flags.in_insert:
 			frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
-							doc_name=self.name, doc_doc=self)
+							doc_name=self.name)
 
 	def __set_error(self, err):
 		self.set("status", 'Error')
@@ -103,7 +103,7 @@ class WechatSendDoc(Document):
 		return False
 
 
-def wechat_send(doc_name, doc_doc=None):
-	doc = doc_doc or frappe.get_doc('Wechat Send Doc', doc_name)
+def wechat_send(doc_name):
+	doc = frappe.get_doc('Wechat Send Doc', doc_name)
 	return doc.wechat_send()
 
