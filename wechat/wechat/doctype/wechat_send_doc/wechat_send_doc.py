@@ -29,26 +29,22 @@ class WechatSendDoc(Document):
 			frappe.local.lang = app_doc.language
 		src_doc = frappe.get_doc(self.doc_type, self.doc_id)
 		if not src_doc:
-			self.set("status", 'Error')
-			self.save()
+			self.db_set("status", 'Error')
 			throw(_("Cannot find doc {0} id {1}").format(self.doc_type, self.doc_id))
 			return
 
 		data = src_doc.run_method("wechat_tmsg_data")
 		if not data:
-			self.set("status", 'Error')
-			self.save()
+			self.db_set("status", 'Error')
 			throw(_("Cannot generate wechat template data for {0}").format(self.doc_type))
 		url = src_doc.run_method("wechat_tmsg_url")
 		if not url:
-			self.set("status", 'Error')
-			self.save()
+			self.db_set("status", 'Error')
 			throw(_("Cannot generate wechat template url for {0}").format(self.doc_type))
 
 		template_id = frappe.get_value('Wechat App', self.app, template_name_map[self.doc_type])
 		if not template_id:
-			self.set("status", 'Error')
-			self.save()
+			self.db_set("status", 'Error')
 			throw(_("Cannot find wechat template id for {0}").format(self.doc_type))
 
 		client = WeChatClient(app_doc.app_id, app_doc.secret)
@@ -64,10 +60,9 @@ class WechatSendDoc(Document):
 				count = count + 1
 
 		if count > 0:
-			self.set("status", "Partial")
+			self.db_set("status", "Partial")
 		if count == len(users):
-			self.set("status", "Finished")
-		self.save()
+			self.db_set("status", "Finished")
 
 	def __send_wechat_msg(self, client, user, template_id, url, data):
 		if user.status != 'New':
