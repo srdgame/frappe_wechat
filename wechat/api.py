@@ -63,8 +63,8 @@ def send_wechat_msg(app, users, msg):
 def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
 	data = {
 		"app": app,
-		"doc_type": doc_type,
-		"doc_id": doc_id,
+		"document_type": doc_type,
+		"document_id": doc_id,
 		"type": msg_type,
 	}
 	data.update({
