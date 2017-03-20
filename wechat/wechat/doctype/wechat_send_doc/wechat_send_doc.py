@@ -21,6 +21,12 @@ class WechatSendDoc(Document):
 			frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 							doc_name=self.name, doc_doc=self)
 
+	def __set_error(self, err):
+		self.set("status", 'Error')
+		self.set("info", err)
+		self.save()
+		throw(err)
+
 	def wechat_send(self):
 		if self.status in ["Error", "Finished"]:
 			return
@@ -30,22 +36,18 @@ class WechatSendDoc(Document):
 			frappe.local.lang = app_doc.language
 		src_doc = frappe.get_doc(self.document_type, self.document_id)
 		if not src_doc:
-			self.set("status", 'Error')
-			throw(_("Cannot find doc {0} id {1}").format(self.document_type, self.document_id))
+			self.__set_error(("Cannot find doc {0} id {1}").format(self.document_type, self.document_id))
 
 		data = src_doc.run_method("wechat_tmsg_data")
 		if not data:
-			self.set("status", 'Error')
-			throw(_("Cannot generate wechat template data for {0}").format(self.document_type))
+			self.__set_error(("Cannot generate wechat template data for {0}").format(self.document_type))
 		url = src_doc.run_method("wechat_tmsg_url")
 		if not url:
-			self.set("status", 'Error')
-			throw(_("Cannot generate wechat template url for {0}").format(self.document_type))
+			self.__set_error(("Cannot generate wechat template url for {0}").format(self.document_type))
 
 		template_id = frappe.get_value('Wechat App', self.app, template_name_map[self.document_type])
 		if not template_id:
-			self.set("status", 'Error')
-			throw(_("Cannot find wechat template id for {0}").format(self.document_type))
+			self.__set_error(("Cannot find wechat template id for {0}").format(self.document_type))
 
 		client = WeChatClient(app_doc.app_id, app_doc.secret)
 
