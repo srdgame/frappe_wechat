@@ -115,6 +115,12 @@ doc_events = {
 # 	]
 # }
 
+scheduler_events = {
+	"all": [
+		"wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_notify",
+	],
+}
+
 # Testing
 # -------
 
