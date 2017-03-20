@@ -18,7 +18,7 @@ class WechatSendDoc(Document):
 			'Repair Issue': 'repair_issue_template',
 			'ToDo': 'repair_issue_template'
 		}
-		return template_name_map[self.docuemnt_type]
+		return template_name_map[self.document_type]
 
 	def on_update(self):
 		if self.flags.in_insert:
