@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+import time
 import frappe
 from frappe import throw, _
 from frappe.model.document import Document
@@ -104,6 +105,7 @@ class WechatSendDoc(Document):
 
 
 def wechat_send(doc_name):
+	time.sleep(1)
 	doc = frappe.get_doc('Wechat Send Doc', doc_name)
 	return doc.wechat_send()
 
