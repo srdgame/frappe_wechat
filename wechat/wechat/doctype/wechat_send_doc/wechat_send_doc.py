@@ -23,7 +23,7 @@ class WechatSendDoc(Document):
 	def on_update(self):
 		if self.flags.in_insert:
 			frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
-							doc_name=self.name)
+							doc_name=self.name, doc_doc=self)
 
 	def __set_error(self, err):
 		self.set("status", 'Error')
@@ -51,7 +51,7 @@ class WechatSendDoc(Document):
 
 		template_id = frappe.get_value('Wechat App', self.app, self.__get_template_id())
 		if not template_id:
-			self.__set_error(("Cannot find wechat template id for {0}").format(self.document_type))
+			self.__set_error(("Cannot find wechat template id for {0} from app {1}").format(self.document_type))
 
 		client = WeChatClient(app_doc.app_id, app_doc.secret)
 
@@ -106,8 +106,7 @@ class WechatSendDoc(Document):
 		return False
 
 
-def wechat_send(doc_name):
-	time.sleep(1)
-	doc = frappe.get_doc('Wechat Send Doc', doc_name)
+def wechat_send(doc_name, doc_doc=None):
+	doc = doc_doc or frappe.get_doc('Wechat Send Doc', doc_name)
 	return doc.wechat_send()
 
