@@ -89,8 +89,8 @@ app_license = "MIT"
 
 doc_events = {
 	"ToDo": {
-		"wechat_tmsg_data": "iot.controllers.wechat_doc_hooks.todo_tmsg_data",
-		"wechat_tmsg_url": "iot.controllers.wechat_doc_hooks.todo_tmsg_url",
+		"wechat_tmsg_data": "wechat.controllers.wechat_doc_hooks.todo_tmsg_data",
+		"wechat_tmsg_url": "wechat.controllers.wechat_doc_hooks.todo_tmsg_url",
 	},
 }
 
