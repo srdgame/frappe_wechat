@@ -16,7 +16,7 @@ template_name_map = {
 }
 
 class WechatSendDoc(Document):
-	def update(self):
+	def on_update(self):
 		if self.flags.in_insert:
 			frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 							doc_name=self.name, doc_doc=self)
