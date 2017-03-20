@@ -65,6 +65,7 @@ class WechatSendDoc(Document):
 			self.set("status", "Partial")
 		if count == len(users):
 			self.set("status", "Finished")
+		self.save()
 
 	def __send_wechat_msg(self, client, user, template_id, url, data):
 		if user.status != 'New':
