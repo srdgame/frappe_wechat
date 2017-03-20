@@ -12,11 +12,13 @@ from wechatpy.oauth import WeChatOAuth
 
 
 class WechatSendDoc(Document):
-	template_name_map = {
-		'IOT Device Error': 'device_alarm_template',
-		'Repair Issue': 'repair_issue_template',
-		'ToDo': 'repair_issue_template'
-	}
+	def __get_template_id(self):
+		template_name_map = {
+			'IOT Device Error': 'device_alarm_template',
+			'Repair Issue': 'repair_issue_template',
+			'ToDo': 'repair_issue_template'
+		}
+		return template_name_map[self.docuemnt_type]
 
 	def on_update(self):
 		if self.flags.in_insert:
@@ -47,7 +49,7 @@ class WechatSendDoc(Document):
 		if not url:
 			self.__set_error(("Cannot generate wechat template url for {0}").format(self.document_type))
 
-		template_id = frappe.get_value('Wechat App', self.app, self.template_name_map[self.document_type])
+		template_id = frappe.get_value('Wechat App', self.app, self.__get_template_id())
 		if not template_id:
 			self.__set_error(("Cannot find wechat template id for {0}").format(self.document_type))
 
