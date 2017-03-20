@@ -12,6 +12,7 @@ from wechatpy.oauth import WeChatOAuth
 template_name_map = {
 	'IOT Device Error': 'device_alarm_template',
 	'Repair Issue': 'repair_issue_template',
+	'ToDo': 'repair_issue_template'
 }
 
 class WechatSendDoc(Document):
