@@ -6,6 +6,7 @@ import frappe
 from frappe import _
 from frappe.utils.data import format_datetime
 
+
 def todo_tmsg_data(doc, method):
 	return {
 		"first": {
@@ -28,6 +29,7 @@ def todo_tmsg_data(doc, method):
 			"value": _("详情: {0}").format(doc.description)
 		}
 	}
+
 
 def todo_tmsg_url(doc, method):
 	return doc.get_url()
