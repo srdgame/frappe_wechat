@@ -11,5 +11,5 @@ frappe.listview_settings['Wechat Send Doc'] = {
 			"status": ['in', "New,Partial"]
 		};
 	},
-	add_fields: ["doc_type", "doc_id"],
+	add_fields: ["document_type", "document_id"],
 }
