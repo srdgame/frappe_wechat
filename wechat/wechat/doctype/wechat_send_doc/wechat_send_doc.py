@@ -120,5 +120,6 @@ def wechat_notify():
 
 
 def after_save(doc, method):
+	print('------------------------------------------------------------------')
 	frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 					doc_name=doc.name)
