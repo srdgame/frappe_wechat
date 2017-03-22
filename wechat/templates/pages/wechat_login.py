@@ -6,7 +6,6 @@ import frappe
 import requests
 import json
 from frappe import _
-from iot.iot.doctype.iot_settings.iot_settings import IOTSettings
 from wechatpy.oauth import WeChatOAuth
 
 
