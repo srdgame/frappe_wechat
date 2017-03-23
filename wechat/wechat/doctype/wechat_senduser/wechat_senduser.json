@@ -43,7 +43,7 @@
    "unique": 0
   }, 
   {
-   "allow_on_submit": 0, 
+   "allow_on_submit": 1, 
    "bold": 0, 
    "collapsible": 0, 
    "columns": 2, 
@@ -74,7 +74,7 @@
    "unique": 0
   }, 
   {
-   "allow_on_submit": 0, 
+   "allow_on_submit": 1, 
    "bold": 0, 
    "collapsible": 0, 
    "columns": 0, 
@@ -113,7 +113,7 @@
  "issingle": 0, 
  "istable": 1, 
  "max_attachments": 0, 
- "modified": "2017-03-20 17:22:11.096713", 
+ "modified": "2017-03-21 21:24:08.987999", 
  "modified_by": "Administrator", 
  "module": "Wechat", 
  "name": "Wechat SendUser", 
