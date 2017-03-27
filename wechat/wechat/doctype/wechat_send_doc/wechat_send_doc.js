@@ -6,7 +6,7 @@ frappe.ui.form.on('Wechat Send Doc', {
 		/* frm.fields_dict["document_type"].get_query = function(){
 			return {
 				filters: {
-					"name": ["in","IOT Device Error,Repair Issue,ToDo,User"]
+					"name": ["in","IOT Device Error,Ticket Task,ToDo,User"]
 				}
 			}
 		}; */

@@ -13,7 +13,7 @@ no_sitemap = 1
 def get_context(context):
 	app = check_wechat_binding()
 	if app:
-		url = "/desk#List/Repair Issue"
+		url = "/desk#List/Tickets Ticket"
 		if frappe.form_dict.name:
 			url = url + "/" + frappe.form_dict.name
 		frappe.local.flags.redirect_location = url
