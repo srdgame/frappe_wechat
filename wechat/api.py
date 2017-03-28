@@ -77,9 +77,9 @@ def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
 			"sent": 0,
 			"status": 'New',
 		})
-	doc = doc.insert().as_dict()
+	doc = doc.insert()
 	doc.submit()
-	return doc
+	return doc.as_dict()
 
 
 @frappe.whitelist(allow_guest=True)
