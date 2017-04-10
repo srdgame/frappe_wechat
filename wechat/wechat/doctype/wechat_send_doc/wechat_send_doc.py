@@ -16,6 +16,7 @@ class WechatSendDoc(Document):
 		template_name_map = {
 			'IOT Device Error': 'device_alarm_template',
 			'Tickets Ticket': 'tickets_ticket_template',
+			'Tickets Ticket Bundle': 'tickets_ticket_template',
 			'ToDo': 'tickets_ticket_template'
 		}
 		return template_name_map[self.document_type]
