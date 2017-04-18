@@ -146,5 +146,6 @@ website_route_rules = [
 	},
 	{"from_route": "/wechat/devlist/<path:app>", "to_route": "wechat_devlist"},
 	{"from_route": "/wechat/profile/<path:app>", "to_route": "wechat_profile"},
-	{"from_route": "/wechat/ticket_list/<path:app>", "to_route": "wechat_ticket_list"}
+	{"from_route": "/wechat/ticket_list/<path:app>", "to_route": "wechat_ticket_list"},
+	{"from_route": "/wechat/cell_list/<path:app>", "to_route": "wechat_cell_list"},
 ]
