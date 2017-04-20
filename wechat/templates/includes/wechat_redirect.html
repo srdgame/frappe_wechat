@@ -1,0 +1,11 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{%= __("WeChat Redirecting...") %}{% endblock %}
+
+{% block page_content %}
+
+<script>
+	{% include "templates/includes/wechat_redirect.js" %}
+</script>
+
+{% endblock %}
