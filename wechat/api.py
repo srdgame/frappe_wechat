@@ -34,7 +34,7 @@ def check_wechat_binding(app=None):
 			frappe.local.flags.redirect_location = url
 			raise frappe.Redirect
 
-		frappe.local.login_manager.clear_cookies()
+		#frappe.local.login_manager.clear_cookies()
 		frappe.local.login_manager.login_as(user)
 	return app
 
