@@ -15,4 +15,5 @@ def get_context(context):
 	if app:
 		#frappe.local.flags.redirect_location = "/cell_station_list"
 		#raise frappe.Redirect
+		context.title = "redirect"
 		context.redirect_location = "/cell_station_list"
