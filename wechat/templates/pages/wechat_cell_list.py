@@ -13,5 +13,6 @@ no_sitemap = 1
 def get_context(context):
 	app = check_wechat_binding()
 	if app:
-		frappe.local.flags.redirect_location = "/cell_station_list"
-		raise frappe.Redirect
+		#frappe.local.flags.redirect_location = "/cell_station_list"
+		#raise frappe.Redirect
+		context.redirect_location = "/cell_station_list"
