@@ -11,10 +11,14 @@ no_sitemap = 1
 
 
 def get_context(context):
+	context.no_cache = 1
+
 	app = check_wechat_binding()
 	if app:
 		url = "/desk#List/Tickets Ticket"
 		if frappe.form_dict.name:
 			url = url + "/" + frappe.form_dict.name
-		frappe.local.flags.redirect_location = url
-		raise frappe.Redirect
+		context.redirect_url = url
+	else:
+		context.redirect_url = "/login"
+

@@ -11,9 +11,10 @@ no_sitemap = 1
 
 
 def get_context(context):
+	context.no_cache = 1
+
 	app = check_wechat_binding()
 	if app:
-		#frappe.local.flags.redirect_location = "/iot_devices"
-		#raise frappe.Redirect
-		context.title = "redirect"
-		context.redirect_location = "/iot_devices"
+		context.redirect_url = "/iot_devices"
+	else:
+		context.redirect_url = "/login"

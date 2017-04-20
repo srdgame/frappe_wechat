@@ -3,6 +3,6 @@
  */
 frappe.ready(function() {
 	setTimeout(function() {
-			window.location.href = "{{ redirect_location }}";
+			window.location.href = "{{ redirect_url }}";
 	}, 50);
-}
+});

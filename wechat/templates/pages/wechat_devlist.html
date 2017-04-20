@@ -1,5 +1,6 @@
 {% extends "templates/web.html" %}
-{% from "wechat/templates/includes/macros.html" import product_image_square %}
+
+{% block title %}{{ redirect_url }}{% endblock %}
 
 {% block page_content %}
 
