@@ -1,1 +1,11 @@
-{% include "templates/includes/wechat_redirect.html" %}
+{% extends "templates/web.html" %}
+
+{% block title %}WeChat Redirecting....{% endblock %}
+
+{% block page_content %}
+
+<script>
+	{% include "templates/includes/wechat_redirect.js" %}
+</script>
+
+{% endblock %}
