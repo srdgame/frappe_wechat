@@ -6,12 +6,10 @@ import frappe
 from wechatpy.oauth import WeChatOAuth
 from wechat.api import check_wechat_binding
 
-no_cache = 1
-no_sitemap = 1
-
 
 def get_context(context):
 	app = check_wechat_binding()
+	context.no_cache = 1
 
 	homepage = frappe.get_doc('Wechat Homepage', app)
 

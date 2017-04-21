@@ -16,7 +16,7 @@ from wechatpy.exceptions import (
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
 
-def check_wechat_binding(app=None):
+def check_wechat_binding(app=None, redirect_url=None):
 	app = app or frappe.form_dict.app
 	if not frappe.session.user or frappe.session.user == 'Guest':
 		code = frappe.form_dict.code
@@ -36,6 +36,9 @@ def check_wechat_binding(app=None):
 
 		#frappe.local.login_manager.clear_cookies()
 		frappe.local.login_manager.login_as(user)
+		if redirect_url:
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = redirect_url
 	return app
 
 

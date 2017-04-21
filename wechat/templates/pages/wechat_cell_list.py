@@ -9,6 +9,4 @@ from wechat.api import check_wechat_binding
 def get_context(context):
 	context.no_cache = 1
 
-	app = check_wechat_binding()
-	if app:
-		context.redirect_url = "/cell_station_list"
+	check_wechat_binding(redirect_url="/cell_station_list")

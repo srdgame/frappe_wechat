@@ -6,15 +6,8 @@ import frappe
 from wechatpy.oauth import WeChatOAuth
 from wechat.api import check_wechat_binding
 
-no_cache = 1
-no_sitemap = 1
-
 
 def get_context(context):
 	context.no_cache = 1
 
-	app = check_wechat_binding()
-	if app:
-		context.redirect_url = "/iot_devices"
-	else:
-		context.redirect_url = "/login"
+	check_wechat_binding(redirect_url="/iot_devices")
