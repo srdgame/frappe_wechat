@@ -34,12 +34,15 @@ def check_wechat_binding(app=None, redirect_url=None):
 			frappe.local.flags.redirect_location = url
 			raise frappe.Redirect
 
-		#frappe.local.login_manager.clear_cookies()
-		frappe.local.login_manager.login_as(user)
-		if redirect_url:
-			frappe.local.response["type"] = "redirect"
-			frappe.local.response["location"] = redirect_url
-	return app
+	#frappe.local.login_manager.clear_cookies()
+	frappe.local.login_manager.login_as(user)
+	if redirect_url:
+		#frappe.local.response["type"] = "redirect"
+		#frappe.local.response["location"] = redirect_url
+		frappe.local.flags.redirect_location = redirect_url
+		raise frappe.Redirect
+	else:
+		return app
 
 
 def get_post_json_data():
