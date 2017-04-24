@@ -228,7 +228,7 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		if msg.type == 'text':
 			reply = create_reply(msg.content, msg)
 		else:
-			reply = create_reply('Sorry, can not handle this for now', msg)
+			reply = create_reply(_('Welcome to follow our WeChat Official Accounts'), msg)
 
 		return fire_raw_content(reply.render(), 200, 'text/xml')
 	else:
@@ -252,6 +252,6 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 			if msg.type == 'text':
 				reply = create_reply(msg.content, msg)
 			else:
-				reply = create_reply('Sorry, can not handle this for now', msg)
+				reply = create_reply(_('Welcome to follow our WeChat Official Accounts'), msg)
 			frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 			return fire_raw_content(crypto.encrypt_message(reply.render(), nonce, timestamp), 200, 'text/xml')
