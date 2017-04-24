@@ -41,6 +41,8 @@ def check_wechat_binding(app=None, redirect_url=None):
 		#frappe.local.response["type"] = "redirect"
 		#frappe.local.response["location"] = redirect_url
 		frappe.local.flags.redirect_location = redirect_url
+		frappe.local.response["home_page"] = redirect_url
+		frappe.local.response["redirect_to"] = redirect_url
 		raise frappe.Redirect
 	else:
 		return app
