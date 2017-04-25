@@ -89,7 +89,7 @@ class WechatSendDoc(Document):
 			return True
 
 		try:
-			r = client.message.send_template(user_id, template_id, url, top_color='yellow', data=data)
+			r = client.message.send_template(user_id, template_id, url=url, data=data)
 
 			if r["errcode"] == 0:
 				frappe.logger(__name__).debug(_("Send template message ok {0}").format(r))
