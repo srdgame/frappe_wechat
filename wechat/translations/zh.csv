@@ -1,13 +1,12 @@
 DocType: Wechat App,AES KEY,AES密钥
 DocType: Wechat App,APP ID,公共号名称
 DocType: Wechat AppMenu,Alias,别名
+DocType: Wechat App,All,所有
 DocType: Wechat Send Doc,Amended From,修订源
 DocType: Wechat App,App,应用
 apps/wechat/wechat/templates/pages/wechat_login.py +27,Binding Wechat,微信绑定
 apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +38,Binding has ben deleted,删除微信绑定成功
 apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +27,Binding is done,微信绑定成功
-DocType: Wechat App,Cloud Manager,Cloud 管理员
-DocType: Wechat App,Cloud User,Cloud 用户
 DocType: Wechat Homepage,Decription,描述
 DocType: Wechat App,Device Alarm Template,设备报警模板
 DocType: Wechat Send Doc,Document ID,文件编号
