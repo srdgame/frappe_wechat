@@ -4,9 +4,10 @@ DocType: Wechat AppMenu,Alias,别名
 DocType: Wechat App,All,所有
 DocType: Wechat Send Doc,Amended From,修订源
 DocType: Wechat App,App,应用
-apps/wechat/wechat/templates/pages/wechat_login.py +27,Binding Wechat,微信绑定
-apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +38,Binding has ben deleted,删除微信绑定成功
-apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +27,Binding is done,微信绑定成功
+apps/wechat/wechat/templates/pages/wechat_login.py +28,Binding Wechat,微信绑定
+apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +43,Binding has ben deleted,删除微信绑定成功
+apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +20,Binding is done,微信绑定成功
+DocType: Wechat App,Company Admin,公司管理员
 DocType: Wechat Homepage,Decription,描述
 DocType: Wechat App,Device Alarm Template,设备报警模板
 DocType: Wechat Send Doc,Document ID,文件编号
@@ -37,18 +38,17 @@ DocType: Wechat Binding,OpenID,
 DocType: Wechat Send Doc,Partial,部分完成
 apps/wechat/wechat/templates/pages/wechat_login.html +23,Password,密码
 apps/wechat/wechat/api.py +222,Received WeChat message {0},接收到微信信息{0}
-DocType: Wechat App,Repair Issue Template,
 apps/wechat/wechat/api.py +53,Request Method Must be POST!,只接受POST请求
 apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.js +25,Resend,重发
 DocType: Wechat Menu,Route,路线
 DocType: Wechat App,Secret,Secret密钥
-apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +95,Send template message ok {0},发送模板信息成功: {0}
-apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +98,Send template message to user {0} failed {1},发送模板信息给用户{0} 失败: {1}
+apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +98,Send template message ok {0},发送模板信息成功: {0}
+apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +101,Send template message to user {0} failed {1},发送模板信息给用户{0} 失败: {1}
 DocType: Wechat Send Doc,SendTo Settings,发送目标设定
 DocType: Wechat Send Doc,Status,状态
 DocType: Wechat Homepage,Tag Line,标签行
 DocType: Wechat Send Doc,Template,模板
-apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +33,There is no binding for App{0} User{1},用户{1}未关注公共号{0}并绑定
+apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +38,There is no binding for App{0} User{1},用户{1}未关注公共号{0}并绑定
 DocType: Wechat Send Doc,Tickets Ticket,工单
 DocType: Wechat Send Doc,Tickets Ticket Bundle,批量工单
 DocType: Wechat App,Tickets Ticket Template,工单信息模板
@@ -58,7 +58,7 @@ DocType: Wechat Send Doc,ToDo,待办事项
 DocType: Wechat App,Token,象征
 DocType: Wechat Menu,Type,类型
 DocType: Wechat Binding,User,用户
-apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +85,User {0} has not bind her/his wechat,用户{0}未绑定微信
+apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +88,User {0} has not bind her/his wechat,用户{0}未绑定微信
 apps/wechat/wechat/api.py +121,Username password is not matched!,用户名密码不匹配
 DocType: Wechat App,Wechat,微信
 DocType: Wechat App,Wechat App,微信公共号
