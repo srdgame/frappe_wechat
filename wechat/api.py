@@ -214,7 +214,7 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 		return fire_raw_content(e, 403)
 
 	if frappe.request.method == "GET":
-		frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
+		#frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 		return fire_raw_content(echostr)
 
 	#data = frappe.request.get_data()
@@ -253,5 +253,5 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 				reply = create_reply(msg.content, msg)
 			else:
 				reply = create_reply(_('Welcome to follow our WeChat Official Accounts'), msg)
-			frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
+			#frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
 			return fire_raw_content(crypto.encrypt_message(reply.render(), nonce, timestamp), 200, 'text/xml')
