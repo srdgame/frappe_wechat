@@ -8,7 +8,7 @@ frappe.listview_settings['Wechat Send Doc'] = {
 	},
 	onload: function(me) {
 		frappe.route_options = {
-			"status": ['in', "New,Partial"]
+			"status": ['in', "New,Partial,Error"]
 		};
 	},
 	add_fields: ["document_type", "document_id"],

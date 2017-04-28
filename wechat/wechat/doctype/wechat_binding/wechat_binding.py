@@ -14,6 +14,12 @@ class WechatBinding(Document):
 
 
 def wechat_bind(app, user, openid, expires=None):
+	doc_name = frappe.get_value("Wechat Binding", {"user" : user, "app" : app})
+	if doc_name:
+		frappe.set_value("Wechat Binding", doc_name, "openid", openid)
+		frappe.set_value("Wechat Binding", doc_name, "expires", expires)
+		return _("Binding is done")
+
 	doc = frappe.get_doc({
 		"doctype": "Wechat Binding",
 		"user": user,
