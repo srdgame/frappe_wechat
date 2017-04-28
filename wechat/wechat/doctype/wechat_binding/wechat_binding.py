@@ -9,8 +9,7 @@ from frappe.model.document import Document
 
 
 class WechatBinding(Document):
-	def autoname(self):
-		self.name = '[' + self.app + '].' + self.user
+	pass
 
 
 def wechat_bind(app, user, openid, expires=None):
