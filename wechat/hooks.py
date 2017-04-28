@@ -66,13 +66,17 @@ app_license = "MIT"
 # Permissions
 # -----------
 # Permissions evaluated in scripted ways
-
+#
 # permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
+# 	"Wechat App": "wechat.wechat.doctype.wechat_app.wechat_app.get_permission_query_conditions",
+# 	"Wechat Binding": "wechat.wechat.doctype.wechat_binding.wechat_binding.get_permission_query_conditions",
+# 	"Wechat Homepage": "wechat.wechat.doctype.wechat_homepage.wechat_homepage.get_permission_query_conditions",
 # }
 #
 # has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# 	"Wechat App": "wechat.wechat.doctype.wechat_app.wechat_app.has_permission",
+# 	"Wechat Binding": "wechat.wechat.doctype.wechat_binding.wechat_binding.has_permission",
+# 	"Wechat Homepage": "wechat.wechat.doctype.wechat_homepage.wechat_homepage.has_permission",
 # }
 
 # Document Events
