@@ -18,7 +18,7 @@ from wechatpy.oauth import WeChatOAuth
 
 def check_wechat_binding(app=None, redirect_url=None):
 	app = app or frappe.form_dict.app
-	if not frappe.session.user or frappe.session.user == 'Guest':
+	if frappe.session.user == 'Guest':
 		code = frappe.form_dict.code
 
 		app_id = frappe.get_value('Wechat App', app, 'app_id')

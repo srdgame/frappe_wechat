@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import time
 import frappe
+import urllib
 from frappe import throw, _
 from frappe.model.document import Document
 from wechatpy import WeChatClient
@@ -48,9 +49,11 @@ class WechatSendDoc(Document):
 		data = src_doc.run_method("wechat_tmsg_data")
 		if not data:
 			self.__set_error(("Cannot generate wechat template data for {0}").format(self.document_type))
+
 		url = src_doc.run_method("wechat_tmsg_url")
 		if not url:
 			self.__set_error(("Cannot generate wechat template url for {0}").format(self.document_type))
+		url = "http://" + app_doc.domain + "/wechat_redirect?" + urllib.urlencode({'wc_rurl': url})
 
 		template_id = frappe.get_value('Wechat App', self.app, self.__get_template_id())
 		if not template_id:
@@ -58,7 +61,7 @@ class WechatSendDoc(Document):
 
 		client = WeChatClient(app_doc.app_id, app_doc.secret)
 
-		authorize_url = WeChatOAuth(app_doc.app_id, app_doc.secret, "http://" + app_doc.domain + url).authorize_url
+		authorize_url = WeChatOAuth(app_doc.app_id, app_doc.secret, url).authorize_url
 
 		users = self.get("to_users")
 
