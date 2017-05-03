@@ -7,7 +7,14 @@ import frappe
 from wechat.api import check_wechat_binding
 
 
+def is_webui_installed():
+	return "sskl_webui" in frappe.get_installed_apps()
+
+
 def get_context(context):
 	context.no_cache = 1
 
-	check_wechat_binding(redirect_url="/cell_station_list")
+	url = "/cell_station_list"
+	if is_webui_installed():
+		url = "/S_Station_List"
+	check_wechat_binding(redirect_url=url)
