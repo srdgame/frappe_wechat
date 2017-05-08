@@ -16,24 +16,28 @@ from wechatpy.exceptions import (
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
 
+
 def check_wechat_binding(app=None, redirect_url=None):
 	app = app or frappe.form_dict.app
-	if frappe.session.user == 'Guest':
-		code = frappe.form_dict.code
 
-		app_id = frappe.get_value('Wechat App', app, 'app_id')
-		secret = frappe.get_value('Wechat App', app, 'secret')
-		auth = WeChatOAuth(app_id, secret, '')
-		token = auth.fetch_access_token(code)
-		openid = token["openid"]
-		expires_in = token['expires_in']
-		user = frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user')
-		if not user:
-			redirect = frappe.form_dict.redirect or ('wechat/home/' + app)
-			url = "/wechat_login?app=" + app + "&openid=" + openid + "&redirect=" + redirect
-			frappe.local.flags.redirect_location = url
-			raise frappe.Redirect
+	code = frappe.form_dict.code
 
+	app_id = frappe.get_value('Wechat App', app, 'app_id')
+	secret = frappe.get_value('Wechat App', app, 'secret')
+
+	auth = WeChatOAuth(app_id, secret, '')
+	token = auth.fetch_access_token(code)
+	openid = token["openid"]
+	expires_in = token['expires_in']
+
+	user = frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user')
+	if not user:
+		redirect = frappe.form_dict.redirect or ('wechat/home/' + app)
+		url = "/wechat_login?app=" + app + "&openid=" + openid + "&redirect=" + redirect
+		frappe.local.flags.redirect_location = url
+		raise frappe.Redirect
+
+	if frappe.session.user == user:
 		#frappe.local.login_manager.clear_cookies()
 		frappe.local.login_manager.login_as(user)
 
