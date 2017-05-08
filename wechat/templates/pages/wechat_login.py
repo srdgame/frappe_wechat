@@ -22,7 +22,7 @@ def get_context(context):
 	if not (app and openid):
 		raise frappe.PermissionError("App or Openid does not exists!")
 
-	# context.no_cache = 1
+	context.no_cache = 1
 	context.show_sidebar = False
 
 	context.title = _("Binding Wechat")
