@@ -153,4 +153,5 @@ website_route_rules = [
 	{"from_route": "/wechat/ticket_list/<path:app>", "to_route": "wechat_ticket_list"},
 	{"from_route": "/wechat/cell_list/<path:app>", "to_route": "wechat_cell_list"},
 	{"from_route": "/wechat/cell_map/<path:app>", "to_route": "wechat_cell_map"},
+	{"from_route": "/wechat/website_home/<path:app>", "to_route": "wechat_website_home"},
 ]
