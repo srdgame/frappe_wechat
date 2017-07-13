@@ -32,7 +32,7 @@ def check_wechat_binding(app=None, redirect_url=None):
 
 	user = frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user')
 	if not user:
-		redirect = frappe.form_dict.redirect or ('wechat/home/' + app)
+		redirect = "/" #redirect_url or frappe.form_dict.redirect or ('wechat/home/' + app)
 		url = "/wechat_login?app=" + app + "&openid=" + openid + "&redirect=" + redirect
 		frappe.local.flags.redirect_location = url
 		raise frappe.Redirect
@@ -116,7 +116,7 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 
 @frappe.whitelist(allow_guest=True)
 def bind(app, openid, user, passwd, expires=None, redirect=None):
-	redirect = redirect or "/desk#desktop"
+	redirect = redirect or "/"
 	if not (app and openid and user and passwd):
 		return fire_raw_content("App, OpenID, User, Passwd is required!", 403)
 
