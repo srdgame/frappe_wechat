@@ -140,6 +140,7 @@ def create_wechat_menu(app_name):
 	print('--------------------------------------------------------')
 	app_id = frappe.get_value('Wechat App', app_name, 'app_id')
 	secret = frappe.get_value('Wechat App', app_name, 'secret')
+	domain = "http://" + (frappe.get_value('Wechat App', app_name, 'domain') or "mm.symgrid.com")
 
 	# Top Menu
 	top_menu_list = frappe.get_all("Wechat AppMenu",
@@ -154,9 +155,9 @@ def create_wechat_menu(app_name):
 			"name": menu.alias or doc.menu_name
 		}
 		if doc.route:
-			url = "http://mm.symgrid.com/wechat/" + doc.route + "/" + app_name
+			url = domain + "/wechat/" + doc.route + "/" + app_name
 		else:
-			url = "http://mm.symgrid.com/wechat/home/" + app_name
+			url = domain + "/wechat/home/" + app_name
 		menu_button["url"] = WeChatOAuth(app_id, secret, url).authorize_url
 
 		# Sub menu
@@ -179,9 +180,9 @@ def create_wechat_menu(app_name):
 				"name": sub_menu.alias or doc.menu_name
 			}
 			if doc.route:
-				url = "http://mm.symgrid.com/wechat/" + doc.route + "/" + app_name
+				url = domain + "/wechat/" + doc.route + "/" + app_name
 			else:
-				url = "http://mm.symgrid.com/wechat/home/" + app_name
+				url = domain + "/wechat/home/" + app_name
 			m["url"] = WeChatOAuth(app_id, secret, url).authorize_url
 			menu_button["sub_button"].append(m)
 
