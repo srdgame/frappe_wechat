@@ -154,4 +154,9 @@ website_route_rules = [
 	{"from_route": "/wechat/cell_list/<path:app>", "to_route": "wechat_cell_list"},
 	{"from_route": "/wechat/cell_map/<path:app>", "to_route": "wechat_cell_map"},
 	{"from_route": "/wechat/website_home/<path:app>", "to_route": "wechat_website_home"},
+	{"from_route": "/wechat/user_defined1/<path:app>", "to_route": "wechat_user_defined1"},
+	{"from_route": "/wechat/user_defined2/<path:app>", "to_route": "wechat_user_defined2"},
+	{"from_route": "/wechat/user_defined3/<path:app>", "to_route": "wechat_user_defined3"},
+	{"from_route": "/wechat/user_defined4/<path:app>", "to_route": "wechat_user_defined4"},
+	{"from_route": "/wechat/user_defined5/<path:app>", "to_route": "wechat_user_defined5"},
 ]
