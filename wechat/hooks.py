@@ -159,4 +159,5 @@ website_route_rules = [
 	{"from_route": "/wechat/user_defined_3/<path:app>", "to_route": "wechat_user_defined_3"},
 	{"from_route": "/wechat/user_defined_4/<path:app>", "to_route": "wechat_user_defined_4"},
 	{"from_route": "/wechat/user_defined_5/<path:app>", "to_route": "wechat_user_defined_5"},
+	{"from_route": "/wechat/user_defined_6/<path:app>", "to_route": "wechat_user_defined_6"},
 ]
