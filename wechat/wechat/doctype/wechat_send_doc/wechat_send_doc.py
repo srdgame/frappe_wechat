@@ -53,7 +53,7 @@ class WechatSendDoc(Document):
 		url = src_doc.run_method("wechat_tmsg_url")
 		if not url:
 			self.__set_error(("Cannot generate wechat template url for {0}").format(self.document_type))
-		url = "http://" + app_doc.domain + "/wechat_redirect?" + urllib.urlencode({'wc_rurl': url})
+		url = "http://" + app_doc.domain + "/wechat_redirect?" + urllib.urlencode({'wc_rurl': url, 'app': self.app})
 
 		template_id = frappe.get_value('Wechat App', self.app, self.__get_template_id())
 		if not template_id:
