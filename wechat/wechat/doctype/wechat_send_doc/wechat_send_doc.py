@@ -42,6 +42,8 @@ class WechatSendDoc(Document):
 		app_doc = frappe.get_doc("Wechat App", self.app)
 		if app_doc.language:
 			frappe.local.lang = app_doc.language
+		else:
+			frappe.local.lang = frappe.db.get_single_value('System Settings', 'language')
 		src_doc = frappe.get_doc(self.document_type, self.document_id)
 		if not src_doc:
 			self.__set_error(("Cannot find doc {0} id {1}").format(self.document_type, self.document_id))
