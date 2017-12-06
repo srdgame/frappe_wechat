@@ -96,9 +96,9 @@ doc_events = {
 		"wechat_tmsg_data": "wechat.controllers.wechat_doc_hooks.todo_tmsg_data",
 		"wechat_tmsg_url": "wechat.controllers.wechat_doc_hooks.todo_tmsg_url",
 	},
-	"Wechat Send Doc": {
-		"after_save": "wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.after_save",
-	}
+	# "Wechat Send Doc": {
+	# 	"after_save": "wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.after_save",
+	# }
 }
 
 # Scheduled Tasks
