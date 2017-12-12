@@ -1,2 +1,2 @@
 frappe
-wechatpy==1.4.1
+wechatpy>=1.4.1
