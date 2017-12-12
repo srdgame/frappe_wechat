@@ -9,19 +9,19 @@ def todo_tmsg_data(doc, method):
 	return {
 		"first": {
 			"value": _("You have new ToDo"),
-			"color": "red"
+			"color": "#800000"
 		},
 		"keyword1": {
 			"value": doc.priority,
-			"color": "blue"
+			"color": "#000080"
 		},
 		"keyword2": {
 			"value": doc.assigned_by_full_name,
-			"color": "blue"
+			"color": "#000080"
 		},
 		"keyword3": {
 			"value": format_datetime(doc.date),  # 时间
-			"color": "green",
+			"color": "#008000",
 		},
 		"remark": {
 			"value": _("详情: {0}").format(doc.description)
