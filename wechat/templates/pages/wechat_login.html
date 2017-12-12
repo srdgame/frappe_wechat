@@ -8,7 +8,7 @@
 	<div class='page-card-head'>
 		<span class='indicator blue'>{{ title }}</span>
 	</div>
-   	<form role="form form-bind-wechat">
+   	<form role="form form-bind-wechat" method="post" action="/api/method/wechat.api.bind">
 		<input type="hidden" id="app" name="app" value="{{ doc.app }}">
 		<input type="hidden" id="openid" name="openid" value="{{ doc.openid }}">
 		<input type="hidden" id="redirect" name="redirect" value="{{ doc.redirect }}">
