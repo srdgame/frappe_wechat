@@ -60,9 +60,10 @@ def get_post_json_data():
 	ctype = frappe.get_request_header("Content-Type")
 	if "json" not in ctype.lower():
 		throw(_("Incorrect HTTP Content-Type found {0}").format(ctype))
-	if not frappe.form_dict.data:
+	data = frappe.request.get_data()
+	if not data:
 		throw(_("JSON Data not found!"))
-	return json.loads(frappe.form_dict.data)
+	return json.loads(data)
 
 
 @frappe.whitelist()
