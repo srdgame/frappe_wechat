@@ -107,10 +107,10 @@ class WechatSendDoc(Document):
 			user.set("info", "result: {0}".format(r))
 			return True
 		except Exception as ex:
-			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user.user, ex.message))
+			frappe.logger(__name__).error(_("Send template message to user {0} failed {1}").format(user.user, repr(ex)))
 			user.set("sent", 1)
 			user.set("status", 'Error')
-			user.set("info", ex.message)
+			user.set("info", repr(ex))
 		return False
 
 
