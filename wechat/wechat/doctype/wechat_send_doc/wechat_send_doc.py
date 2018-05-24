@@ -15,7 +15,8 @@ from wechatpy.oauth import WeChatOAuth
 class WechatSendDoc(Document):
 	def __get_template_id(self):
 		template_name_map = {
-			'IOT Device Error': 'device_alarm_template',
+			'IOT Device Event': 'device_alarm_template',
+			'IOT Device Error': 'device_alarm_template',  # This is original IOT Device Event
 			'Tickets Ticket': 'tickets_ticket_template',
 			'Tickets Ticket Bundle': 'tickets_ticket_template',
 			'ToDo': 'tickets_ticket_template'
