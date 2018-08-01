@@ -98,6 +98,11 @@ def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
 	return doc.as_dict()
 
 
+def clean_doc(doc_type, doc_id):
+	for d in frappe.db.get_values("Wechat Send Doc", {"document_type": doc_type, "document_id": doc_id}, "name"):
+		frappe.delete_doc("Wechat Send Doc", d[0])
+
+
 @frappe.whitelist(allow_guest=True)
 def get_time():
 	return frappe.utils.now()
