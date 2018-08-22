@@ -31,3 +31,8 @@ def todo_tmsg_data(doc, method):
 
 def todo_tmsg_url(doc, method):
 	return doc.get_url()
+
+
+def todo_on_trash(doc, method):
+	from wechat.api import clean_doc
+	clean_doc('ToDo', doc.name)
