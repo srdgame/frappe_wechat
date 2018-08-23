@@ -12,6 +12,11 @@ class WechatBinding(Document):
 	pass
 
 
+def on_doctype_update():
+	"""Add indexes in `Wechat Binding`"""
+	frappe.db.add_index("Wechat Binding", ["app", "user"])
+
+
 def wechat_bind(app, user, openid, expires=None):
 	doc_name = frappe.get_value("Wechat Binding", {"user" : user, "app" : app})
 	if doc_name:

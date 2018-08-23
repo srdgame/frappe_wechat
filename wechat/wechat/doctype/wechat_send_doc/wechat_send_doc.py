@@ -115,6 +115,11 @@ class WechatSendDoc(Document):
 		return False
 
 
+def on_doctype_update():
+	"""Add indexes in `Wechat Send Doc`"""
+	frappe.db.add_index("Wechat Send Doc", ["app", "document_type", "document_id"])
+
+
 def wechat_send(doc_name, doc_doc=None):
 	doc = doc_doc or frappe.get_doc('Wechat Send Doc', doc_name)
 	return doc.wechat_send()
