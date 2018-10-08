@@ -55,18 +55,6 @@ def check_wechat_binding(app=None, redirect_url=None):
 		return app
 
 
-def get_post_json_data():
-	if frappe.request.method != "POST" and frappe.request.method != "PUT":
-		throw(_("Request Method Must be POST!"))
-	ctype = frappe.get_request_header("Content-Type")
-	if "json" not in ctype.lower():
-		throw(_("Incorrect HTTP Content-Type found {0}").format(ctype))
-	data = frappe.request.get_data()
-	if not data:
-		throw(_("JSON Data not found!"))
-	return json.loads(data)
-
-
 @frappe.whitelist()
 def send_wechat_msg(app, users, msg):
 	enable = frappe.get_value('Wechat App', app, "enabled")
@@ -145,23 +133,19 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	return redirect or _("Wechat binded!")
 
 
-def check_bind():
-	data = get_post_json_data()
-	openid = data.get("openid")
-	gen_token = data.get("gen_token")
-	if not openid:
-		throw(_("Openid is missing!!"))
-	if gen_token is not None:
-		gen_token = True
+def check_bind(openid, gen_token=False):
+	if frappe.request.method != "POST" and frappe.request.method != "PUT":
+		throw(_("Request Method Must be POST!"))
 
 	frappe.logger(__name__).info(_("check_bind {0}").format(openid))
+
 	user = frappe.get_value('Wechat Binding', {'openid': openid}, 'user')
 	if not user:
 		throw(_("Openid is not bind with any user"))
 
 	token = frappe.get_value("IOT User Api", user, 'authorization_code')
 
-	if not token and gen_token == True:
+	if not token and gen_token is not False:
 		doc = frappe.get_doc({
 			"doctype": "IOT User Api",
 			"user": user,
