@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 import json
+import uuid
 from frappe import throw, msgprint, _
 from wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
 from wechatpy import parse_message, create_reply
@@ -142,6 +143,37 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	#	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
 
 	return redirect or _("Wechat binded!")
+
+
+def check_bind():
+	data = get_post_json_data()
+	openid = data.get("openid")
+	gen_token = data.get("gen_token")
+	if not openid:
+		throw(_("Openid is missing!!"))
+	if gen_token is not None:
+		gen_token = True
+
+	frappe.logger(__name__).info(_("check_bind {0}").format(openid))
+	user = frappe.get_value('Wechat Binding', {'openid': openid}, 'user')
+	if not user:
+		throw(_("Openid is not bind with any user"))
+
+	token = frappe.get_value("IOT User Api", user, 'authorization_code')
+
+	if not token and gen_token == True:
+		doc = frappe.get_doc({
+			"doctype": "IOT User Api",
+			"user": user,
+			"authorization_code": str(uuid.uuid1()).upper()
+		}).insert()
+
+		token = doc.authorization_code
+
+	return {
+		"user": user,
+		"token": token
+	}
 
 
 def create_wechat_menu(app_name):
