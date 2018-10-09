@@ -7,6 +7,7 @@ import frappe
 import json
 import uuid
 from frappe import throw, msgprint, _
+from frappe.utils import get_fullname
 from wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
 from wechatpy import parse_message, create_reply
 from wechatpy.utils import check_signature
@@ -133,9 +134,13 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	return redirect or _("Wechat binded!")
 
 
+@frappe.whitelist(allow_guest=True)
 def check_bind(app, openid, gen_token=False):
 	if frappe.request.method != "POST" and frappe.request.method != "PUT":
 		throw(_("Request Method Must be POST!"))
+
+	from iot.user_api import valid_auth_code
+	valid_auth_code()
 
 	frappe.logger(__name__).info(_("check_bind {0}").format(openid))
 
@@ -156,6 +161,7 @@ def check_bind(app, openid, gen_token=False):
 
 	return {
 		"user": user,
+		"fullname": get_fullname(user),
 		"token": token
 	}
 
