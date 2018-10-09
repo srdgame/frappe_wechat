@@ -133,13 +133,13 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	return redirect or _("Wechat binded!")
 
 
-def check_bind(openid, gen_token=False):
+def check_bind(app, openid, gen_token=False):
 	if frappe.request.method != "POST" and frappe.request.method != "PUT":
 		throw(_("Request Method Must be POST!"))
 
 	frappe.logger(__name__).info(_("check_bind {0}").format(openid))
 
-	user = frappe.get_value('Wechat Binding', {'openid': openid}, 'user')
+	user = frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user')
 	if not user:
 		throw(_("Openid is not bind with any user"))
 
