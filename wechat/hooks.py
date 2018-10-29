@@ -127,6 +127,9 @@ scheduler_events = {
 	"all": [
 		"wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_notify",
 	],
+	"daily": [
+		"wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.clear_wechat_send_docs"
+	],
 }
 
 # Testing

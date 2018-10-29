@@ -135,3 +135,9 @@ def wechat_notify():
 def wechat_resend(doc_name):
 	doc = frappe.get_doc("Wechat Send Doc", doc_name)
 	doc.amend()
+
+
+def clear_wechat_send_docs():
+	"""clear 100 day old wechat send doc"""
+	frappe.db.sql("""delete from `tabWechat SendUser` where creation<DATE_SUB(NOW(), INTERVAL 100 DAY)""")
+	frappe.db.sql("""delete from `tabWechat Send Doc` where creation<DATE_SUB(NOW(), INTERVAL 100 DAY)""")
