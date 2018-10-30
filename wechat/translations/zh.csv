@@ -4,7 +4,7 @@ DocType: Wechat AppMenu,Alias,别名
 DocType: Wechat Binding,All,所有
 DocType: Wechat Send Doc,Amended From,修订源
 DocType: Wechat App,App,应用
-DocType: Wechat App,Auth Settings,
+DocType: Wechat App,Auth Settings,认证设置
 apps/wechat/wechat/templates/pages/wechat_login.py +28,Binding Wechat,微信绑定
 apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +48,Binding has ben deleted,删除微信绑定成功
 apps/wechat/wechat/wechat/doctype/wechat_binding/wechat_binding.py +25,Binding is done,微信绑定成功
@@ -21,13 +21,13 @@ DocType: Wechat App,Enabled,启用
 DocType: Wechat Send Doc,Error,错误
 DocType: Wechat Send Doc,Error Info,错误信息
 DocType: Wechat Binding,Expires,过期日期
-DocType: Wechat App,File Content,
-DocType: Wechat App,File Name,文件名
+DocType: Wechat App,File Content,认证文件内容
+DocType: Wechat App,File Name,认证文件名
 DocType: Wechat Send Doc,Finished,已完成
 DocType: Wechat AppMenu,Group,组
 DocType: Wechat AppMenu,Group Index,组序号
 DocType: Wechat Send Doc,IOT Device Error,IOT 设备错误
-DocType: Wechat Send Doc,IOT Device Event,
+DocType: Wechat Send Doc,IOT Device Event,IOT 设备事件
 DocType: Wechat SendUser,Info,信息
 DocType: Wechat App,Language,语言
 DocType: Wechat AppMenu,Menu,菜单
@@ -37,15 +37,15 @@ DocType: Wechat App,Message Templates,消息模板
 DocType: Wechat Menu,Name,名称
 DocType: Wechat Send Doc,New,新
 DocType: Wechat App,On Behalf,代理用户
-DocType: Wechat Binding,OpenID,
-apps/wechat/wechat/api.py +149,Openid is not bind with any user,
+DocType: Wechat Binding,OpenID,OpenID
+apps/wechat/wechat/api.py +149,Openid is not bind with any user,OpenID未绑定任何用户
 DocType: Wechat Send Doc,Partial,部分完成
 apps/wechat/wechat/templates/pages/wechat_login.html +23,Password,密码
 apps/wechat/wechat/api.py +257,Received WeChat message {0},接收到微信信息{0}
 apps/wechat/wechat/api.py +140,Request Method Must be POST!,只接受POST请求
 apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.js +25,Resend,重发
 DocType: Wechat Auth File,Route,路线
-DocType: Wechat App,Secret,Secret密钥
+DocType: Wechat App,Secret,密钥(Secret)
 apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +101,Send template message ok {0},发送模板信息成功: {0}
 apps/wechat/wechat/wechat/doctype/wechat_send_doc/wechat_send_doc.py +104,Send template message to user {0} failed {1},发送模板信息给用户{0} 失败: {1}
 DocType: Wechat Send Doc,SendTo Settings,发送目标设定
@@ -61,8 +61,8 @@ DocType: Wechat Send Doc,To Users,目标用户列表
 DocType: Wechat Send Doc,ToDo,待办事项
 DocType: Wechat App,Token,象征
 DocType: Wechat Menu,Type,类型
-apps/wechat/wechat/wechat/doctype/wechat_app/wechat_app.js +17,Update WeChat Menu Successfully,
-apps/wechat/wechat/wechat/doctype/wechat_app/wechat_app.js +7,Update Wechat Menu,
+apps/wechat/wechat/wechat/doctype/wechat_app/wechat_app.js +17,Update WeChat Menu Successfully,更新公众号菜单成功
+apps/wechat/wechat/wechat/doctype/wechat_app/wechat_app.js +7,Update Wechat Menu,更新公众号菜单
 DocType: Wechat Binding,User,用户
 DocType: Wechat App,User Defined 1,
 apps/wechat/wechat/templates/pages/wechat_user_defined_1.py +14,User Defined 1 URL not defined,
@@ -82,7 +82,7 @@ apps/wechat/wechat/api.py +123,Username password is not matched!,用户名密码
 DocType: Wechat App,Wechat,微信
 DocType: Wechat App,Wechat App,微信公共号
 DocType: Wechat AppMenu,Wechat AppMenu,
-DocType: Wechat Auth File,Wechat Auth File,
+DocType: Wechat Auth File,Wechat Auth File,微信认证文件
 DocType: Wechat Binding,Wechat Binding,微信绑定
 apps/wechat/wechat/templates/pages/wechat_login.js +24,Wechat Binding success,微信绑定成功
 DocType: Wechat Homepage,Wechat Homepage,微信公共号主页
