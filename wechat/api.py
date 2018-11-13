@@ -124,12 +124,11 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	frappe.set_user(user)
 	wechat_bind(app, user, openid, expires)
 
-	redirect = redirect or "/"
 	#if redirect:
 	#	frappe.local.response["type"] = "redirect"
 	#	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
 
-	return redirect
+	return redirect or _("Wechat binded!")
 
 
 @frappe.whitelist(allow_guest=True)
