@@ -157,9 +157,9 @@ def check_bind(app, openid, gen_token=False):
 	user = frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user')
 	if not user:
 		if frappe.get_value('Wechat App', app, 'name'):
-			throw(_('Wechat Application does not exits'))
+			throw(_("There is no user bind with this openid!"))
 		else:
-			throw(_("Openid is not bind with any user"))
+			throw(_('Wechat application name does not exists!'))
 
 	token = frappe.get_value("IOT User Api", user, 'authorization_code')
 
