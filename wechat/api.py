@@ -114,7 +114,6 @@ def fire_raw_content(content, status=200, content_type='text/html'):
 
 @frappe.whitelist(allow_guest=True)
 def bind(app, openid, user, passwd, expires=None, redirect=None):
-	redirect = redirect or "/"
 	if not (app and openid and user and passwd):
 		return fire_raw_content("App, OpenID, User, Passwd is required!", 403)
 
@@ -125,11 +124,12 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	frappe.set_user(user)
 	wechat_bind(app, user, openid, expires)
 
+	redirect = redirect or "/"
 	#if redirect:
 	#	frappe.local.response["type"] = "redirect"
 	#	frappe.local.response["location"] = redirect if frappe.local.response.get('message') == 'Logged In' else "/"
 
-	return redirect or _("Wechat binded!")
+	return redirect
 
 
 @frappe.whitelist(allow_guest=True)
