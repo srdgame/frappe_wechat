@@ -142,7 +142,7 @@ def unbind(app, openid, user):
 	if user == frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user'):
 		name = frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'name')
 		if name:
-			frappe.delete_doc('Wechat Binding', name)
+			frappe.delete_doc('Wechat Binding', name, ignore_permissions=True)
 			return True
 	return False
 
