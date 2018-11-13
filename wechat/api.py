@@ -122,9 +122,7 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	if frappe.local.login_manager.user != user:
 		throw(_("Username password is not matched!"))
 
-	frappe.local.login_manager.user = user
-	frappe.local.login_manager.post_login()
-
+	frappe.set_user(user)
 	wechat_bind(app, user, openid, expires)
 
 	#if redirect:
