@@ -135,6 +135,17 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 
 
 @frappe.whitelist(allow_guest=True)
+def unbind(app, openid, user):
+	if frappe.request.method != "POST" and frappe.request.method != "PUT":
+		throw(_("Request Method Must be POST!"))
+
+	if user == frappe.get_value('Wechat Binding', {'app': app, 'openid': openid}, 'user'):
+		frappe.delete_doc('Wechat Binding', user)
+		return True
+	return False
+
+
+@frappe.whitelist(allow_guest=True)
 def check_bind(app, openid, gen_token=False):
 	if frappe.request.method != "POST" and frappe.request.method != "PUT":
 		throw(_("Request Method Must be POST!"))
