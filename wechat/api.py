@@ -259,8 +259,8 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 
 	try:
 		check_signature(TOKEN, signature, timestamp, nonce)
-	except InvalidSignatureException, e:
-		return fire_raw_content(e, 403)
+	except InvalidSignatureException as ex:
+		return fire_raw_content(ex, 403)
 
 	if frappe.request.method == "GET":
 		#frappe.enqueue('wechat.api.create_wechat_menu', app_name=app)
@@ -294,8 +294,8 @@ def wechat(app=None, signature=None, timestamp=None, nonce=None, encrypt_type='r
 				timestamp,
 				nonce
 			)
-		except (InvalidSignatureException, InvalidAppIdException), e:
-			return fire_raw_content(e, 403)
+		except (InvalidSignatureException, InvalidAppIdException) as ex:
+			return fire_raw_content(ex, 403)
 		else:
 			msg = parse_message(msg)
 			if msg.type == 'text':
