@@ -213,7 +213,7 @@ def create_wechat_menu(app_name):
 		for sub_menu in sub_menu_list:
 			if sub_menu.group_index == 0:
 				continue
-			if not menu_button.has_key("sub_button"):
+			if "sub_button" not in menu_button:
 				menu_button = {
 					"name": menu_button['name'],
 					"sub_button": []
