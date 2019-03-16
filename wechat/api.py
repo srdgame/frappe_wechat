@@ -8,7 +8,7 @@ import json
 import uuid
 from frappe import throw, msgprint, _
 from frappe.utils import get_fullname
-from .wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
+from wechat.wechat.doctype.wechat_binding.wechat_binding import wechat_bind, wechat_unbind
 from wechatpy import parse_message, create_reply
 from wechatpy.utils import check_signature
 from wechatpy.exceptions import (
