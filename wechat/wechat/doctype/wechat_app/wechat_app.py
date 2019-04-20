@@ -9,7 +9,7 @@ from frappe.model.document import Document
 class WechatApp(Document):
 	def on_update(self):
 		self.update_auth_file()
-		self.update_menu()
+		# self.update_menu()
 
 	def on_trash(self):
 		frappe.delete_doc("Wechat Auth File", self.name)
