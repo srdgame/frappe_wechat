@@ -18,10 +18,7 @@ def get_context(context):
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
 
-	filter = frappe.form_dict.filter
-	if not filter:
-		filter = "all"
-	context.filter = filter
+	context.filter = frappe.form_dict.filter or "all"
 	context.no_cache = 1
 	context.show_sidebar = True
 
@@ -30,13 +27,10 @@ def get_context(context):
 
 	if 'Company Admin' in frappe.get_roles(frappe.session.user):
 		context.isCompanyAdmin = True
-	userdevices = devices_list_array()
 
-	if userdevices:
-		context.userdevices = devices_list_array()
-		context.dev_lens = int(ceil(len(devices_list_array())*0.1))
-	else:
-		context.userdevices = []
-		context.dev_lens = 0
-	context.app_id = app
+	userdevices = devices_list_array() or []
+	context.userdevices = userdevices
+	context.dev_lens = int(ceil(len(devices_list_array())*0.1))
+
+	context.wechat_app = app
 	context.title = _('Wechat Devices')

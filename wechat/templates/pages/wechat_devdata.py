@@ -15,9 +15,9 @@ def get_context(context):
 		raise frappe.Redirect
 
 	name = frappe.form_dict.device or frappe.form_dict.name
-	devsn = frappe.form_dict.device or frappe.form_dict.sn
-	app = frappe.form_dict.app_id or frappe.form_dict.app
-	if not name:
+	gateway = frappe.form_dict.gateway or frappe.form_dict.sn
+	app = frappe.form_dict.app or frappe.form_dict.app_id
+	if not name or not gateway or not app:
 		frappe.local.flags.redirect_location = "/"
 		raise frappe.Redirect
 
@@ -31,14 +31,14 @@ def get_context(context):
 		context.isCompanyAdmin = True
 
 	# print(name)
-	context.devsn = devsn
-	doc = frappe.get_doc('IOT Device', devsn)
+	context.gateway = gateway
+	doc = frappe.get_doc('IOT Device', gateway)
 	doc.has_permission('read')
 	context.doc = doc
 
 	context.device_sn = name
 
-	cfg = iot_device_cfg(devsn, name)
+	cfg = iot_device_cfg(gateway, name)
 	context.dev_desc = cfg['meta']['inst'] or cfg['meta']['name'] or doc.description or doc.dev_name or "UNKNOWN"
 	context.app_id = app
 

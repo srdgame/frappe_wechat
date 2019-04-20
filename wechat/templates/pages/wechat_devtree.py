@@ -15,8 +15,8 @@ def get_context(context):
 		raise frappe.Redirect
 
 	name = frappe.form_dict.device or frappe.form_dict.name
-	app = frappe.form_dict.app_id or frappe.form_dict.app
-	if not name:
+	app = frappe.form_dict.app or frappe.form_dict.app_id
+	if not name or not app:
 		frappe.local.flags.redirect_location = "/"
 		raise frappe.Redirect
 

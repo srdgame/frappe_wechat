@@ -328,6 +328,7 @@ var total_pages=1;
 
   $(document).on("click", "a.show-actions", function() {
         var dataid = $(this).attr("data-id");
+        var wechat_app = "{{wechat_app}}"
         $.actions({
           actions: [
             {
@@ -335,7 +336,7 @@ var total_pages=1;
               className: "bg-primary",
                 onClick: function() {
                     // $.alert("你选择了“网关详情”");
-                    self.location.href="/wechat_devtree?app={{app_id}}&name=" + dataid;
+                    self.location.href="/wechat_devtree?app=" + wechat_app +"&name=" + dataid;
                 }
             }
           ]
