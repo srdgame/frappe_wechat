@@ -44,6 +44,10 @@
   padding: 15px;
 }
 
+.demos-content-return {
+  padding: 15px;
+}
+
 .demos-second-title {
   text-align: center;
   font-size: 24px;
@@ -124,11 +128,6 @@ footer a {
       </div>
 <!--底部操作-->
 
-<div class='demos-content-padded'>
-  <a href="javascript:;self.location='/wechat_devlist?app={{app_id}}'"
-     id='show-actions-bg' class="weui-btn weui-btn_primary">返回网关列表页</a>
-</div>
-
 <!--&lt;!&ndash;加载更多&ndash;&gt;-->
     <!--<div class='demos-content-padded'>-->
         <!--<div class="weui-loadmore weui-loadmore_line"></div>-->
@@ -151,6 +150,12 @@ footer a {
       </div>
     </div>
 <!--正在加载-->
+
+<div class='demos-content-return'>
+  <a href="javascript:;self.location='/wechat_devlist?app={{app_id}}'"
+     id='show-actions-bg' class="weui-btn weui-btn_primary">返回网关列表页</a>
+</div>
+
 </body>
 <script src="/assets/wechat/assets/js/jquery-2.1.4.min.js"></script>
 <script src="/assets/wechat/assets/js/jquery-weui.min.js"></script>
@@ -210,7 +215,7 @@ var total_pages=1;
             if(total_pages>1){
                 $("div.weui-form-preview__ft").removeClass("hide");
             }
-                $("div.demos-content-padded").addClass("hide");
+               // $("div.demos-content-padded").addClass("hide");
         }
         else{
             $('#load_status').empty();
