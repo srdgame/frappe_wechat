@@ -30,9 +30,9 @@ def get_context(context):
 		if 'Company Admin' in frappe.get_roles(frappe.session.user):
 			context.isCompanyAdmin = True
 
-		userdevices = devices_list_array() or []
+		userdevices = devices_list_array(context.filter) or []
 		context.userdevices = userdevices
-		context.dev_lens = int(ceil(len(devices_list_array())*0.1))
+		context.dev_lens = int(ceil(len(userdevices)*0.1))
 
 		context.wechat_app = app or frappe.form_dict.app
 		context.title = _('Wechat Devices')
