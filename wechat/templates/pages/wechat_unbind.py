@@ -4,20 +4,13 @@
 
 from __future__ import unicode_literals
 import frappe
-from math import ceil
 from frappe import _
-
-from iot_ui.ui_api import devices_list_array
 
 
 def get_context(context):
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
-	filter = frappe.form_dict.filter
-	if not filter:
-		filter = "all"
-	context.filter = filter
 	context.no_cache = 1
 	context.show_sidebar = True
 
@@ -26,12 +19,11 @@ def get_context(context):
 
 	if 'Company Admin' in frappe.get_roles(frappe.session.user):
 		context.isCompanyAdmin = True
-	userdevices = devices_list_array()
 
-	if userdevices:
-		context.userdevices = devices_list_array()
-		context.dev_lens = int(ceil(len(devices_list_array())*0.1))
-	else:
-		context.userdevices = []
-		context.dev_lens = 0
-	context.title = _('Wechat Devices')
+	wechatid = frappe.db.get_value("Wechat Binding", {"user": frappe.session.user})
+	context.wechat_openid = None
+	if wechatid:
+		wechat_user_doc = frappe.get_doc("Wechat Binding", {"name": wechatid})
+		context.wechat_openid = wechat_user_doc.openid
+	context.user_id = frappe.session.user
+	context.title = _('Wechat Unbind')

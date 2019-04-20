@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>实时数据-{{dev_desc}}</title>
+    <link rel="stylesheet" href="/assets/wechat/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/assets/wechat/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/assets/wechat/assets/css/iconfont.css">
+</head>
+<style>
+    body, html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.iconfont{
+    width:20px;margin-right:5px;
+    font-family:"iconfont" !important;
+    font-size:20px;line-height:1;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    color: #007aff;
+}
+
+.quality-good{
+  color:#0BB20C;
+}
+
+.quality-bad{
+  color: #b20f1f;
+}
+
+.quality-unknown{
+  color: rgba(3, 5, 28, 0.52);
+}
+
+.demos-title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.demos-sub-title {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.demos-header {
+  padding: 35px 0;
+}
+
+.demos-content-padded {
+  padding: 15px;
+}
+
+.demos-second-title {
+  text-align: center;
+  font-size: 24px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+  .placeholder {
+    margin: 5px;
+    padding: 0 10px;
+    background-color: #ebebeb;
+    height: 2.3em;
+    line-height: 2.3em;
+    text-align: center;
+    color: #cfcfcf;
+  }
+
+.tag-cont {display:-webkit-box;display:-webkit-flex;display:flex;height:100%}
+.tag-vtss {width:86px;font-size:12px;line-height:24px;display:inline-block;vertical-align:middle;height:100%;margin: 0px 3px 0px 3px;}
+.tag-dsc {-webkit-box-flex:1;-webkit-flex:1;flex:1;font-size:13px;line-height:24px;display:inline-block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:black;vertical-align:middle;height:100%}
+
+.tag-vrtdata{font-size:13px;line-height:24px;width:80px;overflow: hidden;display:inline-block;text-align:right;vertical-align:middle;height:100%}
+
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+}
+</style>
+
+<body ontouchstart="">
+
+      <h2 class="demos-second-title">{{dev_desc}}</h2>
+
+<!--设备数据-->
+
+<div class="weui-cells" id="rtdatas">
+
+</div>
+<!--设备数据-->
+
+<div class='demos-content-padded'>
+  <a href="javascript:;self.location='/weui_devices'" id='show-actions-bg' class="weui-btn weui-btn_primary">返回设备列表页</a>
+</div>
+
+</body>
+<script src="/assets/wechat/assets/js/jquery-2.1.4.min.js"></script>
+<script src="/assets/wechat/assets/js/jquery-weui.min.js"></script>
+<script src="/assets/wechat/assets/js/fastclick.js"></script>
+<script>
+    var devsn = "{{devsn}}";
+  $(function() {
+    FastClick.attach(document.body);
+
+    function show(){
+       console.log("ready");
+    }
+
+    function get_newdata(){
+       $.get("/api/method/wechat.ui_api.iot_device_data_weui?sn=" + devsn, function (r) {
+           var rtdatas = r.message;
+           // console.log(rtdatas.length);
+           if(rtdatas){
+               // console.log("clear");
+               $("#rtdatas").empty();
+                for(var i=0;i<rtdatas.length;i++){
+                    // console.log(userdevices[i].device_status);
+                    if(rtdatas[i].Q=="0"){
+                        var pv_color = '<div class="weui-cell__ft"><span class="tag-vrtdata quality-good">' + rtdatas[i].PV + '</span></div>';
+                        var desc_color = '<span class="tag-dsc">'+ rtdatas[i].DESC + '</span><span class="tag-vtss quality-good">' + rtdatas[i].TM + '</span>';
+                    }
+                    else{
+                        var pv_color = '<div class="weui-cell__ft"><span class="tag-vrtdata quality-bad">'+ rtdatas[i].PV + '</span></div>';
+                        var desc_color = '<span class="tag-dsc">'+ rtdatas[i].DESC + '</span><span class="tag-vtss quality-bad">'+ rtdatas[i].TM + '</span>';
+                    }
+                    $("#rtdatas").append(
+
+                    //  添加测点数据
+                            '<div class="weui-cell weui-cell_access">'
+                        +   '<div class="weui_cell_hd"><i class="iconfont icon-point"></i></div>'
+                        +    '<div class="weui-cell__bd">'
+                        +        '<div class="tag-cont">'
+                        +    desc_color
+                        +       '</div>'
+                        +    '</div>'
+                        +    pv_color
+                        +    '</div>'
+                    //添加测点数据
+                    );
+                }
+            }
+            else{
+               $("#rtdatas").empty();
+               $("#rtdatas").append('<div class="weui-cell weui-cell_access">'+ "无数据" + '</div>');
+           }
+       });
+    }
+    get_newdata();
+    setInterval(get_newdata, 3000);// 注意函数名没有引号和括弧！
+
+
+  });
+
+
+</script>
+</html>

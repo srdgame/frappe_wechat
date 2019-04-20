@@ -1,7 +1,348 @@
-{% extends "templates/web.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>我的配电室</title>
+    <link rel="stylesheet" href="/assets/wechat/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/assets/wechat/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/assets/wechat/assets/css/iconfont.css">
+</head>
+<style>
+    body, html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.iconfont{
+    width:20px;margin-right:5px;
+    font-family:"iconfont" !important;
+    font-size:20px;line-height:1;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    color: #007aff;
+}
+.demos-title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
 
-{% block title %}WeChat Redirecting....{% endblock %}
+.demos-sub-title {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
 
-{% block page_content %}
+.demos-header {
+  padding: 35px 0;
+}
 
-{% endblock %}
+.demos-content-padded {
+  padding: 15px;
+}
+
+.demos-second-title {
+  text-align: center;
+  font-size: 24px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.dev-online{
+  color:#0BB20C;
+}
+
+.dev-offline{
+  color: #b20f1f;
+}
+
+.dev-unknown{
+  color: rgba(3, 5, 28, 0.52);
+}
+.hide {
+    display: none;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+}
+</style>
+
+<body ontouchstart>
+
+
+
+        <h2 class="demos-second-title">我的配电室</h2>
+
+
+
+
+<!--设备列表-->
+
+<div class="weui-cells device-list">
+    <!--{% for dev in userdevices %}-->
+
+        <!--<a class="weui-cell weui-cell_access show-actions" data-id="{{dev['device_sn']}}" href="javascript:;">-->
+            <!--<div class="weui-cell__hd"><i class="iconfont icon-device"></i></div>-->
+                <!--<div class="weui-cell__bd">-->
+
+                    <!--{% if dev['device_status'] %}-->
+                        <!--{% if dev['device_status']=="ONLINE" %}-->
+                            <!--<p class="dev-online">{{dev['device_name']}}</p>-->
+                        <!--{% else %}-->
+                            <!--<p class="dev-offline">{{dev['device_name']}}</p>-->
+                        <!--{% endif %}-->
+                    <!--{% else %}-->
+                        <!--<p class="dev-unknown">{{dev['device_name']}}</p>-->
+                    <!--{% endif %}-->
+
+                <!--</div>-->
+            <!--<div class="weui-cell__ft"></div>-->
+        <!--</a>-->
+
+    <!--{% endfor %}-->
+
+</div>
+<!--设备列表-->
+
+<!--底部操作-->
+      <div class="weui-form-preview__ft hide" id="floortab">
+        <a class="weui-form-preview__btn weui-form-preview__btn_default previous" href="javascript:">上一页</a>
+        <a class="weui-form-preview__btn weui-form-preview__btn_default count" href="javascript:"><span id="cur_page">1</span>/<span id="total_pages">{{dev_lens}}</span></span></a>
+        <a class="weui-form-preview__btn weui-form-preview__btn_primary next" href="javascript:">下一页</a>
+      </div>
+<!--底部操作-->
+
+<!--&lt;!&ndash;加载更多&ndash;&gt;-->
+    <!--<div class='demos-content-padded'>-->
+        <!--<div class="weui-loadmore weui-loadmore_line"></div>-->
+      <!--<div class="weui-loadmore">-->
+        <!--<span class="weui-loadmore__tips">加载更多</span>-->
+      <!--</div>-->
+      <!--<div class="weui-loadmore weui-loadmore_line">-->
+      <!--</div>-->
+    <!--</div>-->
+<!--&lt;!&ndash;加载更多&ndash;&gt;-->
+
+<!--正在加载-->
+    <div class='demos-content-padded'>
+      <div class="weui-loadmore" id="load_status">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在加载</span>
+      </div>
+      <div class="weui-loadmore weui-loadmore_line">
+        <span class="weui-loadmore__tips">暂无数据</span>
+      </div>
+    </div>
+<!--正在加载-->
+</body>
+<script src="/assets/wechat/assets/js/jquery-2.1.4.min.js"></script>
+<script src="/assets/wechat/assets/js/jquery-weui.min.js"></script>
+<script src="/assets/wechat/assets/js/fastclick.js"></script>
+
+<script>
+    // $("#floortab").hide();
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+var userdevices=[];
+var count_perpage=10;
+var current_page=1;
+var total_pages=1;
+    $.get("/api/method/wechat.ui_api.devices_list_array?filter=all", function (r) {
+            userdevices=r.message;
+        if(userdevices){
+            // console.log(userdevices);
+            console.log(userdevices.length);
+            total_pages=Math.ceil(userdevices.length/count_perpage);
+            console.log(Math.ceil(userdevices.length/count_perpage));
+            // $("#floortab").removeClass("hide");
+            $('#total_pages').html(total_pages);
+            if(userdevices.length<=count_perpage){
+                for(var i=0;i<userdevices.length;i++){
+                    // console.log(userdevices[i].device_status);
+                    if(userdevices[i].device_status=="ONLINE"){
+                        var device_clolor = '<p class="dev-online">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    else{
+                        var device_clolor = '<p class="dev-offline">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    $("div.device-list").append(
+                        '<a class="weui-cell weui-cell_access show-actions" data-id="'+ userdevices[i].device_sn +'" href="javascript:;">'
+                        + '<div class="weui-cell__hd"><i class="iconfont icon-device"></i></div>'
+                        + '<div class="weui-cell__bd">'
+                        + device_clolor
+                        + '</div>'
+                        + '<div class="weui-cell__ft"></div>'
+                        + '</a>'
+                    );
+                }
+            }
+            else{
+                for(var i=(current_page - 1) * count_perpage;i<current_page*count_perpage;i++){
+                    // console.log(userdevices[i].device_status);
+                    if(userdevices[i].device_status=="ONLINE"){
+                        var device_clolor = '<p class="dev-online">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    else{
+                        var device_clolor = '<p class="dev-offline">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    $("div.device-list").append(
+                        '<a class="weui-cell weui-cell_access show-actions" data-id="'+ userdevices[i].device_sn +'" href="javascript:;">'
+                        + '<div class="weui-cell__hd"><i class="iconfont icon-device"></i></div>'
+                        + '<div class="weui-cell__bd">'
+                        + device_clolor
+                        + '</div>'
+                        + '<div class="weui-cell__ft"></div>'
+                        + '</a>'
+                    );
+                }
+            }
+
+            if(total_pages>1){
+                $("div.weui-form-preview__ft").removeClass("hide");
+            }
+                $("div.demos-content-padded").addClass("hide");
+        }
+        else{
+            $('#load_status').empty();
+            $('#load_status').html("加载失败，请刷新重试");
+        }
+
+    });
+
+
+  $(document).on("click", "a.previous", function() {
+    // console.log($(this).attr("class"));
+    if(current_page>1) {
+        $("div.device-list").empty();
+        current_page = current_page - 1;
+        $('#cur_page').html(current_page);
+        for (var i = (current_page - 1) * count_perpage; i < current_page * count_perpage; i++) {
+            // console.log(userdevices[i]);
+            if (userdevices[i].device_status == "ONLINE") {
+                var device_clolor = '<p class="dev-online">' + userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' + '</p>'
+            }
+            else {
+                var device_clolor = '<p class="dev-offline">' + userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' + '</p>'
+            }
+            $("div.device-list").append(
+                '<a class="weui-cell weui-cell_access show-actions" data-id="' + userdevices[i].device_sn + '" href="javascript:;">'
+                + '<div class="weui-cell__hd"><i class="iconfont icon-device"></i></div>'
+                + '<div class="weui-cell__bd">'
+                + device_clolor
+                + '</div>'
+                + '<div class="weui-cell__ft"></div>'
+                + '</a>'
+            );
+        }
+
+        if (1 < current_page) {
+            $("a.previous").addClass('weui-form-preview__btn_primary');
+            $("a.previous").removeClass('weui-form-preview__btn_default');
+            $("a.next").addClass('weui-form-preview__btn_primary');
+            $("a.next").removeClass('weui-form-preview__btn_default');
+        }
+        else {
+
+            $("a.next").addClass('weui-form-preview__btn_primary');
+            $("a.next").removeClass('weui-form-preview__btn_default');
+            $("a.previous").removeClass('weui-form-preview__btn_primary');
+            $("a.previous").addClass('weui-form-preview__btn_default');
+        }
+
+    }
+  });
+
+  $(document).on("click", "a.next", function() {
+    // console.log($(this).attr("class"));
+    if(current_page<total_pages){
+        $("div.device-list").empty();
+            current_page = current_page+1;
+            $('#cur_page').html(current_page);
+            if(current_page<total_pages){
+                for(var i=(current_page-1)*count_perpage;i<current_page*count_perpage;i++){
+                    // console.log(userdevices[i]);
+                    if(userdevices[i].device_status=="ONLINE"){
+                        var device_clolor = '<p class="dev-online">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    else{
+                        var device_clolor = '<p class="dev-offline">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    $("div.device-list").append(
+                        '<a class="weui-cell weui-cell_access show-actions" data-id="'+ userdevices[i].device_sn +'" href="javascript:;">'
+                        + '<div class="weui-cell__hd"><i class="iconfont icon-device"></i></div>'
+                        + '<div class="weui-cell__bd">'
+                        + device_clolor
+                        + '</div>'
+                        + '<div class="weui-cell__ft"></div>'
+                        + '</a>'
+                    );
+                }
+
+                $("a.previous").removeClass('weui-form-preview__btn_default');
+                $("a.previous").addClass('weui-form-preview__btn_primary');
+            }
+            else{
+                for(var i=(current_page-1)*count_perpage;i<userdevices.length;i++){
+                    // console.log(userdevices[i]);
+                    if(userdevices[i].device_status=="ONLINE"){
+                        var device_clolor = '<p class="dev-online">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    else{
+                        var device_clolor = '<p class="dev-offline">'+ userdevices[i].device_desc+ '('+ userdevices[i].device_name+ ')' +'</p>'
+                    }
+                    $("div.device-list").append(
+                        '<a class="weui-cell weui-cell_access show-actions" data-id="'+ userdevices[i].device_sn +'" href="javascript:;">'
+                        + '<div class="weui-cell__hd"><i class="iconfont icon-device"></i></div>'
+                        + '<div class="weui-cell__bd">'
+                        + device_clolor
+                        + '</div>'
+                        + '<div class="weui-cell__ft"></div>'
+                        + '</a>'
+                    );
+                }
+
+                $("a.next").removeClass('weui-form-preview__btn_primary');
+                $("a.next").addClass('weui-form-preview__btn_default');
+                $("a.previous").addClass('weui-form-preview__btn_primary');
+                $("a.previous").removeClass('weui-form-preview__btn_default');
+            }
+
+
+        }
+  });
+
+  $(document).on("click", "a.show-actions", function() {
+        var dataid = $(this).attr("data-id");
+        $.actions({
+          actions: [
+            {
+              text: "数据浏览",
+              className: "bg-primary",
+                onClick: function() {
+                    // $.alert("你选择了“数据浏览”");
+                    self.location.href="/weui_rtdata/" + dataid;
+                }
+            }
+          ]
+        });
+  });
+
+
+</script>
+
+</html>

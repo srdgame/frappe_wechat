@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>解除绑定</title>
+    <link rel="stylesheet" href="/assets/wechat/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/assets/wechat/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/assets/wechat/assets/css/iconfont.css">
+</head>
+<style>
+    body, html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.iconfont{
+    width:20px;margin-right:5px;
+    font-family:"iconfont" !important;
+    font-size:20px;line-height:1;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    color: #007aff;
+}
+.demos-title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.demos-sub-title {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.demos-header {
+  padding: 35px 0;
+}
+
+.demos-content-padded {
+  padding: 15px;
+}
+
+.demos-second-title {
+  text-align: center;
+  font-size: 24px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.dev-online{
+  color:#0BB20C;
+}
+
+.dev-offline{
+  color: #b20f1f;
+}
+
+.dev-unknown{
+  color: rgba(3, 5, 28, 0.52);
+}
+.hide {
+    display: none;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+}
+</style>
+
+<body ontouchstart>
+{% if wechat_openid %}
+<!--已经绑定-->
+
+    <div class="weui-msg">
+      <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+      <div class="weui-msg__text-area">
+          <h2 class="weui-msg__title">已经绑定</h2>
+          <p class="weui-msg__desc">绑定用户：{{user_id}}</p>
+          <p class="weui-msg__desc wechat_openid" data-id="{{wechat_openid}}">微信ID：{{wechat_openid}}</p>
+      </div>
+      <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+          <a href="javascript:unbind_wechat();" class="weui-btn weui-btn_primary">解除绑定</a>
+        </p>
+      </div>
+
+    </div>
+
+
+<!--已经绑定-->
+
+{% else %}
+
+<!--未绑定-->
+    <div class="weui-msg">
+      <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+      <div class="weui-msg__text-area">
+          <h2 class="weui-msg__title">未绑定用户</h2>
+
+      </div>
+      <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+          <!--<a href="javascript:;" class="weui-btn weui-btn_primary">绑定</a>-->
+        </p>
+      </div>
+
+    </div>
+<!--未绑定-->
+
+{% endif %}
+</body>
+<script src="/assets/wechat/assets/js/jquery-2.1.4.min.js"></script>
+<script src="/assets/wechat/assets/js/jquery-weui.min.js"></script>
+<script src="/assets/wechat/assets/js/fastclick.js"></script>
+
+<script>
+    $.ajaxSetup( {
+       headers: { // 默认添加请求头
+            "X-Frappe-CSRF-Token": "{{csrf_token}}",
+            "Powered-By": "CodePlayer"
+        }
+        } );
+    // $("#floortab").hide();
+  $(function() {
+    FastClick.attach(document.body);
+  });
+
+  function unbind_wechat() {
+      var dataid = $("p.wechat_openid").attr("data-id");
+      $.ajax({
+          type: 'POST',
+          url: "/api/method/wechat.ui_api.unbind_wechat_user",
+          contentType: "application/json", //必须有
+          data: JSON.stringify({"openid": dataid}),
+          dataType: "json",
+          success: function (r) {
+              console.log(r);
+              self.location.href = "/?cmd=web_logout";
+          },
+          error: function () {
+              console.log("异常!");
+          }
+      });
+  }
+
+</script>
+
+
+</html>
