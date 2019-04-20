@@ -162,7 +162,7 @@ var userdevices=[];
 var count_perpage=10;
 var current_page=1;
 var total_pages=1;
-    $.get("/api/method/wechat.ui_api.devices_list_array?filter=all", function (r) {
+    $.get("/api/method/iot_ui.ui_api.devices_list_array?filter=all", function (r) {
             userdevices=r.message;
         if(userdevices){
             // console.log(userdevices);
@@ -335,7 +335,7 @@ var total_pages=1;
               className: "bg-primary",
                 onClick: function() {
                     // $.alert("你选择了“数据浏览”");
-                    self.location.href="/weui_rtdata/" + dataid;
+                    self.location.href="/wechat_devdata?name=" + dataid;
                 }
             }
           ]

@@ -88,8 +88,9 @@ footer a {
       <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
       <div class="weui-msg__text-area">
           <h2 class="weui-msg__title">已经绑定</h2>
-          <p class="weui-msg__desc">绑定用户：{{user_id}}</p>
+          <p class="weui-msg__desc user_id" data-id="{{user_id}}">绑定用户：{{user_id}}</p>
           <p class="weui-msg__desc wechat_openid" data-id="{{wechat_openid}}">微信ID：{{wechat_openid}}</p>
+          <p class="weui-msg__desc wechat_app" data-id="{{wechat_app}}">微信APP：{{wechat_app}}</p>
       </div>
       <div class="weui-msg__opr-area">
         <p class="weui-btn-area">
@@ -139,12 +140,14 @@ footer a {
   });
 
   function unbind_wechat() {
+      var userid = $("p.user_id").attr("data-id");
       var dataid = $("p.wechat_openid").attr("data-id");
+      var dataapp = $("p.wechat_app").attr("data-id");
       $.ajax({
           type: 'POST',
-          url: "/api/method/wechat.ui_api.unbind_wechat_user",
+          url: "/api/method/wechat.api.unbind",
           contentType: "application/json", //必须有
-          data: JSON.stringify({"openid": dataid}),
+          data: JSON.stringify({"openid": dataid, "app": dataapp, "user": userid}),
           dataType: "json",
           success: function (r) {
               console.log(r);

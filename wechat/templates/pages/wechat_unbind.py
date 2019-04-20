@@ -5,12 +5,16 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+from wechat.api import check_wechat_binding
 
 
 def get_context(context):
+	app = check_wechat_binding()
+
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
+
 	context.no_cache = 1
 	context.show_sidebar = True
 
@@ -20,10 +24,8 @@ def get_context(context):
 	if 'Company Admin' in frappe.get_roles(frappe.session.user):
 		context.isCompanyAdmin = True
 
-	wechatid = frappe.db.get_value("Wechat Binding", {"user": frappe.session.user})
-	context.wechat_openid = None
-	if wechatid:
-		wechat_user_doc = frappe.get_doc("Wechat Binding", {"name": wechatid})
-		context.wechat_openid = wechat_user_doc.openid
+	context.wechat_openid = frappe.db.get_value("Wechat Binding", {"user": frappe.session.user, "app": app}, "openid")
+
 	context.user_id = frappe.session.user
+	context.wechat_openid = app
 	context.title = _('Wechat Unbind')

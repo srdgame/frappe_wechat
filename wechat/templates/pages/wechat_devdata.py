@@ -15,9 +15,12 @@ from cloud.cloud.doctype.cloud_company.cloud_company import list_user_companies
 from iot.hdb_api import list_iot_devices
 from iot.iot.doctype.iot_hdb_settings.iot_hdb_settings import IOTHDBSettings
 from iot.hdb import iot_device_tree
+from wechat.api import check_wechat_binding
 
 
 def get_context(context):
+	app = check_wechat_binding()
+
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
@@ -48,30 +51,6 @@ def get_context(context):
 	if cfg:
 		context.dev_desc = cfg['desc']
 
-	# client2 = redis.Redis.from_url(IOTHDBSettings.get_redis_server() + "/2")
-	# hs = client2.hgetall(name)
-	# datas = []
-	# if cfg.has_key("tags"):
-	# 	tags = cfg.get("tags")
-	# 	for tag in tags:
-	# 		name = tag.get('name')
-	# 		tt = hs.get(name + ".TM")
-	# 		timestr = ''
-	# 		if tt:
-	# 			timestr = str(
-	# 				convert_utc_to_user_timezone(datetime.datetime.utcfromtimestamp(int(int(tt) / 1000))).replace(
-	# 					tzinfo=None))[5:]
-	# 		datas.append({"NAME": name, "PV": hs.get(name + ".PV"),
-	# 		             "TM": timestr, "Q": hs.get(name + ".Q"), "DESC": tag.get("desc"), })
-	#
-	# context.datas = datas
-	# context.dev_desc = ""
-	# if cfg['desc']:
-	# 	context.dev_desc = cfg['desc']
-	# print("dev_name:", cfg['name'])
-	# print("dev_desc:", cfg['desc'])
-	# for data in datas:
-	# 	print("tagname:", data['NAME'], "tagdesc:", data['DESC'], "value:", data['PV'], "time:", data['TM'], "quality:", data['Q'])
 	client = redis.Redis.from_url(IOTHDBSettings.get_redis_server() + "/1")
 	context.devices = []
 	for d in client.lrange(name, 0, -1):

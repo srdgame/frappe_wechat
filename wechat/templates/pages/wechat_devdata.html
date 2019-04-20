@@ -124,7 +124,7 @@ footer a {
     }
 
     function get_newdata(){
-       $.get("/api/method/wechat.ui_api.iot_device_data_weui?sn=" + devsn, function (r) {
+       $.get("/api/method/iot.hdb.iot_device_data_weui?sn=" + devsn, function (r) {
            var rtdatas = r.message;
            // console.log(rtdatas.length);
            if(rtdatas){

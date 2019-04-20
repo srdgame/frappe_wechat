@@ -7,13 +7,17 @@ import frappe
 from math import ceil
 from frappe import _
 
+from wechat.api import check_wechat_binding
 from iot_ui.ui_api import devices_list_array
 
 
 def get_context(context):
+	app = check_wechat_binding()
+
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
+
 	filter = frappe.form_dict.filter
 	if not filter:
 		filter = "all"
