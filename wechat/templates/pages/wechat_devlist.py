@@ -38,4 +38,5 @@ def get_context(context):
 	else:
 		context.userdevices = []
 		context.dev_lens = 0
+	context.app_id = app
 	context.title = _('Wechat Devices')
