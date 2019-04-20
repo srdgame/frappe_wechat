@@ -8,7 +8,7 @@ from frappe.model.document import Document
 
 class WechatApp(Document):
 	def on_update(self):
-		self.create_auth_file()
+		self.update_auth_file()
 		self.update_menu()
 
 	def on_trash(self):
@@ -17,14 +17,16 @@ class WechatApp(Document):
 	def update_menu(self):
 		frappe.enqueue('wechat.api.create_wechat_menu', app_name=self.name)
 
-	def create_auth_file(self):
-		frappe.delete_doc("Wechat Auth File", self.name, ignore_permissions=True)
-		frappe.db.commit()
-		doc = frappe.get_doc({
-			"doctype": "Wechat Auth File",
-			"title": self.name,
-			"route": self.file_name,
-			"app": self.name,
-			"content": self.file_content,
-		})
-		doc.insert(ignore_permissions=True)
+	def update_auth_file(self):
+		if frappe.get_value("Wechat Auth File", self.name):
+			frappe.set_value("Wechat Auth File", self.name, "route", self.file_name)
+			frappe.set_value("Wechat Auth File", self.name, "content", self.file_content)
+		else:
+			doc = frappe.get_doc({
+				"doctype": "Wechat Auth File",
+				"title": self.name,
+				"route": self.file_name,
+				"app": self.name,
+				"content": self.file_content,
+			})
+			doc.insert(ignore_permissions=True)
