@@ -35,5 +35,5 @@ def get_context(context):
 	context.userdevices = userdevices
 	context.dev_lens = int(ceil(len(devices_list_array())*0.1))
 
-	context.wechat_app = app
+	context.wechat_app = app or frappe.form_dict.app
 	context.title = _('Wechat Devices')
