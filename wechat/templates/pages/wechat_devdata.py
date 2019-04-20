@@ -4,21 +4,22 @@
 
 from __future__ import unicode_literals
 import frappe
+
 from frappe import _
-from iot.hdb import iot_device_tree
 from wechat.api import check_wechat_binding
+from iot.hdb import iot_device_tree
 
 
 def get_context(context):
-	app = check_wechat_binding()
-
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
+
 	name = frappe.form_dict.device or frappe.form_dict.name
 	if not name:
 		frappe.local.flags.redirect_location = "/"
 		raise frappe.Redirect
+
 	context.no_cache = 1
 	context.show_sidebar = True
 
