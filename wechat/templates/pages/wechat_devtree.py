@@ -45,3 +45,4 @@ def get_context(context):
 
 	except Exception as ex:
 		frappe.logger(__name__).exception(ex)
+		raise ex
