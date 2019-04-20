@@ -107,7 +107,8 @@ footer a {
 <!--设备数据-->
 
 <div class='demos-content-padded'>
-  <a href="javascript:;self.location='/wechat/devlist/{{app_id}}'" id='show-actions-bg' class="weui-btn weui-btn_primary">返回设备列表页</a>
+  <a href="javascript:;self.location='/wechat_devtree?app={{app_id}}&name={{gateway}}'"
+     id='show-actions-bg' class="weui-btn weui-btn_primary">返回设备列表页</a>
 </div>
 
 </body>
@@ -115,7 +116,6 @@ footer a {
 <script src="/assets/wechat/assets/js/jquery-weui.min.js"></script>
 <script src="/assets/wechat/assets/js/fastclick.js"></script>
 <script>
-    var devsn = "{{devsn}}";
   $(function() {
     FastClick.attach(document.body);
 
@@ -164,7 +164,7 @@ footer a {
     }
 
     function get_all_newdata() {
-        get_newdata("{{devsn}}", "{{device_sn}}");
+        get_newdata("{{gateway}}", "{{device_sn}}");
     }
 
     get_all_newdata();
