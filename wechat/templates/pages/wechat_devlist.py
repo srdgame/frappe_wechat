@@ -12,7 +12,10 @@ from iot_ui.ui_api import devices_list_array
 
 
 def get_context(context):
-	app = check_wechat_binding()
+	try:
+		app = check_wechat_binding()
+	except Exception as ex:
+		frappe.logger(__name__).exception(ex)
 
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
