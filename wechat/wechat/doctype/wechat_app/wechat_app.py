@@ -18,7 +18,7 @@ class WechatApp(Document):
 		frappe.enqueue('wechat.api.create_wechat_menu', app_name=self.name)
 
 	def update_auth_file(self):
-		if frappe.get_value("Wechat Auth File", self.name):
+		if frappe.get_value("Wechat Auth File", self.name, "name"):
 			frappe.set_value("Wechat Auth File", self.name, "route", self.file_name)
 			frappe.set_value("Wechat Auth File", self.name, "content", self.file_content)
 		else:
