@@ -163,11 +163,14 @@ footer a {
        });
     }
 
-    {% for vsn in devices %}
-        get_newdata("{{devsn}}", "{{vsn}}");
-    {% endfor %}
-    setInterval(get_newdata, 3000);// 注意函数名没有引号和括弧！
+    function get_all_newdata() {
+        {% for vsn in devices %}
+            get_newdata("{{devsn}}", "{{vsn}}");
+        {% endfor %}
+    }
 
+    get_all_newdata();
+    setInterval(get_all_newdata, 3000);// 注意函数名没有引号和括弧！
 
   });
 
