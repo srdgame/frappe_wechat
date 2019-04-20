@@ -27,5 +27,5 @@ def get_context(context):
 	context.wechat_openid = frappe.db.get_value("Wechat Binding", {"user": frappe.session.user, "app": app}, "openid")
 
 	context.user_id = frappe.session.user
-	context.wechat_openid = app
+	context.wechat_app = app
 	context.title = _('Wechat Unbind')
