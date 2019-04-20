@@ -19,6 +19,7 @@ class WechatApp(Document):
 
 	def create_auth_file(self):
 		frappe.delete_doc("Wechat Auth File", self.name, ignore_permissions=True)
+		frappe.db.commit()
 		doc = frappe.get_doc({
 			"doctype": "Wechat Auth File",
 			"title": self.name,
