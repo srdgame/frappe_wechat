@@ -39,31 +39,11 @@ def get_context(context):
 
 	# print(name)
 	context.devsn = name
-	device = frappe.get_doc('IOT Device', name)
-	device.has_permission('read')
-	context.doc = device
+	doc = frappe.get_doc('IOT Device', name)
+	doc.has_permission('read')
+	context.doc = doc
 
-	client1 = redis.Redis.from_url(IOTHDBSettings.get_redis_server() + "/0")
-	cfg = None
-	if client1.get(name):
-		cfg = json.loads(client1.get(name))
-	context.dev_desc = device.description or device.dev_name
-	if cfg:
-		context.dev_desc = cfg['desc']
+	context.dev_desc = doc.description or doc.dev_name or "UNKNOWN"
+	context.devices = iot_device_tree(name)
 
-	client = redis.Redis.from_url(IOTHDBSettings.get_redis_server() + "/1")
-	context.devices = []
-	for d in client.lrange(name, 0, -1):
-		dev = {
-			'sn': d
-		}
-		if d[0:len(name)] == name:
-			dev['name']= d[len(name):]
-
-		context.devices.append(dev)
-	# print(context.devices)
-	if device.sn:
-		context.vsn = iot_device_tree(device.sn)
-	else:
-		context.vsn = []
 	context.title = _('Wechat Device Data')

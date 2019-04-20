@@ -107,7 +107,7 @@ footer a {
 <!--设备数据-->
 
 <div class='demos-content-padded'>
-  <a href="javascript:;self.location='/weui_devices'" id='show-actions-bg' class="weui-btn weui-btn_primary">返回设备列表页</a>
+  <a href="javascript:;self.location='/wechat/devlist'" id='show-actions-bg' class="weui-btn weui-btn_primary">返回设备列表页</a>
 </div>
 
 </body>
@@ -123,8 +123,8 @@ footer a {
        console.log("ready");
     }
 
-    function get_newdata(){
-       $.get("/api/method/iot.hdb.iot_device_data_weui?sn=" + devsn, function (r) {
+    function get_newdata(sn, vsn){
+       $.get("/api/method/iot.hdb.iot_device_data_weui?sn=" + sn + "&vsn=" + vsn, function (r) {
            var rtdatas = r.message;
            // console.log(rtdatas.length);
            if(rtdatas){
@@ -162,7 +162,10 @@ footer a {
            }
        });
     }
-    get_newdata();
+
+    {% for vsn in devices %}
+        get_newdata("{{devsn}}", "{{vsn}}");
+    {% endfor %}
     setInterval(get_newdata, 3000);// 注意函数名没有引号和括弧！
 
 
