@@ -164,9 +164,7 @@ footer a {
     }
 
     function get_all_newdata() {
-        {% for vsn in devices %}
-            get_newdata("{{devsn}}", "{{vsn}}");
-        {% endfor %}
+        get_newdata("{{devsn}}", "{{device_sn}}");
     }
 
     get_all_newdata();

@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 
 from frappe import _
-from iot.hdb import iot_device_cfg
+from iot.hdb import iot_device_tree
 
 
 def get_context(context):
@@ -15,7 +15,6 @@ def get_context(context):
 		raise frappe.Redirect
 
 	name = frappe.form_dict.device or frappe.form_dict.name
-	devsn = frappe.form_dict.device or frappe.form_dict.sn
 	app = frappe.form_dict.app_id or frappe.form_dict.app
 	if not name:
 		frappe.local.flags.redirect_location = "/"
@@ -31,15 +30,13 @@ def get_context(context):
 		context.isCompanyAdmin = True
 
 	# print(name)
-	context.devsn = devsn
-	doc = frappe.get_doc('IOT Device', devsn)
+	context.devsn = name
+	doc = frappe.get_doc('IOT Device', name)
 	doc.has_permission('read')
 	context.doc = doc
 
-	context.device_sn = name
-
-	cfg = iot_device_cfg(devsn, name)
-	context.dev_desc = cfg['meta']['inst'] or cfg['meta']['name'] or doc.description or doc.dev_name or "UNKNOWN"
+	context.dev_desc = doc.description or doc.dev_name or "UNKNOWN"
+	context.devices = iot_device_tree(name)
 	context.app_id = app
 
 	context.title = _('Wechat Device Data')
