@@ -12,6 +12,9 @@ from iot_ui.ui_api import devices_list_array
 
 
 def get_context(context):
+	context.no_cache = 1
+	context.show_sidebar = True
+
 	try:
 		app = check_wechat_binding()
 	except Exception as ex:
@@ -22,8 +25,6 @@ def get_context(context):
 		raise frappe.Redirect
 
 	context.filter = frappe.form_dict.filter or "all"
-	context.no_cache = 1
-	context.show_sidebar = True
 
 	context.language = frappe.db.get_value("User", frappe.session.user, ["language"])
 	context.csrf_token = frappe.local.session.data.csrf_token

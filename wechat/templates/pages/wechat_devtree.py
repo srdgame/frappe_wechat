@@ -10,6 +10,9 @@ from iot.hdb import iot_device_tree
 
 
 def get_context(context):
+	context.no_cache = 1
+	context.show_sidebar = True
+
 	if frappe.session.user == 'Guest':
 		frappe.local.flags.redirect_location = "/login"
 		raise frappe.Redirect
@@ -20,8 +23,6 @@ def get_context(context):
 		frappe.local.flags.redirect_location = "/"
 		raise frappe.Redirect
 
-	context.no_cache = 1
-	context.show_sidebar = True
 
 	context.language = frappe.db.get_value("User", frappe.session.user, ["language"])
 	context.csrf_token = frappe.local.session.data.csrf_token
