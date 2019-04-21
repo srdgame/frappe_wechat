@@ -31,6 +31,7 @@ frappe.ready(function() {
 				} else {
 					$('.page-card-head .indicator').removeClass().addClass('indicator red')
 						.html(r.message);
+					frappe.msgprint(__('Incorrect username or password!!'));
 				}
 			}
 		});
