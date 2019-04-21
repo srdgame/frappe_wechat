@@ -30,7 +30,7 @@ frappe.ready(function() {
 					}
 				} else {
 					$('.page-card-head .indicator').removeClass().addClass('indicator red')
-					.text(r.message);
+						.html(r.message);
 				}
 			}
 		});
