@@ -32,7 +32,7 @@ class WechatSendDoc(Document):
 		self.set("error_info", err)
 		self.save()
 		frappe.db.commit()
-		throw(err)
+		# throw(err)
 
 	def wechat_send(self):
 		if self.docstatus != 1:
