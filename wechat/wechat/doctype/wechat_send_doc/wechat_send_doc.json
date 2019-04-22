@@ -86,7 +86,7 @@
   {
    "allow_bulk_edit": 0,
    "allow_in_quick_entry": 0,
-   "allow_on_submit": 0,
+   "allow_on_submit": 1,
    "bold": 0,
    "collapsible": 0,
    "columns": 0,
@@ -256,7 +256,7 @@
   {
    "allow_bulk_edit": 0,
    "allow_in_quick_entry": 0,
-   "allow_on_submit": 1,
+   "allow_on_submit": 0,
    "bold": 0,
    "collapsible": 0,
    "columns": 0,
@@ -329,7 +329,7 @@
  "issingle": 0,
  "istable": 0,
  "max_attachments": 0,
- "modified": "2019-04-22 12:24:18.689424",
+ "modified": "2019-04-22 13:04:25.339417",
  "modified_by": "Administrator",
  "module": "Wechat",
  "name": "Wechat Send Doc",
