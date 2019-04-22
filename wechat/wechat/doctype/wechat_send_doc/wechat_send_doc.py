@@ -37,6 +37,7 @@ class WechatSendDoc(Document):
 	def wechat_send(self):
 		if self.docstatus != 1:
 			return
+
 		if self.status in ["Error", "Finished"]:
 			return
 
@@ -61,6 +62,9 @@ class WechatSendDoc(Document):
 		template_id = frappe.get_value('Wechat App', self.app, self.__get_template_id())
 		if not template_id:
 			self.__set_error(("Cannot find wechat template id for {0} from app {1}").format(self.document_type, self.app))
+
+		if self.status in ["Error", "Finished"]:
+			return
 
 		client = WeChatClient(app_doc.app_id, app_doc.secret)
 
