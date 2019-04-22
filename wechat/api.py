@@ -68,10 +68,7 @@ def send_wechat_msg(app, users, msg):
 
 def run_send_with_retry_in_enqueue(doc_type, doc_name):
 	doc = frappe.get_doc(doc_type, doc_name)
-	if 'wechat_msg_send' in doc:
-		doc.wechat_msg_send()
-	else:
-		throw(_("wechat_msg_send methods missing in {0}".format(doc_type)))
+	doc.wechat_msg_send()
 
 
 def send_with_retry(doc_type, doc_name):
