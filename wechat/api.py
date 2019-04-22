@@ -84,6 +84,7 @@ def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
 			"status": 'New',
 		})
 	doc = doc.insert()
+	doc.submit()
 	return doc.as_dict()
 
 
