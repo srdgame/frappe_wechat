@@ -23,7 +23,7 @@ class WechatSendDoc(Document):
 		}
 		return template_name_map[self.document_type]
 
-	def on_submit(self):
+	def after_insert(self):
 		frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 						doc_name=self.name, doc_doc=self)
 
@@ -31,12 +31,10 @@ class WechatSendDoc(Document):
 		self.set("status", 'Error')
 		self.set("error_info", err)
 		self.save()
-		frappe.db.commit()
+		# frappe.db.commit()
 		# throw(err)
 
 	def wechat_send(self):
-		if self.docstatus != 1:
-			return
 		if self.status in ["Error", "Finished"]:
 			return
 
@@ -126,15 +124,9 @@ def wechat_send(doc_name, doc_doc=None):
 
 
 def wechat_notify():
-	for doc in frappe.get_all("Wechat Send Doc", "name", filters={"status": ["in", ["New", "Partial"]], "docstatus": 1}):
+	for doc in frappe.get_all("Wechat Send Doc", "name", filters={"status": ["in", ["New"]]}):
 		frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 						doc_name=doc.name)
-
-
-@frappe.whitelist()
-def wechat_resend(doc_name):
-	doc = frappe.get_doc("Wechat Send Doc", doc_name)
-	doc.amend()
 
 
 def clear_wechat_send_docs():
