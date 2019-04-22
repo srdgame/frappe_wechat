@@ -25,7 +25,7 @@ class WechatSendDoc(Document):
 
 	def on_submit(self):
 		frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
-						doc_name=self.name, doc_doc=self)
+						doc_name=self.name, doc_doc=self, enqueue_after_commit=True)
 
 	def __set_error(self, err):
 		self.set("status", 'Error')

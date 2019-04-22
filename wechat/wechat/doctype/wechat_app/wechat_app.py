@@ -15,7 +15,7 @@ class WechatApp(Document):
 		frappe.delete_doc("Wechat Auth File", self.name)
 
 	def update_menu(self):
-		frappe.enqueue('wechat.api.create_wechat_menu', app_name=self.name)
+		frappe.enqueue('wechat.api.create_wechat_menu', app_name=self.name, enqueue_after_commit=True)
 
 	def update_auth_file(self):
 		if frappe.get_value("Wechat Auth File", self.name, "name"):

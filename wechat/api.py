@@ -66,6 +66,21 @@ def send_wechat_msg(app, users, msg):
 	print("Wechat sending notify : {0} to openids {1} via app {2}".format(msg, ids, app))
 
 
+def run_send_with_retry_in_enqueue(doc_type, doc_name):
+	doc = frappe.get_doc(doc_type, doc_name)
+	if 'wechat_msg_send' in doc:
+		doc.wechat_msg_send()
+	else:
+		throw(_("wechat_msg_send methods missing in {0}".format(doc_type)))
+
+
+def send_with_retry(doc_type, doc_name):
+	frappe.enqueue('wechat.api.run_send_with_retry_in_enqueue',
+					doc_type=doc_type,
+					doc_name=doc_name,
+					enqueue_after_commit=True)
+
+
 def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
 	data = {
 		"app": app,
