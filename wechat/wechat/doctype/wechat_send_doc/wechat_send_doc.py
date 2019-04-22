@@ -126,7 +126,7 @@ def wechat_send(doc_name, doc_doc=None):
 
 
 def wechat_notify():
-	for doc in frappe.get_all("Wechat Send Doc", "name", filters={"status": ["in", ["New", "Partial"]], "docstatus": 1}):
+	for doc in frappe.get_all("Wechat Send Doc", "name", filters={"status": ["in", ["New"]], "docstatus": 1}):
 		frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 						doc_name=doc.name)
 
