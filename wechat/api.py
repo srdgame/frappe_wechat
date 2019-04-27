@@ -95,7 +95,7 @@ def send_doc(app, doc_type, doc_id, users, msg_type='Template'):
 			"sent": 0,
 			"status": 'New',
 		})
-	doc = doc.insert()
+	doc = doc.insert(ignore_permissions=True)
 	doc.submit()
 	return doc.as_dict()
 
