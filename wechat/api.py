@@ -129,8 +129,9 @@ def bind(app, openid, user, passwd, expires=None, redirect=None):
 	if not (app and openid and user and passwd):
 		return fire_raw_content("App, OpenID, User, Passwd is required!", 403)
 
-	frappe.local.login_manager.authenticate(user, passwd)
-	if frappe.local.login_manager.user != user:
+	try:
+		frappe.local.login_manager.authenticate(user, passwd)
+	except Exception as ex:
 		throw("username_password_not_matched")
 
 	frappe.local.login_manager.post_login()
