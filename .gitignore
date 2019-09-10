@@ -7,3 +7,4 @@ tags
 iot/docs/current
 .idea
 git_swap.sh
+__pycache__
