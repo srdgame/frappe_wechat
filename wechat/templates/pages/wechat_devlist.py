@@ -27,7 +27,7 @@ def get_context(context):
 		context.language = frappe.db.get_value("User", frappe.session.user, ["language"])
 		context.csrf_token = frappe.local.session.data.csrf_token
 
-		if 'Company Admin' in frappe.get_roles(frappe.session.user):
+		if 'Company Admin' in frappe.get_roles():
 			context.isCompanyAdmin = True
 
 		userdevices = devices_list_array(context.filter) or []
