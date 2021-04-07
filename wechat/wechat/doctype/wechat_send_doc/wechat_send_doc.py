@@ -7,6 +7,7 @@ import time
 import frappe
 from six.moves.urllib.parse import urlencode
 from frappe import throw, _
+from frappe.utils import add_to_date, now
 from frappe.model.document import Document
 from wechatpy import WeChatClient
 from wechatpy.oauth import WeChatOAuth
@@ -130,7 +131,9 @@ def wechat_send(doc_name, doc_doc=None):
 
 
 def wechat_notify():
-	for doc in frappe.get_all("Wechat Send Doc", "name", filters={"status": ["in", ["New"]], "docstatus": 1}):
+	oneday = add_to_date(now(), hours=-1)
+	filters = {"status": ["in", ["New"]], "docstatus": 1, "creation": (">", oneday)}
+	for doc in frappe.get_all("Wechat Send Doc", "name", filters):
 		frappe.enqueue('wechat.wechat.doctype.wechat_send_doc.wechat_send_doc.wechat_send',
 						doc_name=doc.name)
 
